@@ -1,11 +1,13 @@
 package org.hansi_b.moss;
 
+import java.util.Arrays;
+
 public class Sudoku {
 
 	private static final int DEFAULT_SIZE = 9;
 
 	private final int size;
-	private final int[] cells;
+	private final Integer[] cells;
 
 	public Sudoku() {
 		this(DEFAULT_SIZE);
@@ -17,59 +19,54 @@ public class Sudoku {
 			throw new IllegalArgumentException(
 					String.format("Sudoku cannot be initialised with a non-square size (got %d)", size));
 		this.size = size;
-		this.cells = new int[size * size];
+		this.cells = new Integer[size * size];
+	}
+
+	public static Sudoku create(final Integer... values) {
+		final int size = Double.valueOf(Math.sqrt(values.length)).intValue();
+		final Sudoku su = new Sudoku(size);
+		Arrays.setAll(su.cells, i -> su.checkValueArg(values[i]));
+		return su;
 	}
 
 	/**
-	 *
 	 * @param row the 1-based row in the Sudoku (i.e., maximum is equal to the
 	 *            Sudoku's size)
 	 * @param col the 1-based column in the Sudoku (i.e., the maximum allowed value
 	 *            is the Sudoku's size)
-	 * @return the cell's value, a number between zero and the Sudoku's size; zero
-	 *         indicates that the field is empty
+	 * @return either an Integer with the cell's value, a number between one and the
+	 *         Sudoku's size; or null to indicate that the field is empty
 	 */
-	public int get(final int row, final int col) {
-		checkRow(row);
-		checkCol(col);
+	public Integer get(final int row, final int col) {
+		checkArg(row, "Row");
+		checkArg(col, "Column");
 		return cells[rowCol2Index(row, col)];
 	}
 
 	/**
-	 *
 	 * @param row      the 1-based row in the Sudoku (i.e., maximum is equal to the
 	 *                 Sudoku's size)
 	 * @param col      the 1-based column in the Sudoku (i.e., the maximum allowed
 	 *                 value is the Sudoku's size)
-	 * @param newValue a number between one and the Sudoku's size (inclusive)
+	 * @param newValue either a value between one and the Sudoku's size (inclusive);
+	 *                 or null to indicate the field should be empty
 	 */
-	public void set(final int row, final int col, final int newValue) {
-		checkRow(row);
-		checkCol(col);
-		checkValue(newValue);
+	public void set(final int row, final int col, final Integer newValue) {
+		checkArg(row, "Row");
+		checkArg(col, "Column");
+		checkValueArg(newValue);
 		cells[rowCol2Index(row, col)] = newValue;
 	}
 
-	public void unset(final int row, final int col) {
-		checkRow(row);
-		checkCol(col);
-		cells[rowCol2Index(row, col)] = 0;
+	private Integer checkValueArg(final Integer newValue) {
+		if (newValue != null && (newValue < 1 || newValue > size))
+			throw new IllegalArgumentException(
+					String.format("Cell value must be null or between one and at most %d (is %d)", size, newValue));
+		return newValue;
 	}
 
 	private int rowCol2Index(final int row, final int col) {
 		return size * (row - 1) + col - 1;
-	}
-
-	private void checkRow(final int row) {
-		checkArg(row, "Row");
-	}
-
-	private void checkCol(final int col) {
-		checkArg(col, "Column");
-	}
-
-	private void checkValue(final int val) {
-		checkArg(val, "Cell value");
 	}
 
 	private void checkArg(final int arg, final String label) {
