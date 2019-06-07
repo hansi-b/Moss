@@ -69,6 +69,16 @@ public class SudokuTest {
 	}
 
 	@Test
+	public void testCreateIncomplete() {
+		final Sudoku su = Sudoku.create(//
+				1, 3, 4, 2, //
+				2, 4, null, 1, //
+				3, 1, 2, 4, //
+				4, 2, 1, 3);
+		assertNull(su.get(2, 3));
+	}
+
+	@Test
 	public void testGetWithIllegalValueArgs() {
 		final Sudoku su = new Sudoku();
 		assertThatExceptionThrownBy(() -> {
