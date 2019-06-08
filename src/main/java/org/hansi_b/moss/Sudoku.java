@@ -1,13 +1,15 @@
 package org.hansi_b.moss;
 
-import java.util.Arrays;
+import java.util.BitSet;
 
 public class Sudoku {
 
 	private static final int DEFAULT_SIZE = 9;
 
 	private final int size;
-	private final Integer[] cells;
+	private final int sizeSqrt;
+
+	private final Integer[][] cells;
 
 	public Sudoku() {
 		this(DEFAULT_SIZE);
@@ -15,17 +17,19 @@ public class Sudoku {
 
 	public Sudoku(final int size) {
 		final double sqrt = Math.sqrt(size);
-		if (Math.floor(sqrt) != sqrt)
+		this.sizeSqrt = (int) Math.floor(sqrt);
+		if (sizeSqrt != sqrt)
 			throw new IllegalArgumentException(
 					String.format("Sudoku cannot be initialised with a non-square size (got %d)", size));
 		this.size = size;
-		this.cells = new Integer[size * size];
+		this.cells = new Integer[size][size];
 	}
 
 	public static Sudoku create(final Integer... values) {
 		final int size = Double.valueOf(Math.sqrt(values.length)).intValue();
 		final Sudoku su = new Sudoku(size);
-		Arrays.setAll(su.cells, i -> su.checkValueArg(values[i]));
+		for (int row = 0; row < size; row++)
+			System.arraycopy(values, row * size, su.cells[row], 0, size);
 		return su;
 	}
 
@@ -40,7 +44,11 @@ public class Sudoku {
 	public Integer get(final int row, final int col) {
 		checkArg(row, "Row");
 		checkArg(col, "Column");
-		return cells[rowCol2Index(row, col)];
+		return cell(row, col);
+	}
+
+	private Integer cell(final int row, final int col) {
+		return cells[row - 1][col - 1];
 	}
 
 	/**
@@ -55,7 +63,7 @@ public class Sudoku {
 		checkArg(row, "Row");
 		checkArg(col, "Column");
 		checkValueArg(newValue);
-		cells[rowCol2Index(row, col)] = newValue;
+		cells[row - 1][col - 1] = newValue;
 	}
 
 	private Integer checkValueArg(final Integer newValue) {
@@ -65,13 +73,55 @@ public class Sudoku {
 		return newValue;
 	}
 
-	private int rowCol2Index(final int row, final int col) {
-		return size * (row - 1) + col - 1;
-	}
-
 	private void checkArg(final int arg, final String label) {
 		if (arg < 1 || arg > size)
 			throw new IllegalArgumentException(
 					String.format("%s argument must be positive and at most %d (is %d)", label, size, arg));
+	}
+
+	Integer[] getRow(final int row) {
+		checkArg(row, "Row");
+		final Integer[] vals = new Integer[size];
+		for (int i = 0; i < size; i++)
+			vals[i] = cell(row, i + 1);
+		return vals;
+	}
+
+	Integer[] getCol(final int col) {
+		checkArg(col, "Column");
+		final Integer[] vals = new Integer[size];
+		for (int i = 0; i < size; i++)
+			vals[i] = cell(i + 1, col);
+		return vals;
+	}
+
+	Integer[] getBlock(final int block) {
+		checkArg(block, "Block");
+
+		final int rowOffset = sizeSqrt * ((block - 1) / sizeSqrt);
+		final int colOffset = sizeSqrt * ((block - 1) % sizeSqrt);
+
+		final Integer[] vals = new Integer[size];
+		for (int r = 0; r < sizeSqrt; r++)
+			for (int c = 0; c < sizeSqrt; c++)
+				vals[r * sizeSqrt + c] = cells[r + rowOffset][c + colOffset];
+		return vals;
+	}
+
+	private boolean isSolved(final Integer[] elements) {
+		final BitSet targets = new BitSet(size);
+		for (final Integer e : elements)
+			if (e != null)
+				targets.set(e - 1);
+		return targets.cardinality() == size;
+	}
+
+	public boolean isSolved() {
+
+		for (int i = 1; i <= size; i++) {
+			if (!isSolved(getRow(i)) || !isSolved(getCol(i)) || !isSolved(getBlock(i)))
+				return false;
+		}
+		return true;
 	}
 }

@@ -109,4 +109,62 @@ public class SudokuTest {
 		su.set(1, 2, null);
 		assertNull(su.get(1, 2));
 	}
+
+	@Test
+	public void testNewIsNotSolved() throws Exception {
+		final Sudoku su = new Sudoku();
+		assertFalse(su.isSolved());
+	}
+
+	@Test
+	public void testCanSolve() {
+		final Sudoku su = Sudoku.create(//
+				1, 3, 4, 2, //
+				2, 4, null, 1, //
+				3, 1, 2, 4, //
+				4, 2, 1, 3);
+		assertFalse(su.isSolved());
+		su.set(2, 3, 3);
+		assertTrue(su.isSolved());
+	}
+
+	@Test
+	public void testGetRow() {
+		final Sudoku su = Sudoku.create(//
+				1, null, 4, 2, //
+				2, 4, null, 1, //
+				3, 1, 2, null, //
+				null, 2, 1, 3);
+		assertThat(su.getRow(1)).isEqualTo(new Integer[] { 1, null, 4, 2 });
+		assertThat(su.getRow(2)).isEqualTo(new Integer[] { 2, 4, null, 1 });
+		assertThat(su.getRow(3)).isEqualTo(new Integer[] { 3, 1, 2, null });
+		assertThat(su.getRow(4)).isEqualTo(new Integer[] { null, 2, 1, 3 });
+	}
+
+	@Test
+	public void testGetCol() {
+		final Sudoku su = Sudoku.create(//
+				1, null, 4, 2, //
+				2, 4, null, 1, //
+				3, 1, 2, null, //
+				null, 2, 1, 3);
+		assertThat(su.getCol(1)).isEqualTo(new Integer[] { 1, 2, 3, null });
+		assertThat(su.getCol(2)).isEqualTo(new Integer[] { null, 4, 1, 2 });
+		assertThat(su.getCol(3)).isEqualTo(new Integer[] { 4, null, 2, 1 });
+		assertThat(su.getCol(4)).isEqualTo(new Integer[] { 2, 1, null, 3 });
+	}
+
+	@Test
+	public void testGetBloc() {
+		final Sudoku su = Sudoku.create(//
+				1, null, 4, 2, //
+				2, 4, null, 1, //
+				3, 1, 2, null, //
+				null, 2, 1, 3);
+
+		assertThat(su.getBlock(1)).isEqualTo(new Integer[] { 1, null, 2, 4 });
+		assertThat(su.getBlock(2)).isEqualTo(new Integer[] { 4, 2, null, 1 });
+		assertThat(su.getBlock(3)).isEqualTo(new Integer[] { 3, 1, null, 2 });
+		assertThat(su.getBlock(4)).isEqualTo(new Integer[] { 2, null, 1, 3 });
+	}
 }
