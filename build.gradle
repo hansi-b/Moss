@@ -18,4 +18,15 @@ dependencies {
     testCompile 'org.assertj:assertj-core-java8:1.0.0m1'
 }
 
-mainClassName='Sudoku'
+def mainClass = 'org.hansi_b.moss.SudokuCliReader'
+
+run {
+	mainClassName=mainClass
+	standardInput = System.in
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': mainClass
+    }
+}
