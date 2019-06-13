@@ -1,6 +1,7 @@
 package org.hansi_b.moss;
 
 import java.util.BitSet;
+import java.util.stream.IntStream;
 
 public class Sudoku {
 
@@ -9,7 +10,8 @@ public class Sudoku {
 	private final int size;
 	private final int sizeSqrt;
 
-	private final Integer[][] cells;
+	private final Cell[][] cells;
+	private final Integer[][] values;
 
 	public Sudoku() {
 		this(DEFAULT_SIZE);
@@ -22,14 +24,25 @@ public class Sudoku {
 			throw new IllegalArgumentException(
 					String.format("Sudoku cannot be initialised with a non-square size (got %d)", size));
 		this.size = size;
-		this.cells = new Integer[size][size];
+		this.cells = initializeCells(this, size);
+		this.values = new Integer[size][size];
+	}
+
+	private static Cell[][] initializeCells(final Sudoku sudoku, final int size) {
+		final Cell[][] cells = new Cell[size][size];
+		IntStream.range(0, size).forEach(rowIdx -> {
+			IntStream.range(0, size).forEach(colIdx -> {
+				cells[rowIdx][colIdx] = new Cell(sudoku, rowIdx, colIdx);
+			});
+		});
+		return cells;
 	}
 
 	public static Sudoku create(final Integer... values) {
 		final int size = Double.valueOf(Math.sqrt(values.length)).intValue();
 		final Sudoku su = new Sudoku(size);
 		for (int row = 0; row < size; row++)
-			System.arraycopy(values, row * size, su.cells[row], 0, size);
+			System.arraycopy(values, row * size, su.values[row], 0, size);
 		return su;
 	}
 
@@ -41,14 +54,14 @@ public class Sudoku {
 	 * @return either an Integer with the cell's value, a number between one and the
 	 *         Sudoku's size; or null to indicate that the field is empty
 	 */
-	public Integer get(final int row, final int col) {
+	public Integer getValue(final int row, final int col) {
 		checkArg(row, "Row");
 		checkArg(col, "Column");
-		return cell(row, col);
+		return valueAt(row, col);
 	}
 
-	private Integer cell(final int row, final int col) {
-		return cells[row - 1][col - 1];
+	private Integer valueAt(final int row, final int col) {
+		return values[row - 1][col - 1];
 	}
 
 	/**
@@ -63,7 +76,7 @@ public class Sudoku {
 		checkArg(row, "Row");
 		checkArg(col, "Column");
 		checkValueArg(newValue);
-		cells[row - 1][col - 1] = newValue;
+		values[row - 1][col - 1] = newValue;
 	}
 
 	private Integer checkValueArg(final Integer newValue) {
@@ -83,7 +96,7 @@ public class Sudoku {
 		checkArg(row, "Row");
 		final Integer[] vals = new Integer[size];
 		for (int i = 0; i < size; i++)
-			vals[i] = cell(row, i + 1);
+			vals[i] = valueAt(row, i + 1);
 		return vals;
 	}
 
@@ -91,7 +104,7 @@ public class Sudoku {
 		checkArg(col, "Column");
 		final Integer[] vals = new Integer[size];
 		for (int i = 0; i < size; i++)
-			vals[i] = cell(i + 1, col);
+			vals[i] = valueAt(i + 1, col);
 		return vals;
 	}
 
@@ -104,7 +117,7 @@ public class Sudoku {
 		final Integer[] vals = new Integer[size];
 		for (int r = 0; r < sizeSqrt; r++)
 			for (int c = 0; c < sizeSqrt; c++)
-				vals[r * sizeSqrt + c] = cells[r + rowOffset][c + colOffset];
+				vals[r * sizeSqrt + c] = values[r + rowOffset][c + colOffset];
 		return vals;
 	}
 
