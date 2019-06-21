@@ -1,6 +1,10 @@
 package org.hansi_b.moss;
 
+import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Sudoku {
@@ -32,7 +36,7 @@ public class Sudoku {
 		final Cell[][] cells = new Cell[size][size];
 		IntStream.range(0, size).forEach(rowIdx -> {
 			IntStream.range(0, size).forEach(colIdx -> {
-				cells[rowIdx][colIdx] = new Cell(sudoku, rowIdx, colIdx);
+				cells[rowIdx][colIdx] = new Cell(sudoku, rowIdx + 1, colIdx + 1);
 			});
 		});
 		return cells;
@@ -44,6 +48,13 @@ public class Sudoku {
 		for (int row = 0; row < size; row++)
 			System.arraycopy(values, row * size, su.values[row], 0, size);
 		return su;
+	}
+
+	/**
+	 * @return the number of cells per row, column, and block
+	 */
+	public int size() {
+		return size;
 	}
 
 	/**
@@ -92,15 +103,37 @@ public class Sudoku {
 					String.format("%s argument must be positive and at most %d (is %d)", label, size, arg));
 	}
 
-	Integer[] getRow(final int row) {
-		checkArg(row, "Row");
-		final Integer[] vals = new Integer[size];
-		for (int i = 0; i < size; i++)
-			vals[i] = valueAt(row, i + 1);
-		return vals;
+	static public class Row implements Iterable<Cell> {
+
+		private final List<Cell> cells;
+
+		Row(final List<Cell> cells) {
+			this.cells = cells;
+		}
+
+		public int size() {
+			return cells.size();
+		}
+
+		public List<Integer> getValues() {
+			return cells.stream().map(Cell::getValue).collect(Collectors.toList());
+		}
+
+		@Override
+		public Iterator<Cell> iterator() {
+			return cells.iterator();
+		}
 	}
 
-	Integer[] getCol(final int col) {
+	public Row getRow(final int row) {
+		checkArg(row, "Row");
+		final List<Cell> res = new ArrayList<Cell>(size);
+		for (int c = 0; c < size; c++)
+			res.add(cells[row - 1][c]);
+		return new Row(res);
+	}
+
+	public Integer[] getCol(final int col) {
 		checkArg(col, "Column");
 		final Integer[] vals = new Integer[size];
 		for (int i = 0; i < size; i++)
@@ -108,7 +141,7 @@ public class Sudoku {
 		return vals;
 	}
 
-	Integer[] getBlock(final int block) {
+	public Integer[] getBlock(final int block) {
 		checkArg(block, "Block");
 
 		final int rowOffset = sizeSqrt * ((block - 1) / sizeSqrt);
@@ -126,6 +159,17 @@ public class Sudoku {
 		for (final Integer e : elements)
 			if (e != null)
 				targets.set(e - 1);
+		return targets.cardinality() == size;
+	}
+
+	private boolean isSolved(final Iterable<Cell> elements) {
+		final BitSet targets = new BitSet(size);
+		for (final Cell e : elements) {
+			final Integer v = e.getValue();
+			if (v != null)
+				targets.set(v - 1);
+		}
+
 		return targets.cardinality() == size;
 	}
 

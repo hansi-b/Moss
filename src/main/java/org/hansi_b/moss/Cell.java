@@ -12,11 +12,11 @@ public class Cell {
 		this.colIdx = colIdx;
 	}
 
-	Integer getValue() {
+	public Integer getValue() {
 		return sudoku.getValue(rowIdx, colIdx);
 	}
 
-	void setValue(final Integer newValue) {
+	public void setValue(final Integer newValue) {
 		sudoku.set(rowIdx, colIdx, newValue);
 	}
 }

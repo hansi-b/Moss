@@ -1,6 +1,10 @@
 package org.hansi_b.moss;
 
 import static org.junit.Assert.*;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.hansi_b.moss.Sudoku;
 
 import static org.assertj.core.api.Assertions.*;
@@ -135,10 +139,14 @@ public class SudokuTest {
 				2, 4, null, 1, //
 				3, 1, 2, null, //
 				null, 2, 1, 3);
-		assertThat(su.getRow(1)).isEqualTo(new Integer[] { 1, null, 4, 2 });
-		assertThat(su.getRow(2)).isEqualTo(new Integer[] { 2, 4, null, 1 });
-		assertThat(su.getRow(3)).isEqualTo(new Integer[] { 3, 1, 2, null });
-		assertThat(su.getRow(4)).isEqualTo(new Integer[] { null, 2, 1, 3 });
+		assertThat(su.getRow(1).getValues()).isEqualTo(listOf(1, null, 4, 2));
+		assertThat(su.getRow(2).getValues()).isEqualTo(listOf(2, 4, null, 1));
+		assertThat(su.getRow(3).getValues()).isEqualTo(listOf(3, 1, 2, null));
+		assertThat(su.getRow(4).getValues()).isEqualTo(listOf(null, 2, 1, 3));
+	}
+
+	private static List<Integer> listOf(final Integer... integers) {
+		return Arrays.asList(integers);
 	}
 
 	@Test
