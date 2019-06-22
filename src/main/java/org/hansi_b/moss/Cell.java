@@ -16,6 +16,14 @@ public class Cell {
 		return sudoku.getValue(rowIdx, colIdx);
 	}
 
+	public int getRow() {
+		return rowIdx;
+	}
+
+	public int getCol() {
+		return colIdx;
+	}
+
 	public void setValue(final Integer newValue) {
 		sudoku.set(rowIdx, colIdx, newValue);
 	}
