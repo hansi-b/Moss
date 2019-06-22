@@ -1,6 +1,7 @@
 
 plugins {
     id 'application'
+    id 'jacoco'
 }
 
 sourceCompatibility = 1.8
@@ -18,15 +19,23 @@ dependencies {
     testCompile 'org.assertj:assertj-core-java8:1.0.0m1'
 }
 
-def mainClass = 'org.hansi_b.moss.SudokuCliReader'
-
-run {
-	mainClassName=mainClass
-	standardInput = System.in
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
 }
+check.dependsOn jacocoTestReport
+
+def mainClass = 'org.hansi_b.moss.SudokuCliReader'
 
 jar {
     manifest {
         attributes 'Main-Class': mainClass
     }
+}
+
+run {
+	mainClassName=mainClass
+	standardInput = System.in
 }
