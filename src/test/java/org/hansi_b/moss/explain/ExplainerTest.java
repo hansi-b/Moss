@@ -8,6 +8,7 @@ import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Explainer;
 import org.hansi_b.moss.explain.Move;
+import org.hansi_b.moss.explain.Move.Strategy;
 import org.junit.Test;
 
 public class ExplainerTest {
@@ -27,7 +28,7 @@ public class ExplainerTest {
 
 		assertThat(candidates.size()).isEqualTo(1);
 
-		assertThatMoveIs(candidates.get(0), 1, 2, 3);
+		assertThatMoveIs(candidates.get(0), Strategy.SingleMissingNumberInRow, 1, 2, 3);
 	}
 
 	@Test
@@ -45,11 +46,12 @@ public class ExplainerTest {
 
 		assertThat(candidates.size()).isEqualTo(1);
 
-		assertThatMoveIs(candidates.get(0), 2, 1, 4);
+		assertThatMoveIs(candidates.get(0), Strategy.SingleMissingNumberInCol, 2, 1, 4);
 	}
 
-	private void assertThatMoveIs(final Move move, final int expectedRowIdx, final int expectedColIdx,
-			final int expectedNewValue) {
+	private static void assertThatMoveIs(final Move move, final Strategy expectedStrategy, final int expectedRowIdx,
+			final int expectedColIdx, final int expectedNewValue) {
+		assertThat(move.getStrategy()).isEqualTo(expectedStrategy);
 		final Cell c = move.getCell();
 		assertThat(c.getRow()).isEqualTo(expectedRowIdx);
 		assertThat(c.getCol()).isEqualTo(expectedColIdx);

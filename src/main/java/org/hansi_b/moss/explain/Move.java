@@ -4,12 +4,24 @@ import org.hansi_b.moss.Cell;
 
 public class Move {
 
+	enum Strategy {
+		SingleMissingNumberInRow, //
+		SingleMissingNumberInCol, //
+		SingleMissingNumberInBlock
+	}
+
+	private final Strategy strategy;
 	private final Cell cell;
 	private final Integer newValue;
 
-	Move(final Cell cell, final Integer newValue) {
+	Move(final Strategy strategy, final Cell cell, final Integer newValue) {
+		this.strategy = strategy;
 		this.cell = cell;
 		this.newValue = newValue;
+	}
+
+	public Strategy getStrategy() {
+		return strategy;
 	}
 
 	public Cell getCell() {

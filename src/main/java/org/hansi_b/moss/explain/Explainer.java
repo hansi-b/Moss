@@ -7,6 +7,8 @@ import java.util.List;
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.Sudoku.CellGroup;
+import org.hansi_b.moss.Sudoku.CellGroup.Type;
+import org.hansi_b.moss.explain.Move.Strategy;
 
 public class Explainer {
 
@@ -22,13 +24,13 @@ public class Explainer {
 		final List<Move> moves = new ArrayList<Move>();
 
 		for (int rowIdx = 1; rowIdx <= sudoku.size(); rowIdx++) {
-			addMove(moves, sudoku.getRow(rowIdx));
-			addMove(moves, sudoku.getCol(rowIdx));
+			findMove(sudoku.getRow(rowIdx), moves);
+			findMove(sudoku.getCol(rowIdx), moves);
 		}
 		return moves;
 	}
 
-	private void addMove(final List<Move> moves, final CellGroup cells) {
+	private static void findMove(final CellGroup cells, final List<Move> moves) {
 		final BitSet values = new BitSet(cells.size());
 
 		Cell emptyCell = null;
@@ -43,12 +45,25 @@ public class Explainer {
 		}
 
 		/*
-		 * we want to have found and empty cell, and all values but one must have
+		 * we want to have found an empty cell, and all values but one must have
 		 * occurred
 		 */
 		final boolean canSolve = emptyCell != null && values.cardinality() == cells.size() - 1;
 
 		if (canSolve)
-			moves.add(new Move(emptyCell, 1 + values.nextClearBit(0)));
+			moves.add(new Move(mapCellGroupToStrategy(cells.type()), emptyCell, 1 + values.nextClearBit(0)));
+	}
+
+	private static Strategy mapCellGroupToStrategy(final Type type) {
+		switch (type) {
+		case Row:
+			return Strategy.SingleMissingNumberInRow;
+		case Col:
+			return Strategy.SingleMissingNumberInCol;
+		case Block:
+			return Strategy.SingleMissingNumberInBlock;
+		default:
+			throw new IllegalStateException(String.format("Unknown cell group type %s", type));
+		}
 	}
 }

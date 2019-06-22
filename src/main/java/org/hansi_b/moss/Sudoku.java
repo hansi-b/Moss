@@ -104,7 +104,7 @@ public class Sudoku {
 	}
 
 	static public class CellGroup implements Iterable<Cell> {
-		enum Type {
+		public enum Type {
 			Row, Col, Block
 		}
 
