@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.assertj.core.util.Sets;
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Explainer;
@@ -78,6 +80,30 @@ public class ExplainerTest {
 		assertThat(candidates.size()).isEqualTo(1);
 
 		assertThatMoveIs(candidates.get(0), Strategy.SingleMissingNumberInBlock, 2, 4, 1);
+	}
+
+	@Test
+	public void testFindsAllThreeOnSameCell() {
+
+		final Sudoku su = Sudoku.create(//
+				1, 2, null, 3, //
+				null, null, 4, 1, //
+				null, null, 2, null, //
+				null, null, 3, null);
+
+		final Explainer ex = new Explainer(su);
+
+		final List<Move> candidates = ex.getPossibleMoves();
+
+		assertThat(candidates.size()).isEqualTo(3);
+		assertThat(candidates.stream().map(Move::getStrategy).collect(Collectors.toSet()))//
+				.isEqualTo(Sets.newLinkedHashSet(//
+						Strategy.SingleMissingNumberInRow, //
+						Strategy.SingleMissingNumberInCol, //
+						Strategy.SingleMissingNumberInBlock//
+				));
+		assertThat(candidates.stream().map(Move::getNewValue).collect(Collectors.toSet()))//
+				.isEqualTo(Sets.newLinkedHashSet(4, 1, 2));
 	}
 
 	private static void assertThatMoveIs(final Move move, final Strategy expectedStrategy, final int expectedRowIdx,
