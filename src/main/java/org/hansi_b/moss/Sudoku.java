@@ -103,7 +103,13 @@ public class Sudoku {
 					String.format("%s argument must be positive and at most %d (is %d)", label, size, arg));
 	}
 
-	static public class Row implements Iterable<Cell> {
+	static public interface CellGroup extends Iterable<Cell> {
+		int size();
+
+		List<Integer> getValues();
+	}
+
+	static public class Row implements CellGroup {
 
 		private final List<Cell> cells;
 

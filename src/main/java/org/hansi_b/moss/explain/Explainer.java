@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
+import org.hansi_b.moss.Sudoku.CellGroup;
 import org.hansi_b.moss.Sudoku.Row;
 
 public class Explainer {
@@ -30,12 +31,12 @@ public class Explainer {
 		return moves;
 	}
 
-	private Move findMissingValue(final Row row) {
+	private Move findMissingValue(final CellGroup cells) {
 
-		final BitSet values = new BitSet(row.size());
+		final BitSet values = new BitSet(cells.size());
 
 		Cell emptyCell = null;
-		for (final Cell c : row) {
+		for (final Cell c : cells) {
 			if (c.getValue() == null) {
 				if (emptyCell != null)
 					return null;
@@ -49,7 +50,7 @@ public class Explainer {
 		 * we want to have found and empty cell, and all values but one must have
 		 * occurred
 		 */
-		final boolean canSolve = emptyCell != null && values.cardinality() == row.size() - 1;
+		final boolean canSolve = emptyCell != null && values.cardinality() == cells.size() - 1;
 
 		return canSolve ? new Move(emptyCell, 1 + values.nextClearBit(0)) : null;
 	}
