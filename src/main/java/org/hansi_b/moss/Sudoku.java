@@ -168,25 +168,17 @@ public class Sudoku {
 		return new Col(res);
 	}
 
-	public Integer[] getBlock(final int block) {
+	public Block getBlock(final int block) {
 		checkArg(block, "Block");
 
 		final int rowOffset = sizeSqrt * ((block - 1) / sizeSqrt);
 		final int colOffset = sizeSqrt * ((block - 1) % sizeSqrt);
 
-		final Integer[] vals = new Integer[size];
+		final List<Cell> res = new ArrayList<Cell>(size);
 		for (int r = 0; r < sizeSqrt; r++)
 			for (int c = 0; c < sizeSqrt; c++)
-				vals[r * sizeSqrt + c] = values[r + rowOffset][c + colOffset];
-		return vals;
-	}
-
-	private boolean isSolved(final Integer[] elements) {
-		final BitSet targets = new BitSet(size);
-		for (final Integer e : elements)
-			if (e != null)
-				targets.set(e - 1);
-		return targets.cardinality() == size;
+				res.add(cells[r + rowOffset][c + colOffset]);
+		return new Block(res);
 	}
 
 	private boolean isSolved(final Iterable<Cell> elements) {

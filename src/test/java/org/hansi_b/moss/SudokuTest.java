@@ -145,10 +145,6 @@ public class SudokuTest {
 		assertThat(su.getRow(4).getValues()).isEqualTo(listOf(null, 2, 1, 3));
 	}
 
-	private static List<Integer> listOf(final Integer... integers) {
-		return Arrays.asList(integers);
-	}
-
 	@Test
 	public void testGetCol() {
 		final Sudoku su = Sudoku.create(//
@@ -170,9 +166,13 @@ public class SudokuTest {
 				3, 1, 2, null, //
 				null, 2, 1, 3);
 
-		assertThat(su.getBlock(1)).isEqualTo(new Integer[] { 1, null, 2, 4 });
-		assertThat(su.getBlock(2)).isEqualTo(new Integer[] { 4, 2, null, 1 });
-		assertThat(su.getBlock(3)).isEqualTo(new Integer[] { 3, 1, null, 2 });
-		assertThat(su.getBlock(4)).isEqualTo(new Integer[] { 2, null, 1, 3 });
+		assertThat(su.getBlock(1).getValues()).isEqualTo(listOf(1, null, 2, 4));
+		assertThat(su.getBlock(2).getValues()).isEqualTo(listOf(4, 2, null, 1));
+		assertThat(su.getBlock(3).getValues()).isEqualTo(listOf(3, 1, null, 2));
+		assertThat(su.getBlock(4).getValues()).isEqualTo(listOf(2, null, 1, 3));
+	}
+
+	private static List<Integer> listOf(final Integer... integers) {
+		return Arrays.asList(integers);
 	}
 }

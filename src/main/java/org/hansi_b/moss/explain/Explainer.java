@@ -26,6 +26,7 @@ public class Explainer {
 		for (int rowIdx = 1; rowIdx <= sudoku.size(); rowIdx++) {
 			findMove(sudoku.getRow(rowIdx), moves);
 			findMove(sudoku.getCol(rowIdx), moves);
+			findMove(sudoku.getBlock(rowIdx), moves);
 		}
 		return moves;
 	}
