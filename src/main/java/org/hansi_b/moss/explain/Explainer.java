@@ -7,7 +7,6 @@ import java.util.List;
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.Sudoku.CellGroup;
-import org.hansi_b.moss.Sudoku.Row;
 
 public class Explainer {
 
@@ -23,23 +22,20 @@ public class Explainer {
 		final List<Move> moves = new ArrayList<Move>();
 
 		for (int rowIdx = 1; rowIdx <= sudoku.size(); rowIdx++) {
-			final Row row = sudoku.getRow(rowIdx);
-			final Move move = findMissingValue(row);
-			if (move != null)
-				moves.add(move);
+			addMove(moves, sudoku.getRow(rowIdx));
+			addMove(moves, sudoku.getCol(rowIdx));
 		}
 		return moves;
 	}
 
-	private Move findMissingValue(final CellGroup cells) {
-
+	private void addMove(final List<Move> moves, final CellGroup cells) {
 		final BitSet values = new BitSet(cells.size());
 
 		Cell emptyCell = null;
 		for (final Cell c : cells) {
 			if (c.getValue() == null) {
 				if (emptyCell != null)
-					return null;
+					return;
 				emptyCell = c;
 			} else {
 				values.set(c.getValue() - 1);
@@ -52,7 +48,7 @@ public class Explainer {
 		 */
 		final boolean canSolve = emptyCell != null && values.cardinality() == cells.size() - 1;
 
-		return canSolve ? new Move(emptyCell, 1 + values.nextClearBit(0)) : null;
+		if (canSolve)
+			moves.add(new Move(emptyCell, 1 + values.nextClearBit(0)));
 	}
-
 }

@@ -103,22 +103,25 @@ public class Sudoku {
 					String.format("%s argument must be positive and at most %d (is %d)", label, size, arg));
 	}
 
-	static public interface CellGroup extends Iterable<Cell> {
-		int size();
+	static public class CellGroup implements Iterable<Cell> {
+		enum Type {
+			Row, Col, Block
+		}
 
-		List<Integer> getValues();
-	}
-
-	static public class Row implements CellGroup {
-
+		private final Type type;
 		private final List<Cell> cells;
 
-		Row(final List<Cell> cells) {
+		CellGroup(final Type type, final List<Cell> cells) {
+			this.type = type;
 			this.cells = cells;
 		}
 
 		public int size() {
 			return cells.size();
+		}
+
+		public Type type() {
+			return type;
 		}
 
 		public List<Integer> getValues() {
@@ -131,6 +134,24 @@ public class Sudoku {
 		}
 	}
 
+	static public class Row extends CellGroup {
+		Row(final List<Cell> cells) {
+			super(Type.Row, cells);
+		}
+	}
+
+	static public class Col extends CellGroup {
+		Col(final List<Cell> cells) {
+			super(Type.Col, cells);
+		}
+	}
+
+	static public class Block extends CellGroup {
+		Block(final List<Cell> cells) {
+			super(Type.Block, cells);
+		}
+	}
+
 	public Row getRow(final int row) {
 		checkArg(row, "Row");
 		final List<Cell> res = new ArrayList<Cell>(size);
@@ -139,12 +160,12 @@ public class Sudoku {
 		return new Row(res);
 	}
 
-	public Integer[] getCol(final int col) {
+	public Col getCol(final int col) {
 		checkArg(col, "Column");
-		final Integer[] vals = new Integer[size];
-		for (int i = 0; i < size; i++)
-			vals[i] = valueAt(i + 1, col);
-		return vals;
+		final List<Cell> res = new ArrayList<Cell>(size);
+		for (int r = 0; r < size; r++)
+			res.add(cells[r][col - 1]);
+		return new Col(res);
 	}
 
 	public Integer[] getBlock(final int block) {

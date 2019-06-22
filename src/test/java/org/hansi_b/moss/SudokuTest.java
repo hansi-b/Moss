@@ -156,10 +156,10 @@ public class SudokuTest {
 				2, 4, null, 1, //
 				3, 1, 2, null, //
 				null, 2, 1, 3);
-		assertThat(su.getCol(1)).isEqualTo(new Integer[] { 1, 2, 3, null });
-		assertThat(su.getCol(2)).isEqualTo(new Integer[] { null, 4, 1, 2 });
-		assertThat(su.getCol(3)).isEqualTo(new Integer[] { 4, null, 2, 1 });
-		assertThat(su.getCol(4)).isEqualTo(new Integer[] { 2, 1, null, 3 });
+		assertThat(su.getCol(1).getValues()).isEqualTo(listOf(1, 2, 3, null));
+		assertThat(su.getCol(2).getValues()).isEqualTo(listOf(null, 4, 1, 2));
+		assertThat(su.getCol(3).getValues()).isEqualTo(listOf(4, null, 2, 1));
+		assertThat(su.getCol(4).getValues()).isEqualTo(listOf(2, 1, null, 3));
 	}
 
 	@Test
