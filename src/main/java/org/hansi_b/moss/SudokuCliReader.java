@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * Reads a Sudoku from the command line and just prints whether it is solved.
  *
  * The format is space-separated numbers for each row, where empty cells are
- * indicated by a zero or
+ * indicated by a zero.
  */
 public class SudokuCliReader {
 
