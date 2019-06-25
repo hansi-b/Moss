@@ -4,7 +4,7 @@ plugins {
     id 'jacoco'
 }
 
-sourceCompatibility = 12
+sourceCompatibility = 11
 
 repositories {
     // Use jcenter for resolving your dependencies.

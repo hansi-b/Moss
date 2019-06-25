@@ -1,8 +1,7 @@
 # from https://docs.travis-ci.com/user/languages/java
 language: java
-dist: trusty
 jdk:
-  - oraclejdk8
+  - openjdk11
 script:
   - ./gradlew check
 after_success:
