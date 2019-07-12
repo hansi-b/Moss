@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.List;
 
 import org.assertj.core.util.Lists;
-import org.hansi_b.moss.Sudoku.Block;
+import org.hansi_b.moss.CellGroup.Block;
 import org.junit.Test;
 
 public class CellTest {

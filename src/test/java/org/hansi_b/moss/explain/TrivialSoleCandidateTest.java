@@ -9,12 +9,14 @@ import java.util.stream.Collectors;
 import org.assertj.core.util.Sets;
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
-import org.hansi_b.moss.explain.Explainer;
+import org.hansi_b.moss.explain.TrivialSoleCandidate;
 import org.hansi_b.moss.explain.Move;
 import org.hansi_b.moss.explain.Move.Strategy;
 import org.junit.Test;
 
-public class ExplainerTest {
+public class TrivialSoleCandidateTest {
+
+	final TrivialSoleCandidate singleEmpty = new TrivialSoleCandidate();
 
 	@Test
 	public void testFindsSingleMissingInRow() {
@@ -25,9 +27,7 @@ public class ExplainerTest {
 				null, null, null, null, //
 				null, null, null, null);
 
-		final Explainer ex = new Explainer(su);
-
-		final List<Move> candidates = ex.getPossibleMoves();
+		final List<Move> candidates = singleEmpty.findPossibleMoves(su);
 
 		assertThat(candidates.size()).isEqualTo(1);
 
@@ -43,7 +43,7 @@ public class ExplainerTest {
 				null, null, null, null, //
 				null, null, null, null);
 
-		assertTrue(new Explainer(su).getPossibleMoves().isEmpty());
+		assertTrue(singleEmpty.findPossibleMoves(su).isEmpty());
 	}
 
 	@Test
@@ -55,9 +55,7 @@ public class ExplainerTest {
 				2, null, null, null, //
 				3, null, null, null);
 
-		final Explainer ex = new Explainer(su);
-
-		final List<Move> candidates = ex.getPossibleMoves();
+		final List<Move> candidates = singleEmpty.findPossibleMoves(su);
 
 		assertThat(candidates.size()).isEqualTo(1);
 
@@ -73,9 +71,7 @@ public class ExplainerTest {
 				null, null, 1, null, //
 				null, null, 3, null);
 
-		final Explainer ex = new Explainer(su);
-
-		final List<Move> candidates = ex.getPossibleMoves();
+		final List<Move> candidates = singleEmpty.findPossibleMoves(su);
 
 		assertThat(candidates.size()).isEqualTo(1);
 
@@ -91,9 +87,7 @@ public class ExplainerTest {
 				null, null, 2, null, //
 				null, null, 3, null);
 
-		final Explainer ex = new Explainer(su);
-
-		final List<Move> candidates = ex.getPossibleMoves();
+		final List<Move> candidates = singleEmpty.findPossibleMoves(su);
 
 		assertThat(candidates.size()).isEqualTo(3);
 		assertThat(candidates.stream().map(Move::getStrategy).collect(Collectors.toSet()))//

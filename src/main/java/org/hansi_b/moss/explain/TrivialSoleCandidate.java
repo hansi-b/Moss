@@ -5,28 +5,27 @@ import java.util.BitSet;
 import java.util.List;
 
 import org.hansi_b.moss.Cell;
+import org.hansi_b.moss.CellGroup;
+import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.Sudoku;
-import org.hansi_b.moss.Sudoku.CellGroup;
-import org.hansi_b.moss.Sudoku.CellGroup.Type;
 import org.hansi_b.moss.explain.Move.Strategy;
 
-public class Explainer {
+/**
+ * Finds rows/cols/blocks which are correctly filled except for one element. The
+ * trivial variant of
+ * https://www.kristanix.com/sudokuepic/sudoku-solving-techniques.php
+ */
+public class TrivialSoleCandidate implements SolvingTechnique {
 
-	private final Sudoku sudoku;
-
-	public Explainer(final Sudoku sudoku) {
-		this.sudoku = sudoku;
-
-	}
-
-	public List<Move> getPossibleMoves() {
+	@Override
+	public List<Move> findPossibleMoves(final Sudoku sudoku) {
 
 		final List<Move> moves = new ArrayList<Move>();
 
-		for (int rowIdx = 1; rowIdx <= sudoku.size(); rowIdx++) {
-			findMove(sudoku.getRow(rowIdx), moves);
-			findMove(sudoku.getCol(rowIdx), moves);
-			findMove(sudoku.getBlock(rowIdx), moves);
+		for (int i = 1; i <= sudoku.size(); i++) {
+			findMove(sudoku.getRow(i), moves);
+			findMove(sudoku.getCol(i), moves);
+			findMove(sudoku.getBlock(i), moves);
 		}
 		return moves;
 	}
@@ -38,7 +37,7 @@ public class Explainer {
 		for (final Cell c : cells) {
 			if (c.getValue() == null) {
 				if (emptyCell != null)
-					return;
+					return; // second empty cell -> bail
 				emptyCell = c;
 			} else {
 				values.set(c.getValue() - 1);
@@ -46,8 +45,8 @@ public class Explainer {
 		}
 
 		/*
-		 * we want to have found an empty cell, and all values but one must have
-		 * occurred
+		 * we want to have found exactly one empty cell, and all values but one must
+		 * have occurred
 		 */
 		final boolean canSolve = emptyCell != null && values.cardinality() == cells.size() - 1;
 

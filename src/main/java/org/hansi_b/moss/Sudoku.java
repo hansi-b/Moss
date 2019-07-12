@@ -2,10 +2,12 @@ package org.hansi_b.moss;
 
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import org.hansi_b.moss.CellGroup.Block;
+import org.hansi_b.moss.CellGroup.Col;
+import org.hansi_b.moss.CellGroup.Row;
 
 public class Sudoku {
 
@@ -101,55 +103,6 @@ public class Sudoku {
 		if (arg < 1 || arg > size)
 			throw new IllegalArgumentException(
 					String.format("%s argument must be positive and at most %d (is %d)", label, size, arg));
-	}
-
-	static public class CellGroup implements Iterable<Cell> {
-		public enum Type {
-			Row, Col, Block
-		}
-
-		private final Type type;
-		private final List<Cell> cells;
-
-		CellGroup(final Type type, final List<Cell> cells) {
-			this.type = type;
-			this.cells = cells;
-		}
-
-		public int size() {
-			return cells.size();
-		}
-
-		public Type type() {
-			return type;
-		}
-
-		public List<Integer> getValues() {
-			return cells.stream().map(Cell::getValue).collect(Collectors.toList());
-		}
-
-		@Override
-		public Iterator<Cell> iterator() {
-			return cells.iterator();
-		}
-	}
-
-	static public class Row extends CellGroup {
-		Row(final List<Cell> cells) {
-			super(Type.Row, cells);
-		}
-	}
-
-	static public class Col extends CellGroup {
-		Col(final List<Cell> cells) {
-			super(Type.Col, cells);
-		}
-	}
-
-	static public class Block extends CellGroup {
-		Block(final List<Cell> cells) {
-			super(Type.Block, cells);
-		}
 	}
 
 	public Row getRow(final int row) {
