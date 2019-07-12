@@ -38,7 +38,7 @@ public class Sudoku {
 		final Cell[][] cells = new Cell[size][size];
 		IntStream.range(0, size).forEach(rowIdx -> {
 			IntStream.range(0, size).forEach(colIdx -> {
-				cells[rowIdx][colIdx] = new Cell(sudoku, rowIdx + 1, colIdx + 1);
+				cells[rowIdx][colIdx] = new Cell(sudoku, rowIdx, colIdx);
 			});
 		});
 		return cells;
@@ -60,9 +60,9 @@ public class Sudoku {
 	}
 
 	/**
-	 * @param row the 1-based row in the Sudoku (i.e., maximum is equal to the
+	 * @param row the 0-based row in the Sudoku (i.e., maximum is equal to the
 	 *            Sudoku's size)
-	 * @param col the 1-based column in the Sudoku (i.e., the maximum allowed value
+	 * @param col the 0-based column in the Sudoku (i.e., the maximum allowed value
 	 *            is the Sudoku's size)
 	 * @return either an Integer with the cell's value, a number between one and the
 	 *         Sudoku's size; or null to indicate that the field is empty
@@ -74,13 +74,13 @@ public class Sudoku {
 	}
 
 	private Integer valueAt(final int row, final int col) {
-		return values[row - 1][col - 1];
+		return values[row][col];
 	}
 
 	/**
-	 * @param row      the 1-based row in the Sudoku (i.e., maximum is equal to the
+	 * @param row      the 0-based row in the Sudoku (i.e., maximum is equal to the
 	 *                 Sudoku's size)
-	 * @param col      the 1-based column in the Sudoku (i.e., the maximum allowed
+	 * @param col      the 0-based column in the Sudoku (i.e., the maximum allowed
 	 *                 value is the Sudoku's size)
 	 * @param newValue either a value between one and the Sudoku's size (inclusive);
 	 *                 or null to indicate the field should be empty
@@ -89,7 +89,7 @@ public class Sudoku {
 		checkArg(row, "Row");
 		checkArg(col, "Column");
 		checkValueArg(newValue);
-		values[row - 1][col - 1] = newValue;
+		values[row][col] = newValue;
 	}
 
 	private Integer checkValueArg(final Integer newValue) {
@@ -100,16 +100,16 @@ public class Sudoku {
 	}
 
 	private void checkArg(final int arg, final String label) {
-		if (arg < 1 || arg > size)
+		if (arg < 0 || arg >= size)
 			throw new IllegalArgumentException(
-					String.format("%s argument must be positive and at most %d (is %d)", label, size, arg));
+					String.format("%s argument must not be negative and at most %d (is %d)", label, size - 1, arg));
 	}
 
 	public Row getRow(final int row) {
 		checkArg(row, "Row");
 		final List<Cell> res = new ArrayList<Cell>(size);
 		for (int c = 0; c < size; c++)
-			res.add(cells[row - 1][c]);
+			res.add(cells[row][c]);
 		return new Row(res);
 	}
 
@@ -117,15 +117,16 @@ public class Sudoku {
 		checkArg(col, "Column");
 		final List<Cell> res = new ArrayList<Cell>(size);
 		for (int r = 0; r < size; r++)
-			res.add(cells[r][col - 1]);
+			res.add(cells[r][col]);
 		return new Col(res);
 	}
 
 	public Block getBlock(final int block) {
 		checkArg(block, "Block");
 
-		final int rowOffset = sizeSqrt * ((block - 1) / sizeSqrt);
-		final int colOffset = sizeSqrt * ((block - 1) % sizeSqrt);
+		// integer cutoff for the row index:
+		final int rowOffset = sizeSqrt * (block / sizeSqrt);
+		final int colOffset = sizeSqrt * (block % sizeSqrt);
 
 		final List<Cell> res = new ArrayList<Cell>(size);
 		for (int r = 0; r < sizeSqrt; r++)
@@ -147,7 +148,7 @@ public class Sudoku {
 
 	public boolean isSolved() {
 
-		for (int i = 1; i <= size; i++) {
+		for (int i = 0; i < size; i++) {
 			if (!isSolved(getRow(i)) || !isSolved(getCol(i)) || !isSolved(getBlock(i)))
 				return false;
 		}

@@ -42,4 +42,9 @@ public class Cell {
 	public void setValue(final Integer newValue) {
 		sudoku.set(rowIdx, colIdx, newValue);
 	}
+
+	@Override
+	public String toString() {
+		return String.format("Cell(%d,%d)", rowIdx, colIdx);
+	}
 }

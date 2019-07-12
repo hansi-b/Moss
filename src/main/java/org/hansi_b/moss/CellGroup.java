@@ -51,4 +51,9 @@ public class CellGroup implements Iterable<Cell> {
 	public Iterator<Cell> iterator() {
 		return cells.iterator();
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s%s", type, cells.toString());
+	}
 }

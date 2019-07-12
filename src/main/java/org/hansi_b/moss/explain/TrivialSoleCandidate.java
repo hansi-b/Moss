@@ -22,7 +22,7 @@ public class TrivialSoleCandidate implements SolvingTechnique {
 
 		final List<Move> moves = new ArrayList<Move>();
 
-		for (int i = 1; i <= sudoku.size(); i++) {
+		for (int i = 0; i < sudoku.size(); i++) {
 			findMove(sudoku.getRow(i), moves);
 			findMove(sudoku.getCol(i), moves);
 			findMove(sudoku.getBlock(i), moves);
@@ -35,12 +35,13 @@ public class TrivialSoleCandidate implements SolvingTechnique {
 
 		Cell emptyCell = null;
 		for (final Cell c : cells) {
-			if (c.getValue() == null) {
+			Integer value = c.getValue();
+			if (value == null) {
 				if (emptyCell != null)
 					return; // second empty cell -> bail
 				emptyCell = c;
 			} else {
-				values.set(c.getValue() - 1);
+				values.set(value - 1);
 			}
 		}
 

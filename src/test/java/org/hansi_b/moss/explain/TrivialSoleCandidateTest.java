@@ -31,7 +31,7 @@ public class TrivialSoleCandidateTest {
 
 		assertThat(candidates.size()).isEqualTo(1);
 
-		assertThatMoveIs(candidates.get(0), Strategy.SingleMissingNumberInRow, 1, 2, 3);
+		assertThatMoveIs(candidates.get(0), Strategy.SingleMissingNumberInRow, 0, 1, 3);
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class TrivialSoleCandidateTest {
 
 		assertThat(candidates.size()).isEqualTo(1);
 
-		assertThatMoveIs(candidates.get(0), Strategy.SingleMissingNumberInCol, 2, 1, 4);
+		assertThatMoveIs(candidates.get(0), Strategy.SingleMissingNumberInCol, 1, 0, 4);
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class TrivialSoleCandidateTest {
 
 		assertThat(candidates.size()).isEqualTo(1);
 
-		assertThatMoveIs(candidates.get(0), Strategy.SingleMissingNumberInBlock, 2, 4, 1);
+		assertThatMoveIs(candidates.get(0), Strategy.SingleMissingNumberInBlock, 1, 3, 1);
 	}
 
 	@Test
@@ -89,7 +89,6 @@ public class TrivialSoleCandidateTest {
 
 		final List<Move> candidates = singleEmpty.findPossibleMoves(su);
 
-		assertThat(candidates.size()).isEqualTo(3);
 		assertThat(candidates.stream().map(Move::getStrategy).collect(Collectors.toSet()))//
 				.isEqualTo(Sets.newLinkedHashSet(//
 						Strategy.SingleMissingNumberInRow, //
