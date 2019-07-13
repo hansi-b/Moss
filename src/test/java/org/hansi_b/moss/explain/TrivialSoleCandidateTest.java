@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.assertj.core.util.Sets;
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
+import static org.hansi_b.moss.SudokuTest.givenSudoku;
 import org.hansi_b.moss.explain.TrivialSoleCandidate;
 import org.hansi_b.moss.explain.Move;
 import org.hansi_b.moss.explain.Move.Strategy;
@@ -21,11 +22,12 @@ public class TrivialSoleCandidateTest {
 	@Test
 	public void testFindsSingleMissingInRow() {
 
-		final Sudoku su = Sudoku.create(//
+		final Integer[] values = { //
 				1, null, 2, 4, //
 				null, null, null, null, //
 				null, null, null, null, //
-				null, null, null, null);
+				null, null, null, null };
+		final Sudoku su = givenSudoku(values);
 
 		final List<Move> candidates = singleEmpty.findPossibleMoves(su);
 
@@ -37,11 +39,12 @@ public class TrivialSoleCandidateTest {
 	@Test
 	public void testFindsNoSingleOnDuplicates() {
 
-		final Sudoku su = Sudoku.create(//
+		final Integer[] values = { //
 				1, null, 2, 2, //
 				null, null, null, null, //
 				null, null, null, null, //
-				null, null, null, null);
+				null, null, null, null };
+		final Sudoku su = givenSudoku(values);
 
 		assertTrue(singleEmpty.findPossibleMoves(su).isEmpty());
 	}
@@ -49,11 +52,12 @@ public class TrivialSoleCandidateTest {
 	@Test
 	public void testFindsSingleMissingInCol() {
 
-		final Sudoku su = Sudoku.create(//
+		final Integer[] values = { //
 				1, null, null, null, //
 				null, null, null, null, //
 				2, null, null, null, //
-				3, null, null, null);
+				3, null, null, null };
+		final Sudoku su = givenSudoku(values);
 
 		final List<Move> candidates = singleEmpty.findPossibleMoves(su);
 
@@ -65,11 +69,13 @@ public class TrivialSoleCandidateTest {
 	@Test
 	public void testFindsSingleMissingInBlock() {
 
-		final Sudoku su = Sudoku.create(//
+		final Integer[] values = { //
 				null, null, 2, 3, //
 				null, null, 4, null, //
 				null, null, 1, null, //
-				null, null, 3, null);
+				null, null, 3, null };
+
+		final Sudoku su = givenSudoku(values);
 
 		final List<Move> candidates = singleEmpty.findPossibleMoves(su);
 
@@ -81,11 +87,13 @@ public class TrivialSoleCandidateTest {
 	@Test
 	public void testFindsAllThreeOnSameCell() {
 
-		final Sudoku su = Sudoku.create(//
+		final Integer[] values = { //
 				1, 2, null, 3, //
 				null, null, 4, 1, //
 				null, null, 2, null, //
-				null, null, 3, null);
+				null, null, 3, null };
+
+		final Sudoku su = givenSudoku(values);
 
 		final List<Move> candidates = singleEmpty.findPossibleMoves(su);
 

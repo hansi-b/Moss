@@ -3,6 +3,7 @@ package org.hansi_b.moss;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 
 import org.hansi_b.moss.CellGroup.Block;
@@ -11,10 +12,82 @@ import org.hansi_b.moss.CellGroup.Row;
 
 public class Sudoku {
 
-	private static final int DEFAULT_SIZE = 9;
+	public static class Factory {
+
+		private static final int DEFAULT_SIZE = 9;
+
+		private Sudoku sudoku;
+
+		public Sudoku create() {
+			return create(DEFAULT_SIZE);
+		}
+
+		public Sudoku create(final Integer... values) {
+			final int size = Double.valueOf(Math.sqrt(values.length)).intValue();
+			final Sudoku su = create(size);
+			for (int row = 0; row < size; row++)
+				System.arraycopy(values, row * size, su.values[row], 0, size);
+			return su;
+		}
+
+		public Sudoku create(final int size) {
+			final double sqrt = Math.sqrt(size);
+			final int sizeSqrt = (int) Math.floor(sqrt);
+			if (sizeSqrt != sqrt)
+				throw new IllegalArgumentException(
+						String.format("Sudoku cannot be initialised with a non-square size (got %d)", size));
+
+			sudoku = new Sudoku(size);
+			initCells();
+			initGroups(sudoku.rows, Factory::createRow);
+			initGroups(sudoku.cols, Factory::createCol);
+			initGroups(sudoku.blocks, Factory::createBlock);
+			return sudoku;
+		}
+
+		private void initCells() {
+			IntStream.range(0, sudoku.size).forEach(rowIdx -> {
+				IntStream.range(0, sudoku.size).forEach(colIdx -> {
+					sudoku.cells[rowIdx][colIdx] = new Cell(sudoku, rowIdx, colIdx);
+				});
+			});
+		}
+
+		private <T extends CellGroup> void initGroups(final T[] group, final BiFunction<Integer, Cell[][], T> grouper) {
+			for (int i = 0; i < group.length; i++)
+				group[i] = grouper.apply(i, sudoku.cells);
+		}
+
+		private static Block createBlock(final int block, final Cell[][] cells) {
+
+			final int sizeSqrt = (int) Math.sqrt(cells.length);
+			// integer cutoff for the row offset:
+			final int rowOffset = sizeSqrt * (block / sizeSqrt);
+			final int colOffset = sizeSqrt * (block % sizeSqrt);
+
+			final List<Cell> res = new ArrayList<Cell>();
+			for (int r = 0; r < sizeSqrt; r++)
+				for (int c = 0; c < sizeSqrt; c++)
+					res.add(cells[r + rowOffset][c + colOffset]);
+			return new Block(res);
+		}
+
+		private static Row createRow(final int row, final Cell[][] cells) {
+			final List<Cell> res = new ArrayList<Cell>();
+			for (int c = 0; c < cells.length; c++)
+				res.add(cells[row][c]);
+			return new Row(res);
+		}
+
+		private static Col createCol(final int col, final Cell[][] cells) {
+			final List<Cell> res = new ArrayList<Cell>();
+			for (int r = 0; r < cells.length; r++)
+				res.add(cells[r][col]);
+			return new Col(res);
+		}
+	}
 
 	private final int size;
-	private final int sizeSqrt;
 
 	private final Cell[][] cells;
 	private final Integer[][] values;
@@ -23,88 +96,15 @@ public class Sudoku {
 	private final Col[] cols;
 	private final Block[] blocks;
 
-	public Sudoku() {
-		this(DEFAULT_SIZE);
-	}
-
-	public Sudoku(final int size) {
-		final double sqrt = Math.sqrt(size);
-		this.sizeSqrt = (int) Math.floor(sqrt);
-		if (sizeSqrt != sqrt)
-			throw new IllegalArgumentException(
-					String.format("Sudoku cannot be initialised with a non-square size (got %d)", size));
+	private Sudoku(final int size) {
 		this.size = size;
-		this.cells = initCells(this, size);
+
+		this.cells = new Cell[size][size];
+		this.rows = new Row[size];
+		this.cols = new Col[size];
+		this.blocks = new Block[size];
+
 		this.values = new Integer[size][size];
-
-		this.rows = initRows();
-		this.cols = initCols();
-		this.blocks = initBlocks();
-	}
-
-	private Block[] initBlocks() {
-		final Block[] groups = new Block[cells.length];
-		for (int i = 0; i < cells.length; i++)
-			groups[i] = createBlock(i);
-		return groups;
-	}
-
-	private Col[] initCols() {
-		final Col[] groups = new Col[cells.length];
-		for (int i = 0; i < cells.length; i++)
-			groups[i] = createCol(i);
-		return groups;
-	}
-
-	private Row[] initRows() {
-		final Row[] groups = new Row[cells.length];
-		for (int i = 0; i < cells.length; i++)
-			groups[i] = createRow(i);
-		return groups;
-	}
-
-	private Block createBlock(final int block) {
-		// integer cutoff for the row offset:
-		final int rowOffset = sizeSqrt * (block / sizeSqrt);
-		final int colOffset = sizeSqrt * (block % sizeSqrt);
-
-		final List<Cell> res = new ArrayList<Cell>(size);
-		for (int r = 0; r < sizeSqrt; r++)
-			for (int c = 0; c < sizeSqrt; c++)
-				res.add(cells[r + rowOffset][c + colOffset]);
-		return new Block(res);
-	}
-
-	private Row createRow(final int row) {
-		final List<Cell> res = new ArrayList<Cell>(size);
-		for (int c = 0; c < size; c++)
-			res.add(cells[row][c]);
-		return new Row(res);
-	}
-
-	private Col createCol(final int col) {
-		final List<Cell> res = new ArrayList<Cell>(size);
-		for (int r = 0; r < size; r++)
-			res.add(cells[r][col]);
-		return new Col(res);
-	}
-
-	private static Cell[][] initCells(final Sudoku sudoku, final int size) {
-		final Cell[][] cells = new Cell[size][size];
-		IntStream.range(0, size).forEach(rowIdx -> {
-			IntStream.range(0, size).forEach(colIdx -> {
-				cells[rowIdx][colIdx] = new Cell(sudoku, rowIdx, colIdx);
-			});
-		});
-		return cells;
-	}
-
-	public static Sudoku create(final Integer... values) {
-		final int size = Double.valueOf(Math.sqrt(values.length)).intValue();
-		final Sudoku su = new Sudoku(size);
-		for (int row = 0; row < size; row++)
-			System.arraycopy(values, row * size, su.values[row], 0, size);
-		return su;
 	}
 
 	/**
