@@ -19,6 +19,10 @@ public class Sudoku {
 	private final Cell[][] cells;
 	private final Integer[][] values;
 
+	private final Row[] rows;
+	private final Col[] cols;
+	private final Block[] blocks;
+
 	public Sudoku() {
 		this(DEFAULT_SIZE);
 	}
@@ -30,11 +34,62 @@ public class Sudoku {
 			throw new IllegalArgumentException(
 					String.format("Sudoku cannot be initialised with a non-square size (got %d)", size));
 		this.size = size;
-		this.cells = initializeCells(this, size);
+		this.cells = initCells(this, size);
 		this.values = new Integer[size][size];
+
+		this.rows = initRows();
+		this.cols = initCols();
+		this.blocks = initBlocks();
 	}
 
-	private static Cell[][] initializeCells(final Sudoku sudoku, final int size) {
+	private Block[] initBlocks() {
+		final Block[] groups = new Block[cells.length];
+		for (int i = 0; i < cells.length; i++)
+			groups[i] = createBlock(i);
+		return groups;
+	}
+
+	private Col[] initCols() {
+		final Col[] groups = new Col[cells.length];
+		for (int i = 0; i < cells.length; i++)
+			groups[i] = createCol(i);
+		return groups;
+	}
+
+	private Row[] initRows() {
+		final Row[] groups = new Row[cells.length];
+		for (int i = 0; i < cells.length; i++)
+			groups[i] = createRow(i);
+		return groups;
+	}
+
+	private Block createBlock(final int block) {
+		// integer cutoff for the row offset:
+		final int rowOffset = sizeSqrt * (block / sizeSqrt);
+		final int colOffset = sizeSqrt * (block % sizeSqrt);
+
+		final List<Cell> res = new ArrayList<Cell>(size);
+		for (int r = 0; r < sizeSqrt; r++)
+			for (int c = 0; c < sizeSqrt; c++)
+				res.add(cells[r + rowOffset][c + colOffset]);
+		return new Block(res);
+	}
+
+	private Row createRow(final int row) {
+		final List<Cell> res = new ArrayList<Cell>(size);
+		for (int c = 0; c < size; c++)
+			res.add(cells[row][c]);
+		return new Row(res);
+	}
+
+	private Col createCol(final int col) {
+		final List<Cell> res = new ArrayList<Cell>(size);
+		for (int r = 0; r < size; r++)
+			res.add(cells[r][col]);
+		return new Col(res);
+	}
+
+	private static Cell[][] initCells(final Sudoku sudoku, final int size) {
 		final Cell[][] cells = new Cell[size][size];
 		IntStream.range(0, size).forEach(rowIdx -> {
 			IntStream.range(0, size).forEach(colIdx -> {
@@ -64,8 +119,8 @@ public class Sudoku {
 	 *            Sudoku's size)
 	 * @param col the 0-based column in the Sudoku (i.e., the maximum allowed value
 	 *            is the Sudoku's size)
-	 * @return either an Integer with the cell's value, a number between one and the
-	 *         Sudoku's size; or null to indicate that the field is empty
+	 * @return either an Integer with the cell's value, i.e., a number between one
+	 *         and the Sudoku's size; or null to indicate that the field is empty
 	 */
 	public Integer getValue(final int row, final int col) {
 		checkArg(row, "Row");
@@ -107,32 +162,17 @@ public class Sudoku {
 
 	public Row getRow(final int row) {
 		checkArg(row, "Row");
-		final List<Cell> res = new ArrayList<Cell>(size);
-		for (int c = 0; c < size; c++)
-			res.add(cells[row][c]);
-		return new Row(res);
+		return rows[row];
 	}
 
 	public Col getCol(final int col) {
 		checkArg(col, "Column");
-		final List<Cell> res = new ArrayList<Cell>(size);
-		for (int r = 0; r < size; r++)
-			res.add(cells[r][col]);
-		return new Col(res);
+		return cols[col];
 	}
 
 	public Block getBlock(final int block) {
 		checkArg(block, "Block");
-
-		// integer cutoff for the row index:
-		final int rowOffset = sizeSqrt * (block / sizeSqrt);
-		final int colOffset = sizeSqrt * (block % sizeSqrt);
-
-		final List<Cell> res = new ArrayList<Cell>(size);
-		for (int r = 0; r < sizeSqrt; r++)
-			for (int c = 0; c < sizeSqrt; c++)
-				res.add(cells[r + rowOffset][c + colOffset]);
-		return new Block(res);
+		return blocks[block];
 	}
 
 	private boolean isSolved(final Iterable<Cell> elements) {
