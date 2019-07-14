@@ -20,7 +20,7 @@ public class SudokuTest {
 
 	@Test
 	public void testConstructorWithInvalidSize() {
-		assertThatExceptionThrownBy(() -> givenSudokuOfSize(5)) //
+		assertThatThrownBy(() -> givenSudokuOfSize(5)) //
 				.isExactlyInstanceOf(IllegalArgumentException.class) //
 				.hasMessage("Sudoku cannot be initialised with a non-square size (got 5)");
 	}
@@ -36,16 +36,16 @@ public class SudokuTest {
 	@Test
 	public void testGetWithIllegalArgs() {
 		final Sudoku su = givenDefaultSudoku();
-		assertThatExceptionThrownBy(() -> su.getValue(-1, 0)) //
+		assertThatThrownBy(() -> su.getValue(-1, 0)) //
 				.isExactlyInstanceOf(IllegalArgumentException.class) //
 				.hasMessage("Row argument must not be negative and at most 8 (is -1)");
-		assertThatExceptionThrownBy(() -> su.getValue(1, -1)) //
+		assertThatThrownBy(() -> su.getValue(1, -1)) //
 				.isExactlyInstanceOf(IllegalArgumentException.class) //
 				.hasMessage("Column argument must not be negative and at most 8 (is -1)");
-		assertThatExceptionThrownBy(() -> su.getValue(10, 0)) //
+		assertThatThrownBy(() -> su.getValue(10, 0)) //
 				.isExactlyInstanceOf(IllegalArgumentException.class) //
 				.hasMessage("Row argument must not be negative and at most 8 (is 10)");
-		assertThatExceptionThrownBy(() -> su.getValue(0, 10)) //
+		assertThatThrownBy(() -> su.getValue(0, 10)) //
 				.isExactlyInstanceOf(IllegalArgumentException.class) //
 				.hasMessage("Column argument must not be negative and at most 8 (is 10)");
 	}
@@ -78,14 +78,12 @@ public class SudokuTest {
 	@Test
 	public void testGetWithIllegalValueArgs() {
 		final Sudoku su = givenDefaultSudoku();
-		assertThatExceptionThrownBy(() -> {
+		assertThatThrownBy(() -> {
 			su.set(1, 1, 0);
-			return null;
 		}).isExactlyInstanceOf(IllegalArgumentException.class) //
 				.hasMessage("Cell value must be null or between one and at most 9 (is 0)");
-		assertThatExceptionThrownBy(() -> {
+		assertThatThrownBy(() -> {
 			su.set(1, 1, 10);
-			return null;
 		}).isExactlyInstanceOf(IllegalArgumentException.class) //
 				.hasMessage("Cell value must be null or between one and at most 9 (is 10)");
 	}
