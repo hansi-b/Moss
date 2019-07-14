@@ -1,10 +1,13 @@
 package org.hansi_b.moss;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import org.assertj.core.util.VisibleForTesting;
 
 /**
  * Reads a Sudoku from the command line and just prints whether it is solved.
@@ -30,11 +33,12 @@ public class SudokuCliReader {
 		return val > 0 ? val : null;
 	}
 
-	private static List<Integer> readValues() {
+	@VisibleForTesting
+	static List<Integer> readValues(final InputStream inStream) {
 		final List<Integer> values = new ArrayList<>();
 		int size = -1;
 
-		try (Scanner stdin = new Scanner(System.in)) {
+		try (Scanner stdin = new Scanner(inStream)) {
 			String line;
 			int lineCount = 0;
 			while (stdin.hasNextLine() && !((line = stdin.nextLine().trim())).isEmpty()) {
@@ -66,7 +70,7 @@ public class SudokuCliReader {
 		out("Please enter your Sudoku, one row a line.");
 		out("Separate cell values by whitespace; empty cells should be represented by zero.");
 
-		final List<Integer> values = readValues();
+		final List<Integer> values = readValues(System.in);
 
 		final Sudoku su = new Sudoku.Factory().create(values.toArray(new Integer[0]));
 		out("The sudoku %s solved.", su.isSolved() ? "_is_" : "is _not_");

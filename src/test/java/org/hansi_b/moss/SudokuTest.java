@@ -165,7 +165,7 @@ public class SudokuTest {
 		return new Sudoku.Factory().create(size);
 	}
 
-	private static List<Integer> listOf(final Integer... integers) {
+	public static List<Integer> listOf(final Integer... integers) {
 		return Arrays.asList(integers);
 	}
 }
