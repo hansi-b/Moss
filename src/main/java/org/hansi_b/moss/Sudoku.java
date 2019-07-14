@@ -3,6 +3,7 @@ package org.hansi_b.moss;
 import java.util.BitSet;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -40,9 +41,9 @@ public class Sudoku {
 
 			sudoku = new Sudoku(size);
 			initCells();
-			initGroups(sudoku.rows, Factory::createRow);
-			initGroups(sudoku.cols, Factory::createCol);
-			initGroups(sudoku.blocks, Factory::createBlock);
+			initGroups(sudoku.rows, Factory::streamRowPos, Row::new);
+			initGroups(sudoku.cols, Factory::streamColPos, Col::new);
+			initGroups(sudoku.blocks, Factory::streamBlockPos, Block::new);
 			return sudoku;
 		}
 
@@ -54,27 +55,14 @@ public class Sudoku {
 			});
 		}
 
-		private <T extends CellGroup> void initGroups(final T[] group, final BiFunction<Integer, Cell[][], T> grouper) {
-			for (int i = 0; i < group.length; i++)
-				group[i] = grouper.apply(i, sudoku.cells);
-		}
-
-		private static Block createBlock(final int blockIdx, final Cell[][] cells) {
-			return new Block(mapPosToCells(blockIdx, cells, Factory::streamBlockPos));
-		}
-
-		private static Row createRow(final int rowIdx, final Cell[][] cells) {
-			return new Row(mapPosToCells(rowIdx, cells, Factory::streamRowPos));
-		}
-
-		private static Col createCol(final int colIdx, final Cell[][] cells) {
-			return new Col(mapPosToCells(colIdx, cells, Factory::streamColPos));
-		}
-
-		private static List<Cell> mapPosToCells(final int groupIdx, final Cell[][] cells,
-				final BiFunction<Integer, Integer, Stream<Pos>> groupPosStream) {
-			return groupPosStream.apply(groupIdx, cells.length).map(p -> cells[p.row][p.col])
-					.collect(Collectors.toList());
+		private <T extends CellGroup> void initGroups(final T[] group,
+				final BiFunction<Integer, Integer, Stream<Pos>> posStreamer, //
+				final Function<List<Cell>, T> newCall) {
+			IntStream.range(0, group.length).forEach(idx -> {
+				final Stream<Pos> posStream = posStreamer.apply(idx, group.length);
+				final List<Cell> cells = posStream.map(p -> sudoku.cells[p.row][p.col]).collect(Collectors.toList());
+				group[idx] = newCall.apply(cells);
+			});
 		}
 
 		private static Stream<Pos> streamBlockPos(final int blockIdx, final int size) {
