@@ -1,10 +1,11 @@
 package org.hansi_b.moss;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.CellGroup.Block;
 import org.hansi_b.moss.CellGroup.Col;
@@ -58,32 +59,40 @@ public class Sudoku {
 				group[i] = grouper.apply(i, sudoku.cells);
 		}
 
-		private static Block createBlock(final int block, final Cell[][] cells) {
+		private static Block createBlock(final int blockIdx, final Cell[][] cells) {
+			return new Block(mapPosToCells(blockIdx, cells, Factory::streamBlockPos));
+		}
 
-			final int sizeSqrt = (int) Math.sqrt(cells.length);
+		private static Row createRow(final int rowIdx, final Cell[][] cells) {
+			return new Row(mapPosToCells(rowIdx, cells, Factory::streamRowPos));
+		}
+
+		private static Col createCol(final int colIdx, final Cell[][] cells) {
+			return new Col(mapPosToCells(colIdx, cells, Factory::streamColPos));
+		}
+
+		private static List<Cell> mapPosToCells(final int groupIdx, final Cell[][] cells,
+				final BiFunction<Integer, Integer, Stream<Pos>> groupPosStream) {
+			return groupPosStream.apply(groupIdx, cells.length).map(p -> cells[p.row][p.col])
+					.collect(Collectors.toList());
+		}
+
+		private static Stream<Pos> streamBlockPos(final int blockIdx, final int size) {
+			final int sizeSqrt = (int) Math.sqrt(size);
 			// integer cutoff for the row offset:
-			final int rowOffset = sizeSqrt * (block / sizeSqrt);
-			final int colOffset = sizeSqrt * (block % sizeSqrt);
+			final int rowOffset = sizeSqrt * (blockIdx / sizeSqrt);
+			final int colOffset = sizeSqrt * (blockIdx % sizeSqrt);
 
-			final List<Cell> res = new ArrayList<Cell>();
-			for (int r = 0; r < sizeSqrt; r++)
-				for (int c = 0; c < sizeSqrt; c++)
-					res.add(cells[r + rowOffset][c + colOffset]);
-			return new Block(res);
+			return IntStream.range(0, sizeSqrt).boxed().flatMap(rowIdx -> IntStream.range(0, sizeSqrt)
+					.mapToObj(colIdx -> Pos.at(rowOffset + rowIdx, colOffset + colIdx)));
 		}
 
-		private static Row createRow(final int row, final Cell[][] cells) {
-			final List<Cell> res = new ArrayList<Cell>();
-			for (int c = 0; c < cells.length; c++)
-				res.add(cells[row][c]);
-			return new Row(res);
+		private static Stream<Pos> streamRowPos(final int rowIdx, final int size) {
+			return IntStream.range(0, size).mapToObj(colIdx -> Pos.at(rowIdx, colIdx));
 		}
 
-		private static Col createCol(final int col, final Cell[][] cells) {
-			final List<Cell> res = new ArrayList<Cell>();
-			for (int r = 0; r < cells.length; r++)
-				res.add(cells[r][col]);
-			return new Col(res);
+		private static Stream<Pos> streamColPos(final int colIdx, final int size) {
+			return IntStream.range(0, size).mapToObj(rowIdx -> Pos.at(rowIdx, colIdx));
 		}
 	}
 
