@@ -32,4 +32,9 @@ class Pos {
 		final Map<Integer, Pos> rowMap = lookup.computeIfAbsent(row, r -> new HashMap<>());
 		return rowMap.computeIfAbsent(col, c -> new Pos(row, c));
 	}
+
+	@Override
+	public String toString() {
+		return String.format("@(%d, %d)", row, col);
+	}
 }

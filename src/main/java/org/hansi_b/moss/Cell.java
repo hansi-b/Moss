@@ -8,33 +8,31 @@ package org.hansi_b.moss;
 public class Cell {
 
 	private final Sudoku sudoku;
-	private final int rowIdx;
-	private final int colIdx;
+	private final Pos pos;
 
-	Cell(final Sudoku sudoku, final int rowIdx, final int colIdx) {
+	Cell(final Sudoku sudoku, final Pos pos) {
 		this.sudoku = sudoku;
-		this.rowIdx = rowIdx;
-		this.colIdx = colIdx;
+		this.pos = pos;
 	}
 
 	public Integer getValue() {
-		return sudoku.getValue(rowIdx, colIdx);
+		return sudoku.getValue(pos.row, pos.col);
 	}
 
 	public int getRow() {
-		return rowIdx;
+		return pos.row;
 	}
 
 	public int getCol() {
-		return colIdx;
+		return pos.col;
 	}
 
 	public void setValue(final Integer newValue) {
-		sudoku.set(rowIdx, colIdx, newValue);
+		sudoku.set(pos.row, pos.col, newValue);
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Cell(%d,%d)", rowIdx, colIdx);
+		return String.format("Cell%s", pos);
 	}
 }

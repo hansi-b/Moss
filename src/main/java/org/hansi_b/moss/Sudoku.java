@@ -2,15 +2,14 @@ package org.hansi_b.moss;
 
 import java.util.BitSet;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
 import org.hansi_b.moss.CellGroup.Block;
 import org.hansi_b.moss.CellGroup.Col;
 import org.hansi_b.moss.CellGroup.Row;
+import org.hansi_b.moss.CellGroup.Type;
 
 public class Sudoku {
 
@@ -41,46 +40,28 @@ public class Sudoku {
 
 			sudoku = new Sudoku(size);
 			initCells();
-			initGroups(sudoku.rows, Factory::streamRowPos, Row::new);
-			initGroups(sudoku.cols, Factory::streamColPos, Col::new);
-			initGroups(sudoku.blocks, Factory::streamBlockPos, Block::new);
+			initGroups(sudoku.rows, Type.Row, Row::new);
+			initGroups(sudoku.cols, Type.Col, Col::new);
+			initGroups(sudoku.blocks, Type.Block, Block::new);
 			return sudoku;
 		}
 
 		private void initCells() {
 			IntStream.range(0, sudoku.size).forEach(rowIdx -> {
 				IntStream.range(0, sudoku.size).forEach(colIdx -> {
-					sudoku.cells[rowIdx][colIdx] = new Cell(sudoku, rowIdx, colIdx);
+					sudoku.cells[rowIdx][colIdx] = new Cell(sudoku, Pos.at(rowIdx, colIdx));
 				});
 			});
 		}
 
-		private <T extends CellGroup> void initGroups(final T[] group,
-				final BiFunction<Integer, Integer, Stream<Pos>> posStreamer, //
+		private <T extends CellGroup> void initGroups(final T[] groups, final Type cellGroupType,
 				final Function<List<Cell>, T> newCall) {
-			IntStream.range(0, group.length).forEach(idx -> {
-				final Stream<Pos> posStream = posStreamer.apply(idx, group.length);
+
+			IntStream.range(0, groups.length).forEach(idx -> {
+				final Stream<Pos> posStream = cellGroupType.getPos(idx, groups.length);
 				final List<Cell> cells = posStream.map(p -> sudoku.cells[p.row][p.col]).collect(Collectors.toList());
-				group[idx] = newCall.apply(cells);
+				groups[idx] = newCall.apply(cells);
 			});
-		}
-
-		private static Stream<Pos> streamBlockPos(final int blockIdx, final int size) {
-			final int sizeSqrt = (int) Math.sqrt(size);
-			// integer cutoff for the row offset:
-			final int rowOffset = sizeSqrt * (blockIdx / sizeSqrt);
-			final int colOffset = sizeSqrt * (blockIdx % sizeSqrt);
-
-			return IntStream.range(0, sizeSqrt).boxed().flatMap(rowIdx -> IntStream.range(0, sizeSqrt)
-					.mapToObj(colIdx -> Pos.at(rowOffset + rowIdx, colOffset + colIdx)));
-		}
-
-		private static Stream<Pos> streamRowPos(final int rowIdx, final int size) {
-			return IntStream.range(0, size).mapToObj(colIdx -> Pos.at(rowIdx, colIdx));
-		}
-
-		private static Stream<Pos> streamColPos(final int colIdx, final int size) {
-			return IntStream.range(0, size).mapToObj(rowIdx -> Pos.at(rowIdx, colIdx));
 		}
 	}
 
