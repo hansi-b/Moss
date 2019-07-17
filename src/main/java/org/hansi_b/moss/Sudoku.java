@@ -1,6 +1,5 @@
 package org.hansi_b.moss;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Function;
@@ -41,9 +40,9 @@ public class Sudoku {
 
 			sudoku = new Sudoku(size);
 			initCells();
-			initGroups(Type.Row, Row::new);
-			initGroups(Type.Col, Col::new);
-			initGroups(Type.Block, Block::new);
+			initGroupType(Type.Row, Row::new);
+			initGroupType(Type.Col, Col::new);
+			initGroupType(Type.Block, Block::new);
 			return sudoku;
 		}
 
@@ -55,15 +54,19 @@ public class Sudoku {
 			});
 		}
 
-		private <T extends CellGroup> void initGroups(final Type cellGroupType, final Function<List<Cell>, T> newCall) {
+		private <T extends CellGroup> void initGroupType(final Type cellGroupType,
+				final Function<List<Cell>, T> newCall) {
 
-			final List<CellGroup> groups = new ArrayList<CellGroup>();
+			final List<CellGroup> groups = IntStream.range(0, sudoku.size)
+					.mapToObj(idx -> getGroup(cellGroupType, idx, newCall)).collect(Collectors.toList());
 			sudoku.cellGroupsByType.put(cellGroupType, groups);
-			IntStream.range(0, sudoku.size).forEach(idx -> {
-				final Stream<Pos> posStream = cellGroupType.getPos(idx, sudoku.size);
-				final List<Cell> cells = posStream.map(p -> sudoku.cells[p.row][p.col]).collect(Collectors.toList());
-				groups.add(newCall.apply(cells));
-			});
+		}
+
+		private <T extends CellGroup> T getGroup(final Type cellGroupType, final int idx,
+				final Function<List<Cell>, T> newCall) {
+			final Stream<Pos> posStream = cellGroupType.getPos(idx, sudoku.size);
+			final Stream<Cell> cellStream = posStream.map(p -> sudoku.cells[p.row][p.col]);
+			return newCall.apply(cellStream.collect(Collectors.toList()));
 		}
 	}
 
