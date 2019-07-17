@@ -1,7 +1,6 @@
 package org.hansi_b.moss;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Function;
@@ -142,21 +141,10 @@ public class Sudoku {
 		return cellGroupsByType.get(groupType).get(groupIdx);
 	}
 
-	private boolean isSolved(final CellGroup elements) {
-		final BitSet targets = new BitSet(size);
-		for (final Cell e : elements) {
-			final Integer v = e.getValue();
-			if (v != null)
-				targets.set(v - 1);
-		}
-
-		return targets.cardinality() == size;
-	}
-
 	public boolean isSolved() {
 		for (int i = 0; i < size; i++) {
 			for (final Type groupType : Type.values())
-				if (!isSolved(getGroup(groupType, i)))
+				if (!getGroup(groupType, i).isSolved())
 					return false;
 		}
 		return true;

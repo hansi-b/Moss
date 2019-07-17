@@ -1,5 +1,6 @@
 package org.hansi_b.moss;
 
+import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -98,5 +99,17 @@ public class CellGroup implements Iterable<Cell> {
 	@Override
 	public String toString() {
 		return String.format("%s%s", type, cells.toString());
+	}
+
+	public boolean isSolved() {
+
+		final BitSet targets = new BitSet(size());
+		for (final Cell e : this) {
+			final Integer v = e.getValue();
+			if (v != null)
+				targets.set(v - 1);
+		}
+
+		return targets.cardinality() == size();
 	}
 }
