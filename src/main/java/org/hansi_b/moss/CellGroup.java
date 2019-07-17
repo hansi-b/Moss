@@ -11,7 +11,9 @@ public class CellGroup implements Iterable<Cell> {
 
 	public enum Type {
 
-		Row(Type::rowPos), Col(Type::colPos), Block(Type::blockPos);
+		Row(Type::rowPos), //
+		Col(Type::colPos), //
+		Block(Type::blockPos);
 
 		private final BiFunction<Integer, Integer, Stream<Pos>> posStreamer;
 

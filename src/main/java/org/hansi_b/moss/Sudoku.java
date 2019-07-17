@@ -1,6 +1,8 @@
 package org.hansi_b.moss;
 
+import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -40,9 +42,9 @@ public class Sudoku {
 
 			sudoku = new Sudoku(size);
 			initCells();
-			initGroups(sudoku.rows, Type.Row, Row::new);
-			initGroups(sudoku.cols, Type.Col, Col::new);
-			initGroups(sudoku.blocks, Type.Block, Block::new);
+			initGroups(Type.Row, Row::new);
+			initGroups(Type.Col, Col::new);
+			initGroups(Type.Block, Block::new);
 			return sudoku;
 		}
 
@@ -54,34 +56,31 @@ public class Sudoku {
 			});
 		}
 
-		private <T extends CellGroup> void initGroups(final T[] groups, final Type cellGroupType,
-				final Function<List<Cell>, T> newCall) {
+		private <T extends CellGroup> void initGroups(final Type cellGroupType, final Function<List<Cell>, T> newCall) {
 
-			IntStream.range(0, groups.length).forEach(idx -> {
-				final Stream<Pos> posStream = cellGroupType.getPos(idx, groups.length);
+			final List<CellGroup> groups = new ArrayList<CellGroup>();
+			sudoku.cellGroupsByType.put(cellGroupType, groups);
+			IntStream.range(0, sudoku.size).forEach(idx -> {
+				final Stream<Pos> posStream = cellGroupType.getPos(idx, sudoku.size);
 				final List<Cell> cells = posStream.map(p -> sudoku.cells[p.row][p.col]).collect(Collectors.toList());
-				groups[idx] = newCall.apply(cells);
+				groups.add(newCall.apply(cells));
 			});
 		}
 	}
 
 	private final int size;
 
+	private final EnumMap<Type, List<CellGroup>> cellGroupsByType;
+
 	private final Cell[][] cells;
 	private final Integer[][] values;
-
-	private final Row[] rows;
-	private final Col[] cols;
-	private final Block[] blocks;
 
 	private Sudoku(final int size) {
 		this.size = size;
 
-		this.cells = new Cell[size][size];
-		this.rows = new Row[size];
-		this.cols = new Col[size];
-		this.blocks = new Block[size];
+		cellGroupsByType = new EnumMap<>(Type.class);
 
+		this.cells = new Cell[size][size];
 		this.values = new Integer[size][size];
 	}
 
@@ -138,22 +137,12 @@ public class Sudoku {
 					String.format("%s argument must not be negative and at most %d (is %d)", label, size - 1, arg));
 	}
 
-	public Row getRow(final int row) {
-		checkArg(row, "Row");
-		return rows[row];
+	public CellGroup getGroup(final Type groupType, final int groupIdx) {
+		checkArg(groupIdx, groupType.toString());
+		return cellGroupsByType.get(groupType).get(groupIdx);
 	}
 
-	public Col getCol(final int col) {
-		checkArg(col, "Column");
-		return cols[col];
-	}
-
-	public Block getBlock(final int block) {
-		checkArg(block, "Block");
-		return blocks[block];
-	}
-
-	private boolean isSolved(final Iterable<Cell> elements) {
+	private boolean isSolved(final CellGroup elements) {
 		final BitSet targets = new BitSet(size);
 		for (final Cell e : elements) {
 			final Integer v = e.getValue();
@@ -165,10 +154,10 @@ public class Sudoku {
 	}
 
 	public boolean isSolved() {
-
 		for (int i = 0; i < size; i++) {
-			if (!isSolved(getRow(i)) || !isSolved(getCol(i)) || !isSolved(getBlock(i)))
-				return false;
+			for (final Type groupType : Type.values())
+				if (!isSolved(getGroup(groupType, i)))
+					return false;
 		}
 		return true;
 	}

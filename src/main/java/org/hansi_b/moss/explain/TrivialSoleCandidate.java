@@ -23,9 +23,8 @@ public class TrivialSoleCandidate implements SolvingTechnique {
 		final List<Move> moves = new ArrayList<Move>();
 
 		for (int i = 0; i < sudoku.size(); i++) {
-			findMove(sudoku.getRow(i), moves);
-			findMove(sudoku.getCol(i), moves);
-			findMove(sudoku.getBlock(i), moves);
+			for (final Type type : Type.values())
+				findMove(sudoku.getGroup(type, i), moves);
 		}
 		return moves;
 	}
@@ -35,7 +34,7 @@ public class TrivialSoleCandidate implements SolvingTechnique {
 
 		Cell emptyCell = null;
 		for (final Cell c : cells) {
-			Integer value = c.getValue();
+			final Integer value = c.getValue();
 			if (value == null) {
 				if (emptyCell != null)
 					return; // second empty cell -> bail

@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.Sudoku;
 import static org.assertj.core.api.Assertions.*;
 
@@ -124,20 +125,20 @@ public class SudokuTest {
 	public void testGetRow() {
 		final Integer[] values = { 1, null, 4, 2, 2, 4, null, 1, 3, 1, 2, null, null, 2, 1, 3 };
 		final Sudoku su = givenSudoku(values);
-		assertThat(su.getRow(0).getValues()).isEqualTo(listOf(1, null, 4, 2));
-		assertThat(su.getRow(1).getValues()).isEqualTo(listOf(2, 4, null, 1));
-		assertThat(su.getRow(2).getValues()).isEqualTo(listOf(3, 1, 2, null));
-		assertThat(su.getRow(3).getValues()).isEqualTo(listOf(null, 2, 1, 3));
+		assertThat(su.getGroup(Type.Row, 0).getValues()).isEqualTo(listOf(1, null, 4, 2));
+		assertThat(su.getGroup(Type.Row, 1).getValues()).isEqualTo(listOf(2, 4, null, 1));
+		assertThat(su.getGroup(Type.Row, 2).getValues()).isEqualTo(listOf(3, 1, 2, null));
+		assertThat(su.getGroup(Type.Row, 3).getValues()).isEqualTo(listOf(null, 2, 1, 3));
 	}
 
 	@Test
 	public void testGetCol() {
 		final Integer[] values = { 1, null, 4, 2, 2, 4, null, 1, 3, 1, 2, null, null, 2, 1, 3 };
 		final Sudoku su = givenSudoku(values);
-		assertThat(su.getCol(0).getValues()).isEqualTo(listOf(1, 2, 3, null));
-		assertThat(su.getCol(1).getValues()).isEqualTo(listOf(null, 4, 1, 2));
-		assertThat(su.getCol(2).getValues()).isEqualTo(listOf(4, null, 2, 1));
-		assertThat(su.getCol(3).getValues()).isEqualTo(listOf(2, 1, null, 3));
+		assertThat(su.getGroup(Type.Col, 0).getValues()).isEqualTo(listOf(1, 2, 3, null));
+		assertThat(su.getGroup(Type.Col, 1).getValues()).isEqualTo(listOf(null, 4, 1, 2));
+		assertThat(su.getGroup(Type.Col, 2).getValues()).isEqualTo(listOf(4, null, 2, 1));
+		assertThat(su.getGroup(Type.Col, 3).getValues()).isEqualTo(listOf(2, 1, null, 3));
 	}
 
 	@Test
@@ -145,10 +146,10 @@ public class SudokuTest {
 		final Integer[] values = { 1, null, 4, 2, 2, 4, null, 1, 3, 1, 2, null, null, 2, 1, 3 };
 		final Sudoku su = givenSudoku(values);
 
-		assertThat(su.getBlock(0).getValues()).isEqualTo(listOf(1, null, 2, 4));
-		assertThat(su.getBlock(1).getValues()).isEqualTo(listOf(4, 2, null, 1));
-		assertThat(su.getBlock(2).getValues()).isEqualTo(listOf(3, 1, null, 2));
-		assertThat(su.getBlock(3).getValues()).isEqualTo(listOf(2, null, 1, 3));
+		assertThat(su.getGroup(Type.Block, 0).getValues()).isEqualTo(listOf(1, null, 2, 4));
+		assertThat(su.getGroup(Type.Block, 1).getValues()).isEqualTo(listOf(4, 2, null, 1));
+		assertThat(su.getGroup(Type.Block, 2).getValues()).isEqualTo(listOf(3, 1, null, 2));
+		assertThat(su.getGroup(Type.Block, 3).getValues()).isEqualTo(listOf(2, null, 1, 3));
 	}
 
 	public static Sudoku givenSudoku(final Integer[] values) {
