@@ -22,10 +22,9 @@ public class TrivialSoleCandidate implements SolvingTechnique {
 
 		final List<Move> moves = new ArrayList<Move>();
 
-		for (int i = 0; i < sudoku.size(); i++) {
-			for (final Type type : Type.values())
-				findMove(sudoku.getGroup(type, i), moves);
-		}
+		for (final Type type : Type.values())
+			for (final CellGroup g : sudoku.iterateGroups(type))
+				findMove(g, moves);
 		return moves;
 	}
 

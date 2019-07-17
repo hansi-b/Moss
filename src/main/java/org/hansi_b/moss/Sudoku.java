@@ -139,17 +139,19 @@ public class Sudoku {
 					String.format("%s argument must not be negative and at most %d (is %d)", label, size - 1, arg));
 	}
 
-	public CellGroup getGroup(final Type groupType, final int groupIdx) {
-		checkArg(groupIdx, groupType.toString());
-		return cellGroupsByType.get(groupType).get(groupIdx);
+	public CellGroup getGroup(final Type groupType, final int groupIndex) {
+		return cellGroupsByType.get(groupType).get(groupIndex);
+	}
+
+	public Iterable<CellGroup> iterateGroups(final Type groupType) {
+		return cellGroupsByType.get(groupType);
 	}
 
 	public boolean isSolved() {
-		for (int i = 0; i < size; i++) {
-			for (final Type groupType : Type.values())
-				if (!getGroup(groupType, i).isSolved())
+		for (final Type groupType : Type.values())
+			for (final CellGroup g : iterateGroups(groupType))
+				if (!g.isSolved())
 					return false;
-		}
 		return true;
 	}
 }
