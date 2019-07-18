@@ -64,14 +64,22 @@ public class SudokuTest {
 
 	@Test
 	public void testCreate() {
-		final Integer[] values = { 1, 3, 4, 2, 2, 4, 3, 1, 3, 1, 2, 4, 4, 2, 1, 3 };
+		final Integer[] values = { //
+				1, 3, 4, 2, //
+				2, 4, 3, 1, //
+				3, 1, 2, 4, //
+				4, 2, 1, 3 };
 		final Sudoku su = givenSudoku(values);
 		assertThat(su.getValue(0, 1)).isEqualTo(3);
 	}
 
 	@Test
 	public void testCreateIncomplete() {
-		final Integer[] values = { 1, 3, 4, 2, 2, 4, null, 1, 3, 1, 2, 4, 4, 2, 1, 3 };
+		final Integer[] values = { //
+				1, 3, 4, 2, //
+				2, 4, null, 1, //
+				3, 1, 2, 4, //
+				4, 2, 1, 3 };
 		final Sudoku su = givenSudoku(values);
 		assertNull(su.getValue(1, 2));
 	}
@@ -114,7 +122,11 @@ public class SudokuTest {
 
 	@Test
 	public void testCanSolve() {
-		final Integer[] values = { 1, 3, 4, 2, 2, 4, null, 1, 3, 1, 2, 4, 4, 2, 1, 3 };
+		final Integer[] values = { //
+				1, 3, 4, 2, //
+				2, 4, null, 1, //
+				3, 1, 2, 4, //
+				4, 2, 1, 3 };
 		final Sudoku su = givenSudoku(values);
 		assertFalse(su.isSolved());
 		su.set(1, 2, 3);
@@ -123,7 +135,12 @@ public class SudokuTest {
 
 	@Test
 	public void testGetRow() {
-		final Integer[] values = { 1, null, 4, 2, 2, 4, null, 1, 3, 1, 2, null, null, 2, 1, 3 };
+		final Integer[] values = { //
+				1, null, 4, 2, //
+				2, 4, null, 1, //
+				3, 1, 2, null, //
+				null, 2, 1, 3 };
+
 		final Sudoku su = givenSudoku(values);
 		assertThat(su.getGroup(Type.Row, 0).getValues()).isEqualTo(listOf(1, null, 4, 2));
 		assertThat(su.getGroup(Type.Row, 1).getValues()).isEqualTo(listOf(2, 4, null, 1));
@@ -143,7 +160,12 @@ public class SudokuTest {
 
 	@Test
 	public void testGetBlock() {
-		final Integer[] values = { 1, null, 4, 2, 2, 4, null, 1, 3, 1, 2, null, null, 2, 1, 3 };
+		final Integer[] values = { //
+				1, null, 4, 2, //
+				2, 4, null, 1, //
+				3, 1, 2, null, //
+				null, 2, 1, 3 };
+
 		final Sudoku su = givenSudoku(values);
 
 		assertThat(su.getGroup(Type.Block, 0).getValues()).isEqualTo(listOf(1, null, 2, 4));
