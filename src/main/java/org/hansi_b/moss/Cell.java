@@ -27,6 +27,10 @@ public class Cell {
 		return pos.col;
 	}
 
+	public CellGroup getCellGroup(final CellGroup.Type cellGroupType) {
+		return sudoku.getGroup(cellGroupType, pos);
+	}
+
 	public void setValue(final Integer newValue) {
 		sudoku.set(pos.row, pos.col, newValue);
 	}

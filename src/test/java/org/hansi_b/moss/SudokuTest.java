@@ -174,6 +174,29 @@ public class SudokuTest {
 		assertThat(su.getGroup(Type.Block, 3).getValues()).isEqualTo(listOf(2, null, 1, 3));
 	}
 
+	@Test
+	public void testGetBlockAtPos() {
+		final Sudoku su = givenSudokuOfSize(4);
+
+		final CellGroup block0 = su.getGroup(Type.Block, Pos.at(0, 0));
+		assertSame(block0, su.getGroup(Type.Block, Pos.at(0, 1)));
+		assertSame(block0, su.getGroup(Type.Block, Pos.at(1, 0)));
+		assertSame(block0, su.getGroup(Type.Block, Pos.at(1, 1)));
+		final CellGroup block1 = su.getGroup(Type.Block, Pos.at(2, 0));
+		assertNotSame(block0, block1);
+		assertSame(block1, su.getGroup(Type.Block, Pos.at(2, 1)));
+	}
+
+	@Test
+	public void testGetGroupAtPos() {
+		final Sudoku su = givenSudokuOfSize(4);
+
+		final CellGroup block0 = su.getGroup(Type.Block, Pos.at(0, 0));
+		assertSame(block0, su.getGroup(Type.Block, Pos.at(0, 1)));
+		assertSame(block0, su.getGroup(Type.Block, Pos.at(1, 0)));
+		assertSame(block0, su.getGroup(Type.Block, Pos.at(1, 1)));
+	}
+
 	public static Sudoku givenSudoku(final Integer[] values) {
 		return new Sudoku.Factory().create(values);
 	}

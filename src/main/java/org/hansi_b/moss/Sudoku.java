@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import org.hansi_b.moss.CellGroup.Block;
 import org.hansi_b.moss.CellGroup.Col;
 import org.hansi_b.moss.CellGroup.Row;
@@ -58,15 +57,21 @@ public class Sudoku {
 				final Function<List<Cell>, T> newCall) {
 
 			final List<CellGroup> groups = IntStream.range(0, sudoku.size)
-					.mapToObj(idx -> getGroup(cellGroupType, idx, newCall)).collect(Collectors.toList());
+					.mapToObj(idx -> initGroup(cellGroupType, idx, newCall)).collect(Collectors.toList());
 			sudoku.cellGroupsByType.put(cellGroupType, groups);
 		}
 
-		private <T extends CellGroup> T getGroup(final Type cellGroupType, final int idx,
+		private <T extends CellGroup> T initGroup(final Type cellGroupType, final int idx,
 				final Function<List<Cell>, T> newCall) {
-			final Stream<Pos> posStream = cellGroupType.getPos(idx, sudoku.size);
-			final Stream<Cell> cellStream = posStream.map(p -> sudoku.cells[p.row][p.col]);
-			return newCall.apply(cellStream.collect(Collectors.toList()));
+
+			final List<Pos> posList = cellGroupType.getPos(idx, sudoku.size).collect(Collectors.toList());
+			final List<Cell> cells = posList.stream().map(p -> sudoku.cells[p.row][p.col]).collect(Collectors.toList());
+
+			final T group = newCall.apply(cells);
+			for (final Pos pos : posList)
+				sudoku.groups[pos.row][pos.col].put(group.type(), group);
+
+			return group;
 		}
 	}
 
@@ -75,6 +80,8 @@ public class Sudoku {
 	private final EnumMap<Type, List<CellGroup>> cellGroupsByType;
 
 	private final Cell[][] cells;
+	private final EnumMap<CellGroup.Type, CellGroup>[][] groups;
+
 	private final Integer[][] values;
 
 	private Sudoku(final int size) {
@@ -83,7 +90,17 @@ public class Sudoku {
 		cellGroupsByType = new EnumMap<>(Type.class);
 
 		this.cells = new Cell[size][size];
+		this.groups = initCellGroups(size);
 		this.values = new Integer[size][size];
+	}
+
+	private static EnumMap<CellGroup.Type, CellGroup>[][] initCellGroups(final int size) {
+		@SuppressWarnings("unchecked")
+		final EnumMap<CellGroup.Type, CellGroup>[][] cellGroups = new EnumMap[size][size];
+		for (int rowIdx = 0; rowIdx < size; rowIdx++)
+			for (int colIdx = 0; colIdx < size; colIdx++)
+				cellGroups[rowIdx][colIdx] = new EnumMap<CellGroup.Type, CellGroup>(CellGroup.Type.class);
+		return cellGroups;
 	}
 
 	/**
@@ -141,6 +158,13 @@ public class Sudoku {
 
 	public CellGroup getGroup(final Type groupType, final int groupIndex) {
 		return cellGroupsByType.get(groupType).get(groupIndex);
+	}
+
+	/**
+	 * @return the cellgroup of the given type at the given position
+	 */
+	public CellGroup getGroup(final Type cellGroupType, final Pos pos) {
+		return groups[pos.row][pos.col].get(cellGroupType);
 	}
 
 	public Iterable<CellGroup> iterateGroups(final Type groupType) {
