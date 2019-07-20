@@ -8,8 +8,10 @@ import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.Sudoku;
 
 /**
- * https://www.kristanix.com/sudokuepic/sudoku-solving-techniques.php Finds
- * cells where the row+block+column contain all numbers but one.
+ * https://www.kristanix.com/sudokuepic/sudoku-solving-techniques.php - also:
+ * https://www.sudokuoftheday.com/techniques/single-candidate/
+ *
+ * Finds cells where the row+block+column contain all numbers but one.
  */
 public class SoleCandidate implements SolvingTechnique {
 

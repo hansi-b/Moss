@@ -13,7 +13,8 @@ import org.hansi_b.moss.explain.Move.Strategy;
 /**
  * Finds rows/cols/blocks which are correctly filled except for one element. The
  * trivial variant of
- * https://www.kristanix.com/sudokuepic/sudoku-solving-techniques.php
+ * https://www.kristanix.com/sudokuepic/sudoku-solving-techniques.php, also
+ * https://www.sudokuoftheday.com/techniques/single-candidate/
  */
 public class TrivialSoleCandidate implements SolvingTechnique {
 
