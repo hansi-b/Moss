@@ -3,7 +3,6 @@ package org.hansi_b.moss;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -94,18 +93,6 @@ public class CellGroup implements Iterable<Cell> {
 	 */
 	public List<Integer> values() {
 		return cells.stream().map(Cell::getValue).collect(Collectors.toList());
-	}
-
-	/**
-	 * @return a fresh BitSet, where each bit represents a possible value in the
-	 *         Sudoku; each set bit means that the respective value is present once
-	 *         or more times in this group; NB: the BitSet indices start at zero,
-	 *         i.e., bit zero denotes the first value (usually 1)
-	 */
-	public BitSet valuesAsBits() {
-		final BitSet values = new BitSet(size());
-		values().stream().filter(Objects::nonNull).forEach(v -> values.set(v - 1));
-		return values;
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
@@ -23,9 +23,9 @@ public class SoleCandidate implements SolvingTechnique {
 		for (final Cell cell : sudoku) {
 			if (cell.getValue() != null)
 				continue;
-			final BitSet cands = cell.getCandidateBits();
-			if (cands.cardinality() == 1)
-				moves.add(new Move(Move.Strategy.SoleCandidate, cell, 1 + cands.nextSetBit(0)));
+			final Set<Integer> cands = cell.getCandidates();
+			if (cands.size() == 1)
+				moves.add(new Move(Move.Strategy.SoleCandidate, cell, cands.iterator().next()));
 
 		}
 		return moves;

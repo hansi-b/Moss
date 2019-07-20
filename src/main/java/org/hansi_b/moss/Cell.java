@@ -1,7 +1,9 @@
 package org.hansi_b.moss;
 
-import java.util.BitSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * A single field in the Sudoku. Has a row and a column (at least in the square
@@ -27,15 +29,14 @@ public class Cell {
 	}
 
 	/**
-	 * @return the inverse of the union of all value BitSets from the groups of this
-	 *         cell
+	 * @return a set of the values not set in any of the groups of this cell
 	 */
-	public BitSet getCandidateBits() {
-		final BitSet cellBits = new BitSet(sudoku.size());
+	public LinkedHashSet<Integer> getCandidates() {
+		final LinkedHashSet<Integer> candidates = IntStream.range(1, sudoku.size() + 1).mapToObj(Integer::new)
+				.collect(Collectors.toCollection(LinkedHashSet::new));
 		for (final CellGroup group : getGroups())
-			cellBits.or(group.valuesAsBits());
-		cellBits.flip(0, cellBits.size());
-		return cellBits;
+			candidates.removeAll(group.values());
+		return candidates;
 	}
 
 	public Pos getPos() {

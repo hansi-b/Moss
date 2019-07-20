@@ -40,7 +40,9 @@ public class Move {
 		if (!(obj instanceof Move))
 			return false;
 		final Move m = (Move) obj;
-		return strategy == m.strategy && cell == m.cell && newValue == m.newValue;
+		return strategy == m.strategy && //
+				cell == m.cell && //
+				newValue.intValue() == m.newValue.intValue();
 	}
 
 	@Override
