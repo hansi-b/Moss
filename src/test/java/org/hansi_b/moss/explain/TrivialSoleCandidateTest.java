@@ -18,10 +18,10 @@ public class TrivialSoleCandidateTest {
 	public void testFindsSingleMissingInRow() {
 
 		final Integer[] values = { //
-				1, null, 2, 4, //
-				null, null, null, null, //
-				null, null, null, null, //
-				null, null, null, null };
+				1, 0, 2, 4, //
+				0, 0, 0, 0, //
+				0, 0, 0, 0, //
+				0, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 
 		assertThat(technique.findPossibleMoves(su)).containsExactly(//
@@ -32,10 +32,10 @@ public class TrivialSoleCandidateTest {
 	public void testFindsNoSingleOnDuplicates() {
 
 		final Integer[] values = { //
-				1, null, 2, 2, //
-				null, null, null, null, //
-				null, null, null, null, //
-				null, null, null, null };
+				1, 0, 2, 2, //
+				0, 0, 0, 0, //
+				0, 0, 0, 0, //
+				0, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 
 		assertTrue(technique.findPossibleMoves(su).isEmpty());
@@ -45,10 +45,10 @@ public class TrivialSoleCandidateTest {
 	public void testFindsSingleMissingInCol() {
 
 		final Integer[] values = { //
-				1, null, null, null, //
-				null, null, null, null, //
-				2, null, null, null, //
-				3, null, null, null };
+				1, 0, 0, 0, //
+				0, 0, 0, 0, //
+				2, 0, 0, 0, //
+				3, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 
 		assertThat(technique.findPossibleMoves(su)).containsExactly(//
@@ -59,10 +59,10 @@ public class TrivialSoleCandidateTest {
 	public void testFindsSingleMissingInBlock() {
 
 		final Integer[] values = { //
-				null, null, 2, 3, //
-				null, null, 4, null, //
-				null, null, 1, null, //
-				null, null, 3, null };
+				0, 0, 2, 3, //
+				0, 0, 4, 0, //
+				0, 0, 1, 0, //
+				0, 0, 3, 0 };
 
 		final Sudoku su = filledSudoku(values);
 
@@ -74,10 +74,10 @@ public class TrivialSoleCandidateTest {
 	public void testFindsAllThreeOnSameCell() {
 
 		final Integer[] values = { //
-				1, 2, null, 3, //
-				null, null, 4, 1, //
-				null, null, 2, null, //
-				null, null, 3, null };
+				1, 2, 0, 3, //
+				0, 0, 4, 1, //
+				0, 0, 2, 0, //
+				0, 0, 3, 0 };
 
 		final Sudoku su = filledSudoku(values);
 

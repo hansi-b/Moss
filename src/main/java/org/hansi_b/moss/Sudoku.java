@@ -26,11 +26,21 @@ public class Sudoku implements Iterable<Cell> {
 			return create(DEFAULT_SIZE);
 		}
 
+		/**
+		 * @param values a flat array of integers containing the size × size values of
+		 *               the Sudoku, where null or zero denote empty cells
+		 * @return a Sudoku filled with the argument numbers
+		 */
 		public Sudoku create(final Integer... values) {
 			final int size = Double.valueOf(Math.sqrt(values.length)).intValue();
+
+			final Integer[] mappedVals = Arrays.stream(values).map(v -> {
+				return v == null || v > 0 ? v : null;
+			}).toArray(Integer[]::new);
+
 			final Sudoku su = create(size);
 			for (int row = 0; row < size; row++)
-				System.arraycopy(values, row * size, su.cellValues[row], 0, size);
+				System.arraycopy(mappedVals, row * size, su.cellValues[row], 0, size);
 			return su;
 		}
 

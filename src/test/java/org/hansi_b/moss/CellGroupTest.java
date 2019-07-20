@@ -13,10 +13,10 @@ public class CellGroupTest {
 	@Test
 	public void testRowValues() {
 		final Integer[] values = { //
-				1, null, 4, 2, //
-				2, 4, null, 1, //
-				3, 1, 2, null, //
-				null, 2, 1, 3 };
+				1, 0, 4, 2, //
+				2, 4, 0, 1, //
+				3, 1, 2, 0, //
+				0, 2, 1, 3 };
 
 		final Sudoku su = filledSudoku(values);
 		assertThat(row(su, 0).values()).isEqualTo(list(1, null, 4, 2));
@@ -28,10 +28,10 @@ public class CellGroupTest {
 	@Test
 	public void testColValues() {
 		final Integer[] values = { //
-				1, null, 4, 2, //
-				2, 4, null, 1, //
-				3, 1, 2, null, //
-				null, 2, 1, 3 };
+				1, 0, 4, 2, //
+				2, 4, 0, 1, //
+				3, 1, 2, 0, //
+				0, 2, 1, 3 };
 		final Sudoku su = filledSudoku(values);
 		assertThat(col(su, 0).values()).isEqualTo(list(1, 2, 3, null));
 		assertThat(col(su, 1).values()).isEqualTo(list(null, 4, 1, 2));
@@ -42,10 +42,10 @@ public class CellGroupTest {
 	@Test
 	public void testBlockValues() {
 		final Integer[] values = { //
-				1, null, 4, 2, //
-				2, 4, null, 1, //
-				3, 1, 2, null, //
-				null, 2, 1, 3 };
+				1, 0, 4, 2, //
+				2, 4, 0, 1, //
+				3, 1, 2, 0, //
+				0, 2, 1, 3 };
 
 		final Sudoku su = filledSudoku(values);
 
@@ -58,10 +58,10 @@ public class CellGroupTest {
 	@Test
 	public void testBlockMissing() {
 		final Integer[] values = { //
-				1, null, 4, 2, //
-				2, 4, null, null, //
-				3, null, null, null, //
-				null, null, null, null };
+				1, 0, 4, 2, //
+				2, 4, 0, 0, //
+				3, 0, 0, 0, //
+				0, 0, 0, 0 };
 
 		final Sudoku su = filledSudoku(values);
 
@@ -75,9 +75,9 @@ public class CellGroupTest {
 	public void testRowMissingSpecialCases() {
 		final Integer[] values = { //
 				1, 1, 1, 1, //
-				null, null, null, null, //
-				null, null, null, null, //
-				null, null, null, null };
+				0, 0, 0, 0, //
+				0, 0, 0, 0, //
+				0, 0, 0, 0 };
 
 		final Sudoku su = filledSudoku(values);
 

@@ -28,10 +28,10 @@ public class CellTest {
 	public void testGetCandidates() throws Exception {
 
 		final Integer[] values = { //
-				1, null, 2, 4, //
-				null, null, null, null, //
-				null, null, null, null, //
-				null, null, null, null };
+				1, 0, 2, 4, //
+				0, 0, 0, 0, //
+				0, 0, 0, 0, //
+				0, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 		assertThat(su.getCell(Pos.at(0, 0)).getCandidates()).isEqualTo(//
 				Sets.newLinkedHashSet(3));
