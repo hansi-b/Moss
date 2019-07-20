@@ -11,6 +11,7 @@ public class Move {
 		SoleCandidateInCol, //
 		SoleCandidateInBlock, //
 		SoleCandidate, //
+		SinglePosition, //
 	}
 
 	private final Strategy strategy;

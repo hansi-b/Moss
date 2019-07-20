@@ -1,9 +1,7 @@
 package org.hansi_b.moss;
 
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.SortedSet;
 
 /**
  * A single field in the Sudoku. Has a row and a column (at least in the square
@@ -31,9 +29,8 @@ public class Cell {
 	/**
 	 * @return a set of the values not set in any of the groups of this cell
 	 */
-	public LinkedHashSet<Integer> getCandidates() {
-		final LinkedHashSet<Integer> candidates = IntStream.range(1, sudoku.size() + 1).mapToObj(Integer::new)
-				.collect(Collectors.toCollection(LinkedHashSet::new));
+	public SortedSet<Integer> getCandidates() {
+		final SortedSet<Integer> candidates = sudoku.possibleValues();
 		for (final CellGroup group : getGroups())
 			candidates.removeAll(group.values());
 		return candidates;
