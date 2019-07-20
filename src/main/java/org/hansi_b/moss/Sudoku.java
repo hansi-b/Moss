@@ -181,6 +181,10 @@ public class Sudoku implements Iterable<Cell> {
 		return groups[pos.row][pos.col].get(groupType);
 	}
 
+	public Iterable<CellGroup> iterateGroups() {
+		return Arrays.stream(Type.values()).map(groupsByType::get).flatMap(List::stream)::iterator;
+	}
+
 	public Iterable<CellGroup> iterateGroups(final Type groupType) {
 		return groupsByType.get(groupType);
 	}
