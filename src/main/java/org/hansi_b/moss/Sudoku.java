@@ -26,7 +26,7 @@ public class Sudoku {
 			final int size = Double.valueOf(Math.sqrt(values.length)).intValue();
 			final Sudoku su = create(size);
 			for (int row = 0; row < size; row++)
-				System.arraycopy(values, row * size, su.values[row], 0, size);
+				System.arraycopy(values, row * size, su.cellValues[row], 0, size);
 			return su;
 		}
 
@@ -58,7 +58,7 @@ public class Sudoku {
 
 			final List<CellGroup> groups = IntStream.range(0, sudoku.size)
 					.mapToObj(idx -> initGroup(cellGroupType, idx, newCall)).collect(Collectors.toList());
-			sudoku.cellGroupsByType.put(cellGroupType, groups);
+			sudoku.groupsByType.put(cellGroupType, groups);
 		}
 
 		private <T extends CellGroup> T initGroup(final Type cellGroupType, final int idx,
@@ -77,21 +77,21 @@ public class Sudoku {
 
 	private final int size;
 
-	private final EnumMap<Type, List<CellGroup>> cellGroupsByType;
+	private final EnumMap<Type, List<CellGroup>> groupsByType;
 
 	private final Cell[][] cells;
-	private final EnumMap<CellGroup.Type, CellGroup>[][] groups;
+	private final Integer[][] cellValues;
 
-	private final Integer[][] values;
+	private final EnumMap<CellGroup.Type, CellGroup>[][] groups;
 
 	private Sudoku(final int size) {
 		this.size = size;
 
-		cellGroupsByType = new EnumMap<>(Type.class);
+		groupsByType = new EnumMap<>(Type.class);
 
 		this.cells = new Cell[size][size];
 		this.groups = initCellGroups(size);
-		this.values = new Integer[size][size];
+		this.cellValues = new Integer[size][size];
 	}
 
 	private static EnumMap<CellGroup.Type, CellGroup>[][] initCellGroups(final int size) {
@@ -125,7 +125,7 @@ public class Sudoku {
 	}
 
 	private Integer valueAt(final int row, final int col) {
-		return values[row][col];
+		return cellValues[row][col];
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class Sudoku {
 		checkArg(row, "Row");
 		checkArg(col, "Column");
 		checkValueArg(newValue);
-		values[row][col] = newValue;
+		cellValues[row][col] = newValue;
 	}
 
 	private Integer checkValueArg(final Integer newValue) {
@@ -157,18 +157,18 @@ public class Sudoku {
 	}
 
 	public CellGroup getGroup(final Type groupType, final int groupIndex) {
-		return cellGroupsByType.get(groupType).get(groupIndex);
+		return groupsByType.get(groupType).get(groupIndex);
 	}
 
 	/**
-	 * @return the cellgroup of the given type at the given position
+	 * @return the cell group of the given type at the given position
 	 */
-	public CellGroup getGroup(final Type cellGroupType, final Pos pos) {
-		return groups[pos.row][pos.col].get(cellGroupType);
+	public CellGroup getGroup(final Type groupType, final Pos pos) {
+		return groups[pos.row][pos.col].get(groupType);
 	}
 
 	public Iterable<CellGroup> iterateGroups(final Type groupType) {
-		return cellGroupsByType.get(groupType);
+		return groupsByType.get(groupType);
 	}
 
 	public boolean isSolved() {

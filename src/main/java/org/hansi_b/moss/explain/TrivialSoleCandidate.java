@@ -28,11 +28,11 @@ public class TrivialSoleCandidate implements SolvingTechnique {
 		return moves;
 	}
 
-	private static void findMove(final CellGroup cells, final List<Move> moves) {
-		final BitSet values = new BitSet(cells.size());
+	private static void findMove(final CellGroup group, final List<Move> moves) {
+		final BitSet values = new BitSet(group.size());
 
 		Cell emptyCell = null;
-		for (final Cell c : cells) {
+		for (final Cell c : group) {
 			final Integer value = c.getValue();
 			if (value == null) {
 				if (emptyCell != null)
@@ -47,20 +47,20 @@ public class TrivialSoleCandidate implements SolvingTechnique {
 		 * we want to have found exactly one empty cell, and all values but one must
 		 * have occurred
 		 */
-		final boolean canSolve = emptyCell != null && values.cardinality() == cells.size() - 1;
+		final boolean canSolve = emptyCell != null && values.cardinality() == group.size() - 1;
 
 		if (canSolve)
-			moves.add(new Move(mapCellGroupToStrategy(cells.type()), emptyCell, 1 + values.nextClearBit(0)));
+			moves.add(new Move(mapCellGroupToStrategy(group.type()), emptyCell, 1 + values.nextClearBit(0)));
 	}
 
 	private static Strategy mapCellGroupToStrategy(final Type type) {
 		switch (type) {
 		case Row:
-			return Strategy.SingleMissingNumberInRow;
+			return Strategy.SoleCandidateInRow;
 		case Col:
-			return Strategy.SingleMissingNumberInCol;
+			return Strategy.SoleCandidateInCol;
 		case Block:
-			return Strategy.SingleMissingNumberInBlock;
+			return Strategy.SoleCandidateInBlock;
 		default:
 			throw new IllegalStateException(String.format("Unknown cell group type %s", type));
 		}

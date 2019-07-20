@@ -5,9 +5,9 @@ import org.hansi_b.moss.Cell;
 public class Move {
 
 	enum Strategy {
-		SingleMissingNumberInRow, //
-		SingleMissingNumberInCol, //
-		SingleMissingNumberInBlock
+		SoleCandidateInRow, //
+		SoleCandidateInCol, //
+		SoleCandidateInBlock, //
 	}
 
 	private final Strategy strategy;

@@ -17,7 +17,7 @@ import org.junit.Test;
 
 public class TrivialSoleCandidateTest {
 
-	final TrivialSoleCandidate singleEmpty = new TrivialSoleCandidate();
+	final TrivialSoleCandidate technique = new TrivialSoleCandidate();
 
 	@Test
 	public void testFindsSingleMissingInRow() {
@@ -29,11 +29,11 @@ public class TrivialSoleCandidateTest {
 				null, null, null, null };
 		final Sudoku su = givenSudoku(values);
 
-		final List<Move> candidates = singleEmpty.findPossibleMoves(su);
+		final List<Move> candidates = technique.findPossibleMoves(su);
 
 		assertThat(candidates.size()).isEqualTo(1);
 
-		assertThatMoveIs(candidates.get(0), Strategy.SingleMissingNumberInRow, 0, 1, 3);
+		assertThatMoveIs(candidates.get(0), Strategy.SoleCandidateInRow, 0, 1, 3);
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class TrivialSoleCandidateTest {
 				null, null, null, null };
 		final Sudoku su = givenSudoku(values);
 
-		assertTrue(singleEmpty.findPossibleMoves(su).isEmpty());
+		assertTrue(technique.findPossibleMoves(su).isEmpty());
 	}
 
 	@Test
@@ -59,11 +59,11 @@ public class TrivialSoleCandidateTest {
 				3, null, null, null };
 		final Sudoku su = givenSudoku(values);
 
-		final List<Move> candidates = singleEmpty.findPossibleMoves(su);
+		final List<Move> candidates = technique.findPossibleMoves(su);
 
 		assertThat(candidates.size()).isEqualTo(1);
 
-		assertThatMoveIs(candidates.get(0), Strategy.SingleMissingNumberInCol, 1, 0, 4);
+		assertThatMoveIs(candidates.get(0), Strategy.SoleCandidateInCol, 1, 0, 4);
 	}
 
 	@Test
@@ -77,11 +77,11 @@ public class TrivialSoleCandidateTest {
 
 		final Sudoku su = givenSudoku(values);
 
-		final List<Move> candidates = singleEmpty.findPossibleMoves(su);
+		final List<Move> candidates = technique.findPossibleMoves(su);
 
 		assertThat(candidates.size()).isEqualTo(1);
 
-		assertThatMoveIs(candidates.get(0), Strategy.SingleMissingNumberInBlock, 1, 3, 1);
+		assertThatMoveIs(candidates.get(0), Strategy.SoleCandidateInBlock, 1, 3, 1);
 	}
 
 	@Test
@@ -95,13 +95,13 @@ public class TrivialSoleCandidateTest {
 
 		final Sudoku su = givenSudoku(values);
 
-		final List<Move> candidates = singleEmpty.findPossibleMoves(su);
+		final List<Move> candidates = technique.findPossibleMoves(su);
 
 		assertThat(candidates.stream().map(Move::getStrategy).collect(Collectors.toSet()))//
 				.isEqualTo(Sets.newLinkedHashSet(//
-						Strategy.SingleMissingNumberInRow, //
-						Strategy.SingleMissingNumberInCol, //
-						Strategy.SingleMissingNumberInBlock//
+						Strategy.SoleCandidateInRow, //
+						Strategy.SoleCandidateInCol, //
+						Strategy.SoleCandidateInBlock//
 				));
 		assertThat(candidates.stream().map(Move::getNewValue).collect(Collectors.toSet()))//
 				.isEqualTo(Sets.newLinkedHashSet(4, 1, 2));

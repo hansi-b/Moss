@@ -27,8 +27,8 @@ public class Cell {
 		return pos.col;
 	}
 
-	public CellGroup getCellGroup(final CellGroup.Type cellGroupType) {
-		return sudoku.getGroup(cellGroupType, pos);
+	public CellGroup getGroup(final CellGroup.Type groupType) {
+		return sudoku.getGroup(groupType, pos);
 	}
 
 	public void setValue(final Integer newValue) {
