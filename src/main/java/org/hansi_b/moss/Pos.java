@@ -7,6 +7,8 @@ import java.util.Map;
 /**
  * Flyweight implementation of a position on a square Sudoku.
  *
+ * The implementation guarantees object identity for position object(s) with the
+ * same coordinates.
  */
 class Pos {
 

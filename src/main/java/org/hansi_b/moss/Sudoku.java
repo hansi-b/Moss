@@ -1,6 +1,8 @@
 package org.hansi_b.moss;
 
+import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -10,7 +12,7 @@ import org.hansi_b.moss.CellGroup.Col;
 import org.hansi_b.moss.CellGroup.Row;
 import org.hansi_b.moss.CellGroup.Type;
 
-public class Sudoku {
+public class Sudoku implements Iterable<Cell> {
 
 	public static class Factory {
 
@@ -156,6 +158,14 @@ public class Sudoku {
 					String.format("%s argument must not be negative and at most %d (is %d)", label, size - 1, arg));
 	}
 
+	public boolean isSolved() {
+		for (final Type groupType : Type.values())
+			for (final CellGroup g : iterateGroups(groupType))
+				if (!g.isSolved())
+					return false;
+		return true;
+	}
+
 	public CellGroup getGroup(final Type groupType, final int groupIndex) {
 		return groupsByType.get(groupType).get(groupIndex);
 	}
@@ -171,11 +181,8 @@ public class Sudoku {
 		return groupsByType.get(groupType);
 	}
 
-	public boolean isSolved() {
-		for (final Type groupType : Type.values())
-			for (final CellGroup g : iterateGroups(groupType))
-				if (!g.isSolved())
-					return false;
-		return true;
+	@Override
+	public Iterator<Cell> iterator() {
+		return Arrays.stream(cells).flatMap(Arrays::stream).iterator();
 	}
 }
