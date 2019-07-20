@@ -1,8 +1,12 @@
 package org.hansi_b.moss.explain;
 
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Function;
 
 import org.hansi_b.moss.Cell;
+import org.hansi_b.moss.CellGroup;
+import org.hansi_b.moss.CellGroup.Type;
 
 public class Move {
 
@@ -11,7 +15,28 @@ public class Move {
 		SoleCandidateInCol, //
 		SoleCandidateInBlock, //
 		SoleCandidate, //
-		SinglePosition, //
+		SinglePosition; //
+
+		static Function<Type, Strategy> mapToTypes(final Strategy... rowColBlockReturns) {
+			if (rowColBlockReturns.length != 3)
+				throw new IllegalArgumentException(String.format("Require three arguments to strategy mapping, got %s",
+						Arrays.toString(rowColBlockReturns)));
+			return new Function<CellGroup.Type, Move.Strategy>() {
+				@Override
+				public Strategy apply(final Type type) {
+					switch (type) {
+					case Row:
+						return rowColBlockReturns[0];
+					case Col:
+						return rowColBlockReturns[1];
+					case Block:
+						return rowColBlockReturns[2];
+					default:
+						throw new IllegalStateException(String.format("Unknown cell group type %s", type));
+					}
+				}
+			};
+		}
 	}
 
 	private final Strategy strategy;

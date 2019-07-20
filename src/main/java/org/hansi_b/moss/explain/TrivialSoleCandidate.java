@@ -3,6 +3,7 @@ package org.hansi_b.moss.explain;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
+import java.util.function.Function;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
@@ -17,6 +18,15 @@ import org.hansi_b.moss.explain.Move.Strategy;
  * https://www.sudokuoftheday.com/techniques/single-candidate/
  */
 public class TrivialSoleCandidate implements SolvingTechnique {
+
+	private static final Function<Type, Strategy> strategyByGroup = Strategy.mapToTypes(//
+			Strategy.SoleCandidateInRow, //
+			Strategy.SoleCandidateInCol, //
+			Strategy.SoleCandidateInBlock);
+
+	private static Strategy strategyByGroup(final Type type) {
+		return strategyByGroup.apply(type);
+	}
 
 	@Override
 	public List<Move> findPossibleMoves(final Sudoku sudoku) {
@@ -49,19 +59,6 @@ public class TrivialSoleCandidate implements SolvingTechnique {
 		final boolean canSolve = emptyCell != null && values.cardinality() == group.size() - 1;
 
 		if (canSolve)
-			moves.add(new Move(mapCellGroupToStrategy(group.type()), emptyCell, 1 + values.nextClearBit(0)));
-	}
-
-	private static Strategy mapCellGroupToStrategy(final Type type) {
-		switch (type) {
-		case Row:
-			return Strategy.SoleCandidateInRow;
-		case Col:
-			return Strategy.SoleCandidateInCol;
-		case Block:
-			return Strategy.SoleCandidateInBlock;
-		default:
-			throw new IllegalStateException(String.format("Unknown cell group type %s", type));
-		}
+			moves.add(new Move(strategyByGroup(group.type()), emptyCell, 1 + values.nextClearBit(0)));
 	}
 }
