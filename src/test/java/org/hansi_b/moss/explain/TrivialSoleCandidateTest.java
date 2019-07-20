@@ -5,7 +5,7 @@ import static org.hansi_b.moss.explain.MoveAsserts.*;
 import static org.junit.Assert.assertTrue;
 
 import org.hansi_b.moss.Sudoku;
-import static org.hansi_b.moss.SudokuTest.givenSudoku;
+import static org.hansi_b.moss.SudokuTest.filledSudoku;
 import org.hansi_b.moss.explain.TrivialSoleCandidate;
 import org.hansi_b.moss.explain.Move.Strategy;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class TrivialSoleCandidateTest {
 				null, null, null, null, //
 				null, null, null, null, //
 				null, null, null, null };
-		final Sudoku su = givenSudoku(values);
+		final Sudoku su = filledSudoku(values);
 
 		assertThat(technique.findPossibleMoves(su)).containsExactly(//
 				move(su, Strategy.SoleCandidateInRow, 0, 1, 3));
@@ -36,7 +36,7 @@ public class TrivialSoleCandidateTest {
 				null, null, null, null, //
 				null, null, null, null, //
 				null, null, null, null };
-		final Sudoku su = givenSudoku(values);
+		final Sudoku su = filledSudoku(values);
 
 		assertTrue(technique.findPossibleMoves(su).isEmpty());
 	}
@@ -49,7 +49,7 @@ public class TrivialSoleCandidateTest {
 				null, null, null, null, //
 				2, null, null, null, //
 				3, null, null, null };
-		final Sudoku su = givenSudoku(values);
+		final Sudoku su = filledSudoku(values);
 
 		assertThat(technique.findPossibleMoves(su)).containsExactly(//
 				move(su, Strategy.SoleCandidateInCol, 1, 0, 4));
@@ -64,7 +64,7 @@ public class TrivialSoleCandidateTest {
 				null, null, 1, null, //
 				null, null, 3, null };
 
-		final Sudoku su = givenSudoku(values);
+		final Sudoku su = filledSudoku(values);
 
 		assertThat(technique.findPossibleMoves(su)).containsExactly(//
 				move(su, Strategy.SoleCandidateInBlock, 1, 3, 1));
@@ -79,7 +79,7 @@ public class TrivialSoleCandidateTest {
 				null, null, 2, null, //
 				null, null, 3, null };
 
-		final Sudoku su = givenSudoku(values);
+		final Sudoku su = filledSudoku(values);
 
 		assertThat(technique.findPossibleMoves(su)).containsExactlyInAnyOrder(//
 				move(su, Strategy.SoleCandidateInCol, 0, 2, 1), //

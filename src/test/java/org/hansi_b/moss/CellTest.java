@@ -1,6 +1,6 @@
 package org.hansi_b.moss;
 
-import static org.hansi_b.moss.SudokuTest.givenSudoku;
+import static org.hansi_b.moss.SudokuTest.filledSudoku;
 
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
@@ -32,7 +32,7 @@ public class CellTest {
 				null, null, null, null, //
 				null, null, null, null, //
 				null, null, null, null };
-		final Sudoku su = givenSudoku(values);
+		final Sudoku su = filledSudoku(values);
 		assertThat(su.getCell(Pos.at(0, 0)).getCandidates()).isEqualTo(//
 				Sets.newLinkedHashSet(3));
 		assertThat(su.getCell(Pos.at(0, 1)).getCandidates()).isEqualTo(//

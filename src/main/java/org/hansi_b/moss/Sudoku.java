@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.hansi_b.moss.CellGroup.Block;
@@ -56,7 +58,7 @@ public class Sudoku implements Iterable<Cell> {
 		}
 
 		private <T extends CellGroup> void initGroupType(final Type cellGroupType,
-				final Function<List<Cell>, T> newCall) {
+				final BiFunction<Sudoku, List<Cell>, T> newCall) {
 
 			final List<CellGroup> groups = IntStream.range(0, sudoku.size)
 					.mapToObj(idx -> initGroup(cellGroupType, idx, newCall)).collect(Collectors.toList());
@@ -64,12 +66,12 @@ public class Sudoku implements Iterable<Cell> {
 		}
 
 		private <T extends CellGroup> T initGroup(final Type cellGroupType, final int idx,
-				final Function<List<Cell>, T> newCall) {
+				final BiFunction<Sudoku, List<Cell>, T> newCall) {
 
 			final List<Pos> posList = cellGroupType.getPos(idx, sudoku.size).collect(Collectors.toList());
 			final List<Cell> cells = posList.stream().map(p -> sudoku.cells[p.row][p.col]).collect(Collectors.toList());
 
-			final T group = newCall.apply(cells);
+			final T group = newCall.apply(sudoku, cells);
 			for (final Pos pos : posList)
 				sudoku.groups[pos.row][pos.col].put(group.type(), group);
 
@@ -82,17 +84,21 @@ public class Sudoku implements Iterable<Cell> {
 	private final EnumMap<Type, List<CellGroup>> groupsByType;
 
 	private final Cell[][] cells;
-	private final Integer[][] cellValues;
-
 	private final EnumMap<CellGroup.Type, CellGroup>[][] groups;
+
+	private final TreeSet<Integer> possibleValues;
+	private final Integer[][] cellValues;
 
 	private Sudoku(final int size) {
 		this.size = size;
 
-		groupsByType = new EnumMap<>(Type.class);
+		this.groupsByType = new EnumMap<>(Type.class);
 
 		this.cells = new Cell[size][size];
 		this.groups = initCellGroups(size);
+
+		this.possibleValues = IntStream.range(1, size + 1).mapToObj(Integer::new)
+				.collect(Collectors.toCollection(TreeSet::new));
 		this.cellValues = new Integer[size][size];
 	}
 
@@ -156,6 +162,10 @@ public class Sudoku implements Iterable<Cell> {
 		if (arg < 0 || arg >= size)
 			throw new IllegalArgumentException(
 					String.format("%s argument must not be negative and at most %d (is %d)", label, size - 1, arg));
+	}
+
+	public SortedSet<Integer> possibleValues() {
+		return new TreeSet<>(possibleValues);
 	}
 
 	public boolean isSolved() {

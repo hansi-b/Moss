@@ -3,6 +3,7 @@ package org.hansi_b.moss;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -54,27 +55,29 @@ public class CellGroup implements Iterable<Cell> {
 	}
 
 	static public class Row extends CellGroup {
-		Row(final List<Cell> cells) {
-			super(Type.Row, cells);
+		Row(final Sudoku sudoku, final List<Cell> cells) {
+			super(sudoku, Type.Row, cells);
 		}
 	}
 
 	static public class Col extends CellGroup {
-		Col(final List<Cell> cells) {
-			super(Type.Col, cells);
+		Col(final Sudoku sudoku, final List<Cell> cells) {
+			super(sudoku, Type.Col, cells);
 		}
 	}
 
 	static public class Block extends CellGroup {
-		Block(final List<Cell> cells) {
-			super(Type.Block, cells);
+		Block(final Sudoku sudoku, final List<Cell> cells) {
+			super(sudoku, Type.Block, cells);
 		}
 	}
 
+	private final Sudoku sudoku;
 	private final CellGroup.Type type;
 	private final List<Cell> cells;
 
-	CellGroup(final CellGroup.Type type, final List<Cell> cells) {
+	CellGroup(final Sudoku sudoku, final CellGroup.Type type, final List<Cell> cells) {
+		this.sudoku = sudoku;
 		this.type = type;
 		this.cells = cells;
 	}
@@ -88,11 +91,30 @@ public class CellGroup implements Iterable<Cell> {
 	}
 
 	/**
+	 * The values of the cells in this group. May contain duplicates and empty,
+	 * i.e., null values.
+	 *
 	 * @return a fresh, mutable List of the values in this group, in order of cell
 	 *         iteration
 	 */
 	public List<Integer> values() {
 		return cells.stream().map(Cell::getValue).collect(Collectors.toList());
+	}
+
+	/**
+	 * The possible values for the Sudoku not in any cell of this group.
+	 *
+	 * @return a fresh sorted set on numbers missing in this group
+	 */
+	public SortedSet<Integer> missing() {
+
+		final SortedSet<Integer> possibleValues = sudoku.possibleValues();
+		for (final Cell c : this) {
+			final Integer value = c.getValue();
+			if (value != null)
+				possibleValues.remove(value);
+		}
+		return possibleValues;
 	}
 
 	@Override

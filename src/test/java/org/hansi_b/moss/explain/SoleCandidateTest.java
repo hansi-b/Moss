@@ -1,7 +1,7 @@
 package org.hansi_b.moss.explain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hansi_b.moss.SudokuTest.givenSudoku;
+import static org.hansi_b.moss.SudokuTest.filledSudoku;
 
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
@@ -21,7 +21,7 @@ public class SoleCandidateTest {
 				null, null, null, null, //
 				null, null, null, null, //
 				null, null, null, null };
-		final Sudoku su = givenSudoku(values);
+		final Sudoku su = filledSudoku(values);
 
 		assertThat(technique.findPossibleMoves(su)).containsExactly(//
 				move(su, Strategy.SoleCandidate, 0, 1, 3));
@@ -35,7 +35,7 @@ public class SoleCandidateTest {
 				null, null, 3, null, //
 				null, 2, null, null, //
 				null, null, null, null };
-		final Sudoku su = givenSudoku(values);
+		final Sudoku su = filledSudoku(values);
 
 		assertThat(technique.findPossibleMoves(su)).containsExactly(//
 				move(su, Strategy.SoleCandidate, 1, 1, 4));
@@ -49,7 +49,7 @@ public class SoleCandidateTest {
 				null, null, 3, null, //
 				4, 2, null, null, //
 				null, null, null, null };
-		final Sudoku su = givenSudoku(values);
+		final Sudoku su = filledSudoku(values);
 
 		assertThat(technique.findPossibleMoves(su)).containsExactlyInAnyOrder( //
 				move(su, Strategy.SoleCandidate, 1, 0, 2), //
