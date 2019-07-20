@@ -3,6 +3,7 @@ package org.hansi_b.moss;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -87,8 +88,14 @@ public class CellGroup implements Iterable<Cell> {
 		return type;
 	}
 
-	public List<Integer> getValues() {
+	public List<Integer> values() {
 		return cells.stream().map(Cell::getValue).collect(Collectors.toList());
+	}
+
+	public BitSet valuesAsBits() {
+		final BitSet values = new BitSet(size());
+		values().stream().filter(Objects::nonNull).forEach(v -> values.set(v - 1));
+		return values;
 	}
 
 	@Override

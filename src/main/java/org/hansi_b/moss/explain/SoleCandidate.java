@@ -3,9 +3,7 @@ package org.hansi_b.moss.explain;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-import java.util.Objects;
 
-import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.Sudoku;
 
@@ -23,7 +21,7 @@ public class SoleCandidate implements SolvingTechnique {
 		// let's arbitrarly iterate over one type first:
 		sudoku.iterateGroups(Type.Block).forEach(block -> {
 
-			final BitSet blockBits = valuesAsBits(block);
+			final BitSet blockBits = block.valuesAsBits();
 
 			block.forEach(cell -> {
 				if (cell.getValue() != null)
@@ -31,8 +29,8 @@ public class SoleCandidate implements SolvingTechnique {
 
 				final BitSet cellBits = new BitSet(sudoku.size());
 				cellBits.or(blockBits);
-				cellBits.or(valuesAsBits(cell.getGroup(Type.Row)));
-				cellBits.or(valuesAsBits(cell.getGroup(Type.Col)));
+				cellBits.or(cell.getGroup(Type.Row).valuesAsBits());
+				cellBits.or(cell.getGroup(Type.Col).valuesAsBits());
 
 				/*
 				 * if the union of the three groups has left exactly one slot open, this must be
@@ -46,11 +44,5 @@ public class SoleCandidate implements SolvingTechnique {
 		});
 
 		return moves;
-	}
-
-	private static BitSet valuesAsBits(final CellGroup group) {
-		final BitSet values = new BitSet(group.size());
-		group.getValues().stream().filter(Objects::nonNull).forEach(v -> values.set(v - 1));
-		return values;
 	}
 }
