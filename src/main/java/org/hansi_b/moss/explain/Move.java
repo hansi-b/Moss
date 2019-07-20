@@ -1,5 +1,7 @@
 package org.hansi_b.moss.explain;
 
+import java.util.Objects;
+
 import org.hansi_b.moss.Cell;
 
 public class Move {
@@ -31,6 +33,19 @@ public class Move {
 
 	public Integer getNewValue() {
 		return newValue;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (!(obj instanceof Move))
+			return false;
+		final Move m = (Move) obj;
+		return strategy == m.strategy && cell == m.cell && newValue == m.newValue;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(strategy, cell, newValue);
 	}
 
 	@Override

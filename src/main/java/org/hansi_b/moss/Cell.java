@@ -19,12 +19,8 @@ public class Cell {
 		return sudoku.getValue(pos.row, pos.col);
 	}
 
-	public int getRow() {
-		return pos.row;
-	}
-
-	public int getCol() {
-		return pos.col;
+	public Pos getPos() {
+		return pos;
 	}
 
 	public CellGroup getGroup(final CellGroup.Type groupType) {

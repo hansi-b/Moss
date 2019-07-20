@@ -1,17 +1,13 @@
 package org.hansi_b.moss.explain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.hansi_b.moss.Cell;
+import org.hansi_b.moss.Pos;
+import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 
 class MoveAsserts {
-	static void assertThatMoveIs(final Move move, final Strategy expectedStrategy, final int expectedRowIdx,
-			final int expectedColIdx, final int expectedNewValue) {
-		assertThat(move.getStrategy()).isEqualTo(expectedStrategy);
-		final Cell c = move.getCell();
-		assertThat(c.getRow()).isEqualTo(expectedRowIdx);
-		assertThat(c.getCol()).isEqualTo(expectedColIdx);
-		assertThat(move.getNewValue()).isEqualTo(expectedNewValue);
+
+	public static Move move(final Sudoku sudoku, final Strategy strategy, final int row, final int col,
+			final int newValue) {
+		return new Move(strategy, sudoku.getCell(Pos.at(row, col)), newValue);
 	}
 }

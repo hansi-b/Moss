@@ -10,7 +10,7 @@ import java.util.Map;
  * The implementation guarantees object identity for position object(s) with the
  * same coordinates.
  */
-class Pos {
+public class Pos {
 
 	public final static Comparator<Pos> positionComparator = new Comparator<Pos>() {
 		@Override
@@ -30,7 +30,7 @@ class Pos {
 		this.col = col;
 	}
 
-	static Pos at(final int row, final int col) {
+	public static Pos at(final int row, final int col) {
 		final Map<Integer, Pos> rowMap = lookup.computeIfAbsent(row, r -> new HashMap<>());
 		return rowMap.computeIfAbsent(col, c -> new Pos(row, c));
 	}

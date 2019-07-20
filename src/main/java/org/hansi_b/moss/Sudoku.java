@@ -166,6 +166,10 @@ public class Sudoku implements Iterable<Cell> {
 		return true;
 	}
 
+	public Cell getCell(final Pos pos) {
+		return cells[pos.row][pos.col];
+	}
+
 	public CellGroup getGroup(final Type groupType, final int groupIndex) {
 		return groupsByType.get(groupType).get(groupIndex);
 	}

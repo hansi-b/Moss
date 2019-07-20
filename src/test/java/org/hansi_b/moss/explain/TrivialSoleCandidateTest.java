@@ -4,14 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hansi_b.moss.explain.MoveAsserts.*;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.assertj.core.util.Sets;
 import org.hansi_b.moss.Sudoku;
 import static org.hansi_b.moss.SudokuTest.givenSudoku;
 import org.hansi_b.moss.explain.TrivialSoleCandidate;
-import org.hansi_b.moss.explain.Move;
 import org.hansi_b.moss.explain.Move.Strategy;
 import org.junit.Test;
 
@@ -29,11 +24,8 @@ public class TrivialSoleCandidateTest {
 				null, null, null, null };
 		final Sudoku su = givenSudoku(values);
 
-		final List<Move> candidates = technique.findPossibleMoves(su);
-
-		assertThat(candidates.size()).isEqualTo(1);
-
-		assertThatMoveIs(candidates.get(0), Strategy.SoleCandidateInRow, 0, 1, 3);
+		assertThat(technique.findPossibleMoves(su)).containsExactly(//
+				move(su, Strategy.SoleCandidateInRow, 0, 1, 3));
 	}
 
 	@Test
@@ -59,11 +51,8 @@ public class TrivialSoleCandidateTest {
 				3, null, null, null };
 		final Sudoku su = givenSudoku(values);
 
-		final List<Move> candidates = technique.findPossibleMoves(su);
-
-		assertThat(candidates.size()).isEqualTo(1);
-
-		assertThatMoveIs(candidates.get(0), Strategy.SoleCandidateInCol, 1, 0, 4);
+		assertThat(technique.findPossibleMoves(su)).containsExactly(//
+				move(su, Strategy.SoleCandidateInCol, 1, 0, 4));
 	}
 
 	@Test
@@ -77,11 +66,8 @@ public class TrivialSoleCandidateTest {
 
 		final Sudoku su = givenSudoku(values);
 
-		final List<Move> candidates = technique.findPossibleMoves(su);
-
-		assertThat(candidates.size()).isEqualTo(1);
-
-		assertThatMoveIs(candidates.get(0), Strategy.SoleCandidateInBlock, 1, 3, 1);
+		assertThat(technique.findPossibleMoves(su)).containsExactly(//
+				move(su, Strategy.SoleCandidateInBlock, 1, 3, 1));
 	}
 
 	@Test
@@ -95,15 +81,9 @@ public class TrivialSoleCandidateTest {
 
 		final Sudoku su = givenSudoku(values);
 
-		final List<Move> candidates = technique.findPossibleMoves(su);
-
-		assertThat(candidates.stream().map(Move::getStrategy).collect(Collectors.toSet()))//
-				.isEqualTo(Sets.newLinkedHashSet(//
-						Strategy.SoleCandidateInRow, //
-						Strategy.SoleCandidateInCol, //
-						Strategy.SoleCandidateInBlock//
-				));
-		assertThat(candidates.stream().map(Move::getNewValue).collect(Collectors.toSet()))//
-				.isEqualTo(Sets.newLinkedHashSet(4, 1, 2));
+		assertThat(technique.findPossibleMoves(su)).containsExactlyInAnyOrder(//
+				move(su, Strategy.SoleCandidateInCol, 0, 2, 1), //
+				move(su, Strategy.SoleCandidateInBlock, 0, 2, 2), //
+				move(su, Strategy.SoleCandidateInRow, 0, 2, 4));
 	}
 }
