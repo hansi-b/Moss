@@ -14,7 +14,7 @@ public class Move {
 		SoleCandidateInRow, //
 		SoleCandidateInCol, //
 		SoleCandidateInBlock, //
-		SoleCandidate, //
+		NakedSingle, //
 		SinglePosition; //
 
 		static Function<Type, Strategy> mapToTypes(final Strategy... rowColBlockReturns) {

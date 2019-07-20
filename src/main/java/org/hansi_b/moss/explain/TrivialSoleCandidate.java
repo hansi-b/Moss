@@ -16,6 +16,8 @@ import org.hansi_b.moss.explain.Move.Strategy;
  * trivial variant of
  * https://www.kristanix.com/sudokuepic/sudoku-solving-techniques.php, also
  * https://www.sudokuoftheday.com/techniques/single-candidate/
+ *
+ * Called open single here: https://www.learn-sudoku.com/open-singles.html
  */
 public class TrivialSoleCandidate implements SolvingTechnique {
 

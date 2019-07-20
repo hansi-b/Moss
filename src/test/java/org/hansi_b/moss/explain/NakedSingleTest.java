@@ -9,52 +9,52 @@ import org.junit.Test;
 
 import static org.hansi_b.moss.explain.MoveAsserts.*;
 
-public class SoleCandidateTest {
+public class NakedSingleTest {
 
-	final SoleCandidate technique = new SoleCandidate();
+	final NakedSingle technique = new NakedSingle();
 
 	@Test
 	public void testFindsTrivialSoleInRow() {
 
 		final Integer[] values = { //
-				1, null, 2, 4, //
-				null, null, null, null, //
-				null, null, null, null, //
-				null, null, null, null };
+				1, 0, 2, 4, //
+				0, 0, 0, 0, //
+				0, 0, 0, 0, //
+				0, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 
 		assertThat(technique.findPossibleMoves(su)).containsExactly(//
-				move(su, Strategy.SoleCandidate, 0, 1, 3));
+				move(su, Strategy.NakedSingle, 0, 1, 3));
 	}
 
 	@Test
 	public void testFindsSingleSoleFromCombination() {
 
 		final Integer[] values = { //
-				1, null, null, null, //
-				null, null, 3, null, //
-				null, 2, null, null, //
-				null, null, null, null };
+				1, 0, 0, 0, //
+				0, 0, 3, 0, //
+				0, 2, 0, 0, //
+				0, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 
 		assertThat(technique.findPossibleMoves(su)).containsExactly(//
-				move(su, Strategy.SoleCandidate, 1, 1, 4));
+				move(su, Strategy.NakedSingle, 1, 1, 4));
 	}
 
 	@Test
 	public void testFindsMultipleFromCombinations() {
 
 		final Integer[] values = { //
-				1, null, null, null, //
-				null, null, 3, null, //
-				4, 2, null, null, //
-				null, null, null, null };
+				1, 0, 0, 0, //
+				0, 0, 3, 0, //
+				4, 2, 0, 0, //
+				0, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 
 		assertThat(technique.findPossibleMoves(su)).containsExactlyInAnyOrder( //
-				move(su, Strategy.SoleCandidate, 1, 0, 2), //
-				move(su, Strategy.SoleCandidate, 1, 1, 4), //
-				move(su, Strategy.SoleCandidate, 2, 2, 1), //
-				move(su, Strategy.SoleCandidate, 3, 0, 3));
+				move(su, Strategy.NakedSingle, 1, 0, 2), //
+				move(su, Strategy.NakedSingle, 1, 1, 4), //
+				move(su, Strategy.NakedSingle, 2, 2, 1), //
+				move(su, Strategy.NakedSingle, 3, 0, 3));
 	}
 }
