@@ -1,13 +1,13 @@
 package org.hansi_b.moss.explain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hansi_b.moss.explain.MoveAsserts.*;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.assertj.core.util.Sets;
-import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
 import static org.hansi_b.moss.SudokuTest.givenSudoku;
 import org.hansi_b.moss.explain.TrivialSoleCandidate;
@@ -105,14 +105,5 @@ public class TrivialSoleCandidateTest {
 				));
 		assertThat(candidates.stream().map(Move::getNewValue).collect(Collectors.toSet()))//
 				.isEqualTo(Sets.newLinkedHashSet(4, 1, 2));
-	}
-
-	private static void assertThatMoveIs(final Move move, final Strategy expectedStrategy, final int expectedRowIdx,
-			final int expectedColIdx, final int expectedNewValue) {
-		assertThat(move.getStrategy()).isEqualTo(expectedStrategy);
-		final Cell c = move.getCell();
-		assertThat(c.getRow()).isEqualTo(expectedRowIdx);
-		assertThat(c.getCol()).isEqualTo(expectedColIdx);
-		assertThat(move.getNewValue()).isEqualTo(expectedNewValue);
 	}
 }

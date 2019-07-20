@@ -8,6 +8,7 @@ public class Move {
 		SoleCandidateInRow, //
 		SoleCandidateInCol, //
 		SoleCandidateInBlock, //
+		SoleCandidate, //
 	}
 
 	private final Strategy strategy;
@@ -30,5 +31,10 @@ public class Move {
 
 	public Integer getNewValue() {
 		return newValue;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s: %s <- %d", strategy, cell, newValue);
 	}
 }
