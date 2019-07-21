@@ -9,14 +9,13 @@ import java.util.TreeSet;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
-import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 
 /**
  * https://www.sudokuoftheday.com/techniques/single-position/
  *
- * Called Unique Candidate here:
+ * Similar to Unique Candidate here:
  * https://www.kristanix.com/sudokuepic/sudoku-solving-techniques.php
  *
  * For a given group and missing number, find a unique cell which is the only
@@ -35,7 +34,7 @@ import org.hansi_b.moss.explain.Move.Strategy;
  * This would seem to be necessarily symmetric in the fashion that if you
  * identify a move on C relative to G, you will find the same move for C with
  * respect to its other groups. Note that this is less sophisticated than
- * "hidden singles".
+ * "hidden singles" or "unique candidate".
  *
  * Is there a way to not do this in quadratic fashion?
  */
@@ -47,14 +46,15 @@ public class SinglePosition implements SolvingTechnique {
 		// we will need these again and again
 		final Map<Cell, SortedSet<Integer>> candidatesCache = new HashMap<>();
 		final List<Move> moves = new ArrayList<Move>();
-		for (final CellGroup group : sudoku.iterateGroups(Type.Block)) {
-
-			for (final Cell cell : group) {
-				if (cell.getValue() != null)
-					continue;
+		for (final Cell cell : sudoku) {
+			if (cell.getValue() != null)
+				continue;
+			for (final CellGroup group : cell.getGroups()) {
 				final SortedSet<Integer> cands = filteredCandidates(group, cell, candidatesCache);
-				if (cands.size() == 1)
+				if (cands.size() == 1) {
 					moves.add(new Move(Strategy.SinglePosition, cell, cands.first()));
+					break;
+				}
 			}
 		}
 
@@ -65,7 +65,7 @@ public class SinglePosition implements SolvingTechnique {
 			final Map<Cell, SortedSet<Integer>> candidatesCache) {
 		final SortedSet<Integer> cands = new TreeSet<>(candidates(target, candidatesCache));
 		for (final Cell otherCell : group) {
-			if (otherCell.getValue() != null || otherCell != target)
+			if (otherCell != target)
 				cands.removeAll(candidates(otherCell, candidatesCache));
 		}
 		return cands;
