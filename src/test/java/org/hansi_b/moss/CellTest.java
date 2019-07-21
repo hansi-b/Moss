@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.util.Sets.newLinkedHashSet;
 
-import org.assertj.core.util.Sets;
 import org.junit.Test;
 
 public class CellTest {
@@ -34,12 +34,12 @@ public class CellTest {
 				0, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 		assertThat(su.getCell(Pos.at(0, 0)).getCandidates()).isEqualTo(//
-				Sets.newLinkedHashSet(3));
+				newLinkedHashSet(3));
 		assertThat(su.getCell(Pos.at(0, 1)).getCandidates()).isEqualTo(//
-				Sets.newLinkedHashSet(3));
+				newLinkedHashSet(3));
 		assertThat(su.getCell(Pos.at(1, 0)).getCandidates()).isEqualTo(//
-				Sets.newLinkedHashSet(2, 3, 4));
+				newLinkedHashSet(2, 3, 4));
 		assertThat(su.getCell(Pos.at(2, 1)).getCandidates()).isEqualTo(//
-				Sets.newLinkedHashSet(1, 2, 3, 4));
+				newLinkedHashSet(1, 2, 3, 4));
 	}
 }
