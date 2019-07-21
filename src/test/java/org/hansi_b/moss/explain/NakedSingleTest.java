@@ -23,7 +23,7 @@ public class NakedSingleTest {
 				0, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 
-		assertThat(technique.findPossibleMoves(su)).containsExactly(//
+		assertThat(technique.findMoves(su)).containsExactly(//
 				move(su, Strategy.NakedSingle, 0, 1, 3));
 	}
 
@@ -37,7 +37,7 @@ public class NakedSingleTest {
 				0, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 
-		assertThat(technique.findPossibleMoves(su)).containsExactly(//
+		assertThat(technique.findMoves(su)).containsExactly(//
 				move(su, Strategy.NakedSingle, 1, 1, 4));
 	}
 
@@ -51,10 +51,35 @@ public class NakedSingleTest {
 				0, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 
-		assertThat(technique.findPossibleMoves(su)).containsExactlyInAnyOrder( //
+		assertThat(technique.findMoves(su)).containsExactlyInAnyOrder( //
 				move(su, Strategy.NakedSingle, 1, 0, 2), //
 				move(su, Strategy.NakedSingle, 1, 1, 4), //
 				move(su, Strategy.NakedSingle, 2, 2, 1), //
 				move(su, Strategy.NakedSingle, 3, 0, 3));
+	}
+
+	@Test
+	public void testFindBig() {
+
+		/*
+		 * from http://www.sudoku-space.de/sudoku-loesungstechniken/
+		 */
+		final Integer[] values = { //
+				0, 0, 0, 0, 0, 1, 0, 0, 0, //
+				0, 0, 0, 0, 0, 5, 0, 0, 0, //
+				0, 0, 0, 0, 0, 0, 0, 0, 0, //
+				//
+				0, 0, 0, 8, 0, 0, 0, 0, 0, //
+				0, 0, 0, 0, 2, 0, 0, 0, 0, //
+				0, 4, 0, 6, 0, 0, 7, 0, 0, //
+				//
+				0, 0, 0, 0, 0, 0, 0, 0, 0, //
+				0, 0, 0, 0, 0, 0, 0, 0, 0, //
+				0, 0, 0, 0, 0, 9, 0, 0, 0 //
+		};
+		final Sudoku su = filledSudoku(values);
+
+		assertThat(technique.findMoves(su)).containsExactlyInAnyOrder( //
+				move(su, Strategy.NakedSingle, 5, 5, 3));
 	}
 }

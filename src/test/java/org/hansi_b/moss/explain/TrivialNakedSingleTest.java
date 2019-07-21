@@ -6,13 +6,13 @@ import static org.junit.Assert.assertTrue;
 
 import org.hansi_b.moss.Sudoku;
 import static org.hansi_b.moss.SudokuTest.filledSudoku;
-import org.hansi_b.moss.explain.TrivialSoleCandidate;
+import org.hansi_b.moss.explain.TrivialNakedSingle;
 import org.hansi_b.moss.explain.Move.Strategy;
 import org.junit.Test;
 
-public class TrivialSoleCandidateTest {
+public class TrivialNakedSingleTest {
 
-	final TrivialSoleCandidate technique = new TrivialSoleCandidate();
+	final TrivialNakedSingle technique = new TrivialNakedSingle();
 
 	@Test
 	public void testFindsSingleMissingInRow() {
@@ -24,8 +24,8 @@ public class TrivialSoleCandidateTest {
 				0, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 
-		assertThat(technique.findPossibleMoves(su)).containsExactly(//
-				move(su, Strategy.SoleCandidateInRow, 0, 1, 3));
+		assertThat(technique.findMoves(su)).containsExactly(//
+				move(su, Strategy.NakedSingleInRow, 0, 1, 3));
 	}
 
 	@Test
@@ -38,7 +38,7 @@ public class TrivialSoleCandidateTest {
 				0, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 
-		assertTrue(technique.findPossibleMoves(su).isEmpty());
+		assertTrue(technique.findMoves(su).isEmpty());
 	}
 
 	@Test
@@ -51,8 +51,8 @@ public class TrivialSoleCandidateTest {
 				3, 0, 0, 0 };
 		final Sudoku su = filledSudoku(values);
 
-		assertThat(technique.findPossibleMoves(su)).containsExactly(//
-				move(su, Strategy.SoleCandidateInCol, 1, 0, 4));
+		assertThat(technique.findMoves(su)).containsExactly(//
+				move(su, Strategy.NakedSingleInCol, 1, 0, 4));
 	}
 
 	@Test
@@ -66,8 +66,8 @@ public class TrivialSoleCandidateTest {
 
 		final Sudoku su = filledSudoku(values);
 
-		assertThat(technique.findPossibleMoves(su)).containsExactly(//
-				move(su, Strategy.SoleCandidateInBlock, 1, 3, 1));
+		assertThat(technique.findMoves(su)).containsExactly(//
+				move(su, Strategy.NakedSingleInBlock, 1, 3, 1));
 	}
 
 	@Test
@@ -81,9 +81,9 @@ public class TrivialSoleCandidateTest {
 
 		final Sudoku su = filledSudoku(values);
 
-		assertThat(technique.findPossibleMoves(su)).containsExactlyInAnyOrder(//
-				move(su, Strategy.SoleCandidateInCol, 0, 2, 1), //
-				move(su, Strategy.SoleCandidateInBlock, 0, 2, 2), //
-				move(su, Strategy.SoleCandidateInRow, 0, 2, 4));
+		assertThat(technique.findMoves(su)).containsExactlyInAnyOrder(//
+				move(su, Strategy.NakedSingleInCol, 0, 2, 1), //
+				move(su, Strategy.NakedSingleInBlock, 0, 2, 2), //
+				move(su, Strategy.NakedSingleInRow, 0, 2, 4));
 	}
 }

@@ -213,6 +213,10 @@ public class Sudoku implements Iterable<Cell> {
 		return groupsByType.get(groupType);
 	}
 
+	public Iterable<Cell> iterateEmptyCells() {
+		return Arrays.stream(cells).flatMap(Arrays::stream).filter(Cell::isEmpty)::iterator;
+	}
+
 	@Override
 	public Iterator<Cell> iterator() {
 		return Arrays.stream(cells).flatMap(Arrays::stream).iterator();

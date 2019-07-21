@@ -11,25 +11,22 @@ import org.hansi_b.moss.Sudoku;
  *
  * After https://www.sudoku-solutions.com/index.php?page=solvingnakedsubsets
  *
- * https://www.kristanix.com/sudokuepic/sudoku-solving-techniques.php - also:
- * https://www.sudokuoftheday.com/techniques/single-candidate/
+ * Also known as: Singleton, Sole Candidate
  *
- * Finds cells where the row+block+column contain all numbers but one.
+ * Finds cells where the combinations of the cell's row+block+column contain all
+ * numbers but one.
  */
 public class NakedSingle implements SolvingTechnique {
 
 	@Override
-	public List<Move> findPossibleMoves(final Sudoku sudoku) {
+	public List<Move> findMoves(final Sudoku sudoku) {
 
 		final List<Move> moves = new ArrayList<Move>();
 
-		for (final Cell cell : sudoku) {
-			if (cell.getValue() != null)
-				continue;
+		for (final Cell cell : sudoku.iterateEmptyCells()) {
 			final Set<Integer> cands = cell.getCandidates();
 			if (cands.size() == 1)
 				moves.add(new Move(Move.Strategy.NakedSingle, cell, cands.iterator().next()));
-
 		}
 		return moves;
 	}

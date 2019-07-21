@@ -6,17 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.Function;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.Sudoku;
+import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.explain.Move.Strategy;
 
 /**
- * https://www.sudokuoftheday.com/techniques/single-position/
- *
- * Similar to Unique Candidate here:
- * https://www.kristanix.com/sudokuepic/sudoku-solving-techniques.php
+ * As described in http://www.sudoku-space.de/sudoku-loesungstechniken/
  *
  * For a given group and missing number, find a unique cell which is the only
  * possible place in that group for that number.
@@ -31,29 +30,35 @@ import org.hansi_b.moss.explain.Move.Strategy;
  * </ol>
  * </ol>
  *
- * This would seem to be necessarily symmetric in the fashion that if you
- * identify a move on C relative to G, you will find the same move for C with
- * respect to its other groups. Note that this is less sophisticated than
- * "hidden singles" or "unique candidate".
+ * Also known as Unique Candidate.
  *
- * Is there a way to not do this in quadratic fashion?
+ * This would often seem to be symmetric in the fashion that if you identify a
+ * move on C relative to G, you can find the same move for C with respect to its
+ * other groups. Note that this is less sophisticated than "hidden singles" or
+ * "unique candidate".
  */
-public class SinglePosition implements SolvingTechnique {
+public class HiddenSingle implements SolvingTechnique {
+
+	private static final Function<Type, Strategy> strategyByGroup = Strategy.typeMapper(//
+			Strategy.HiddenSingleInRow, //
+			Strategy.HiddenSingleInCol, //
+			Strategy.HiddenSingleInBlock);
+
+	private static Strategy strategyByGroup(final Type type) {
+		return strategyByGroup.apply(type);
+	}
 
 	@Override
-	public List<Move> findPossibleMoves(final Sudoku sudoku) {
+	public List<Move> findMoves(final Sudoku sudoku) {
 
 		// we will need these again and again
 		final Map<Cell, SortedSet<Integer>> candidatesCache = new HashMap<>();
 		final List<Move> moves = new ArrayList<Move>();
-		for (final Cell cell : sudoku) {
-			if (cell.getValue() != null)
-				continue;
+		for (final Cell cell : sudoku.iterateEmptyCells()) {
 			for (final CellGroup group : cell.getGroups()) {
 				final SortedSet<Integer> cands = filteredCandidates(group, cell, candidatesCache);
 				if (cands.size() == 1) {
-					moves.add(new Move(Strategy.SinglePosition, cell, cands.first()));
-					break;
+					moves.add(new Move(strategyByGroup(group.type()), cell, cands.first()));
 				}
 			}
 		}
@@ -64,10 +69,9 @@ public class SinglePosition implements SolvingTechnique {
 	private static SortedSet<Integer> filteredCandidates(final CellGroup group, final Cell target,
 			final Map<Cell, SortedSet<Integer>> candidatesCache) {
 		final SortedSet<Integer> cands = new TreeSet<>(candidates(target, candidatesCache));
-		for (final Cell otherCell : group) {
-			if (otherCell != target)
+		for (final Cell otherCell : group)
+			if (otherCell != target && otherCell.isEmpty())
 				cands.removeAll(candidates(otherCell, candidatesCache));
-		}
 		return cands;
 	}
 

@@ -26,6 +26,10 @@ public class Cell {
 		return sudoku.getValue(pos.row, pos.col);
 	}
 
+	public boolean isEmpty() {
+		return sudoku.getValue(pos.row, pos.col) == null;
+	}
+
 	/**
 	 * @return a set of the values not set in any of the groups of this cell
 	 */

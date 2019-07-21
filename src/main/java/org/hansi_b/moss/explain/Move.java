@@ -11,13 +11,15 @@ import org.hansi_b.moss.CellGroup.Type;
 public class Move {
 
 	enum Strategy {
-		SoleCandidateInRow, //
-		SoleCandidateInCol, //
-		SoleCandidateInBlock, //
+		NakedSingleInRow, //
+		NakedSingleInCol, //
+		NakedSingleInBlock, //
 		NakedSingle, //
-		SinglePosition; //
+		HiddenSingleInRow, //
+		HiddenSingleInCol, //
+		HiddenSingleInBlock;
 
-		static Function<Type, Strategy> mapToTypes(final Strategy... rowColBlockReturns) {
+		static Function<Type, Strategy> typeMapper(final Strategy... rowColBlockReturns) {
 			if (rowColBlockReturns.length != 3)
 				throw new IllegalArgumentException(String.format("Require three arguments to strategy mapping, got %s",
 						Arrays.toString(rowColBlockReturns)));

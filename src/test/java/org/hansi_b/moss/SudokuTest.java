@@ -2,11 +2,11 @@ package org.hansi_b.moss;
 
 import static org.junit.Assert.*;
 
+import org.assertj.core.util.Sets;
 import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.Sudoku;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.util.Sets.newTreeSet;
-
 import org.junit.Test;
 
 public class SudokuTest {
@@ -58,6 +58,29 @@ public class SudokuTest {
 		assertThat(su.getValue(3, 5)).isEqualTo(6);
 		su.set(8, 8, 7);
 		assertThat(su.getValue(8, 8)).isEqualTo(7);
+	}
+
+	@Test
+	public void testCreateBigEmpty() {
+	
+		/*
+		 * mainly to have the empty template lying around
+		 */
+		final Integer[] values = { //
+				0, 0, 0, 0, 0, 0, 0, 0, 0, //
+				0, 0, 0, 0, 0, 0, 0, 0, 0, //
+				0, 0, 0, 0, 0, 0, 0, 0, 0, //
+				//
+				0, 0, 0, 0, 0, 0, 0, 0, 0, //
+				0, 0, 0, 0, 0, 0, 0, 0, 0, //
+				0, 0, 0, 0, 0, 0, 0, 0, 0, //
+				//
+				0, 0, 0, 0, 0, 0, 0, 0, 0, //
+				0, 0, 0, 0, 0, 0, 0, 0, 0, //
+				0, 0, 0, 0, 0, 0, 0, 0, 0 //
+		};
+		final Sudoku su = filledSudoku(values);
+		assertEquals(9 * 9, Sets.newHashSet(su.iterateEmptyCells()).size());
 	}
 
 	@Test

@@ -12,26 +12,25 @@ import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 
 /**
- * Finds rows/cols/blocks which are correctly filled except for one element. The
- * trivial variant of
- * https://www.kristanix.com/sudokuepic/sudoku-solving-techniques.php, also
- * https://www.sudokuoftheday.com/techniques/single-candidate/
+ * The trivial variant of NakedSingle:
+ *
+ * Finds rows/cols/blocks which are correctly filled except for one element.
  *
  * Called open single here: https://www.learn-sudoku.com/open-singles.html
  */
-public class TrivialSoleCandidate implements SolvingTechnique {
+public class TrivialNakedSingle implements SolvingTechnique {
 
-	private static final Function<Type, Strategy> strategyByGroup = Strategy.mapToTypes(//
-			Strategy.SoleCandidateInRow, //
-			Strategy.SoleCandidateInCol, //
-			Strategy.SoleCandidateInBlock);
+	private static final Function<Type, Strategy> strategyByGroup = Strategy.typeMapper(//
+			Strategy.NakedSingleInRow, //
+			Strategy.NakedSingleInCol, //
+			Strategy.NakedSingleInBlock);
 
 	private static Strategy strategyByGroup(final Type type) {
 		return strategyByGroup.apply(type);
 	}
 
 	@Override
-	public List<Move> findPossibleMoves(final Sudoku sudoku) {
+	public List<Move> findMoves(final Sudoku sudoku) {
 
 		final List<Move> moves = new ArrayList<Move>();
 		for (final CellGroup g : sudoku.iterateGroups())
