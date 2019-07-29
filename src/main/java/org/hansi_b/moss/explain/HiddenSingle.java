@@ -53,7 +53,7 @@ public class HiddenSingle implements SolvingTechnique {
 
 		// we will need these again and again
 		final Map<Cell, SortedSet<Integer>> candidatesCache = new HashMap<>();
-		final List<Move> moves = new ArrayList<Move>();
+		final List<Move> moves = new ArrayList<>();
 		for (final Cell cell : sudoku.iterateEmptyCells()) {
 			for (final CellGroup group : cell.getGroups()) {
 				final SortedSet<Integer> cands = filteredCandidates(group, cell, candidatesCache);
@@ -77,6 +77,6 @@ public class HiddenSingle implements SolvingTechnique {
 
 	private static SortedSet<Integer> candidates(final Cell cell,
 			final Map<Cell, SortedSet<Integer>> candidatesByCell) {
-		return candidatesByCell.computeIfAbsent(cell, c -> c.getCandidates());
+		return candidatesByCell.computeIfAbsent(cell, Cell::getCandidates);
 	}
 }

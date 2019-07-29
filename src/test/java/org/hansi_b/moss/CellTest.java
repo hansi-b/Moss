@@ -13,7 +13,7 @@ import org.junit.Test;
 public class CellTest {
 
 	@Test
-	public void testIdentity() throws Exception {
+	public void testIdentity() {
 
 		final Sudoku su1 = new Sudoku.Factory().create();
 		su1.set(0, 0, 2);
@@ -25,7 +25,7 @@ public class CellTest {
 	}
 
 	@Test
-	public void testGetCandidates() throws Exception {
+	public void testGetCandidates() {
 
 		final Integer[] values = { //
 				1, 0, 2, 4, //

@@ -28,15 +28,14 @@ public class Sudoku implements Iterable<Cell> {
 
 		/**
 		 * @param values a flat array of integers containing the size × size values of
-		 *               the Sudoku, where null or zero denote empty cells
+		 *               the Sudoku, where null or zero denote empty s
 		 * @return a Sudoku filled with the argument numbers
 		 */
 		public Sudoku create(final Integer... values) {
-			final int size = Double.valueOf(Math.sqrt(values.length)).intValue();
+			final int size = (int) Math.sqrt(values.length);
 
-			final Integer[] mappedVals = Arrays.stream(values).map(v -> {
-				return v == null || v > 0 ? v : null;
-			}).toArray(Integer[]::new);
+			final Integer[] mappedVals = Arrays.stream(values).map(v -> (v == null || v > 0) ? v : null)
+					.toArray(Integer[]::new);
 
 			final Sudoku su = create(size);
 			for (int row = 0; row < size; row++)
@@ -60,11 +59,9 @@ public class Sudoku implements Iterable<Cell> {
 		}
 
 		private void initCells() {
-			IntStream.range(0, sudoku.size).forEach(rowIdx -> {
-				IntStream.range(0, sudoku.size).forEach(colIdx -> {
-					sudoku.cells[rowIdx][colIdx] = new Cell(sudoku, Pos.at(rowIdx, colIdx));
-				});
-			});
+			IntStream.range(0, sudoku.size).forEach(rowIdx -> //
+			IntStream.range(0, sudoku.size).forEach(colIdx -> //
+			sudoku.cells[rowIdx][colIdx] = new Cell(sudoku, Pos.at(rowIdx, colIdx))));
 		}
 
 		private <T extends CellGroup> void initGroupType(final Type cellGroupType,
@@ -107,7 +104,7 @@ public class Sudoku implements Iterable<Cell> {
 		this.cells = new Cell[size][size];
 		this.groups = initCellGroups(size);
 
-		this.possibleValues = IntStream.range(1, size + 1).mapToObj(Integer::new)
+		this.possibleValues = IntStream.range(1, size + 1).mapToObj(Integer::valueOf)
 				.collect(Collectors.toCollection(TreeSet::new));
 		this.cellValues = new Integer[size][size];
 	}
@@ -117,7 +114,7 @@ public class Sudoku implements Iterable<Cell> {
 		final EnumMap<CellGroup.Type, CellGroup>[][] cellGroups = new EnumMap[size][size];
 		for (int rowIdx = 0; rowIdx < size; rowIdx++)
 			for (int colIdx = 0; colIdx < size; colIdx++)
-				cellGroups[rowIdx][colIdx] = new EnumMap<CellGroup.Type, CellGroup>(CellGroup.Type.class);
+				cellGroups[rowIdx][colIdx] = new EnumMap<>(CellGroup.Type.class);
 		return cellGroups;
 	}
 
@@ -174,6 +171,9 @@ public class Sudoku implements Iterable<Cell> {
 					String.format("%s argument must not be negative and at most %d (is %d)", label, size - 1, arg));
 	}
 
+	/**
+	 * @return a fresh copy of this Sudoku's possible values
+	 */
 	public SortedSet<Integer> possibleValues() {
 		return new TreeSet<>(possibleValues);
 	}

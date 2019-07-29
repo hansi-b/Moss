@@ -62,7 +62,7 @@ public class SudokuTest {
 
 	@Test
 	public void testCreateBigEmpty() {
-	
+
 		/*
 		 * mainly to have the empty template lying around
 		 */
@@ -80,7 +80,7 @@ public class SudokuTest {
 				0, 0, 0, 0, 0, 0, 0, 0, 0 //
 		};
 		final Sudoku su = filledSudoku(values);
-		assertEquals(9 * 9, Sets.newHashSet(su.iterateEmptyCells()).size());
+		assertEquals(81, Sets.newHashSet(su.iterateEmptyCells()).size());
 	}
 
 	@Test
@@ -108,13 +108,9 @@ public class SudokuTest {
 	@Test
 	public void testGetWithIllegalValueArgs() {
 		final Sudoku su = defaultSudoku();
-		assertThatThrownBy(() -> {
-			su.set(1, 1, 0);
-		}).isExactlyInstanceOf(IllegalArgumentException.class) //
+		assertThatThrownBy(() -> su.set(1, 1, 0)).isExactlyInstanceOf(IllegalArgumentException.class) //
 				.hasMessage("Cell value must be null or between one and at most 9 (is 0)");
-		assertThatThrownBy(() -> {
-			su.set(1, 1, 10);
-		}).isExactlyInstanceOf(IllegalArgumentException.class) //
+		assertThatThrownBy(() -> su.set(1, 1, 10)).isExactlyInstanceOf(IllegalArgumentException.class) //
 				.hasMessage("Cell value must be null or between one and at most 9 (is 10)");
 	}
 
@@ -136,13 +132,13 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testNewIsNotSolved() throws Exception {
+	public void testNewIsNotSolved() {
 		final Sudoku su = defaultSudoku();
 		assertFalse(su.isSolved());
 	}
 
 	@Test
-	public void testPossibleValues() throws Exception {
+	public void testPossibleValues() {
 		final Sudoku su = defaultSudoku();
 		assertThat(su.possibleValues()).isEqualTo(newTreeSet(1, 2, 3, 4, 5, 6, 7, 8, 9));
 		final Sudoku su4 = sudokuOfSize(4);

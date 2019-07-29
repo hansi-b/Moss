@@ -12,15 +12,12 @@ import java.util.Map;
  */
 public class Pos {
 
-	public final static Comparator<Pos> positionComparator = new Comparator<Pos>() {
-		@Override
-		public int compare(final Pos p1, final Pos p2) {
-			final int rowDiff = p1.row - p2.row;
-			return rowDiff != 0 ? rowDiff : p1.col - p2.col;
-		}
+	public static final Comparator<Pos> positionComparator = (p1, p2) -> {
+		final int rowDiff = p1.row - p2.row;
+		return rowDiff != 0 ? rowDiff : p1.col - p2.col;
 	};
 
-	private final static Map<Integer, Map<Integer, Pos>> lookup = new HashMap<>();
+	private static final Map<Integer, Map<Integer, Pos>> lookup = new HashMap<>();
 
 	final int row;
 	final int col;

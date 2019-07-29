@@ -41,7 +41,7 @@ public class SudokuCliReader {
 		try (Scanner stdin = new Scanner(inStream)) {
 			String line;
 			int lineCount = 0;
-			while (stdin.hasNextLine() && !((line = stdin.nextLine().trim())).isEmpty()) {
+			while (stdin.hasNextLine() && !(line = stdin.nextLine().trim()).isEmpty()) {
 
 				final String[] tokens = line.split("\\s");
 				if (size == -1) {

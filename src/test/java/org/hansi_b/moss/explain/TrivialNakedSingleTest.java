@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.hansi_b.moss.Sudoku;
 import static org.hansi_b.moss.SudokuTest.filledSudoku;
-import org.hansi_b.moss.explain.TrivialNakedSingle;
 import org.hansi_b.moss.explain.Move.Strategy;
 import org.junit.Test;
 

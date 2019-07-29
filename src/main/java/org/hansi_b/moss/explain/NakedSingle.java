@@ -21,7 +21,7 @@ public class NakedSingle implements SolvingTechnique {
 	@Override
 	public List<Move> findMoves(final Sudoku sudoku) {
 
-		final List<Move> moves = new ArrayList<Move>();
+		final List<Move> moves = new ArrayList<>();
 
 		for (final Cell cell : sudoku.iterateEmptyCells()) {
 			final Set<Integer> cands = cell.getCandidates();

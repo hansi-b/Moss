@@ -32,7 +32,7 @@ public class TrivialNakedSingle implements SolvingTechnique {
 	@Override
 	public List<Move> findMoves(final Sudoku sudoku) {
 
-		final List<Move> moves = new ArrayList<Move>();
+		final List<Move> moves = new ArrayList<>();
 		for (final CellGroup g : sudoku.iterateGroups())
 			findMove(g, moves);
 		return moves;

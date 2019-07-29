@@ -54,19 +54,19 @@ public class CellGroup implements Iterable<Cell> {
 		}
 	}
 
-	static public class Row extends CellGroup {
+	public static class Row extends CellGroup {
 		Row(final Sudoku sudoku, final List<Cell> cells) {
 			super(sudoku, Type.Row, cells);
 		}
 	}
 
-	static public class Col extends CellGroup {
+	public static class Col extends CellGroup {
 		Col(final Sudoku sudoku, final List<Cell> cells) {
 			super(sudoku, Type.Col, cells);
 		}
 	}
 
-	static public class Block extends CellGroup {
+	public static class Block extends CellGroup {
 		Block(final Sudoku sudoku, final List<Cell> cells) {
 			super(sudoku, Type.Block, cells);
 		}

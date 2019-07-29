@@ -11,16 +11,16 @@ import org.junit.Test;
 public class PosTest {
 
 	@Test
-	public void testFlyweight() throws Exception {
+	public void testFlyweight() {
 
-		final Pos p_1_7 = Pos.at(1, 7);
+		final Pos pos = Pos.at(1, 7);
 
-		assertSame(p_1_7, Pos.at(1, 7));
-		assertNotEquals(p_1_7, Pos.at(1, 6));
+		assertSame(pos, Pos.at(1, 7));
+		assertNotEquals(pos, Pos.at(1, 6));
 	}
 
 	@Test
-	public void testComparator() throws Exception {
+	public void testComparator() {
 
 		final Comparator<Pos> pc = Pos.positionComparator;
 

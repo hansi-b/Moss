@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.util.Lists.list;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -12,7 +13,7 @@ import org.junit.Test;
 public class SudokuCliReaderTest {
 
 	@Test
-	public void testReadValues() throws Exception {
+	public void testReadValues() throws IOException {
 		try (final InputStream in = givenInput("1 2 3\n2 2 1")) {
 			assertThat(SudokuCliReader.readValues(in)).isEqualTo(list(1, 2, 3, 2, 2, 1));
 		}
