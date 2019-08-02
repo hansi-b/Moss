@@ -37,7 +37,7 @@ import org.hansi_b.moss.explain.Move.Strategy;
  * other groups. Note that this is less sophisticated than "hidden singles" or
  * "unique candidate".
  */
-public class HiddenSingle implements SolvingTechnique {
+public class HiddenSingle implements Technique {
 
 	private static final Function<Type, Strategy> strategyByGroup = Strategy.typeMapper(//
 			Strategy.HiddenSingleInRow, //

@@ -16,7 +16,7 @@ import org.hansi_b.moss.Sudoku;
  * Finds cells where the combinations of the cell's row+block+column contain all
  * numbers but one.
  */
-public class NakedSingle implements SolvingTechnique {
+public class NakedSingle implements Technique {
 
 	@Override
 	public List<Move> findMoves(final Sudoku sudoku) {

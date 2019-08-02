@@ -4,6 +4,6 @@ import java.util.List;
 
 import org.hansi_b.moss.Sudoku;
 
-interface SolvingTechnique {
+interface Technique {
 	List<Move> findMoves(Sudoku sudoku);
 }

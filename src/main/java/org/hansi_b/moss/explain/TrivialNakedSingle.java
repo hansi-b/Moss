@@ -18,7 +18,7 @@ import org.hansi_b.moss.explain.Move.Strategy;
  *
  * Called open single here: https://www.learn-sudoku.com/open-singles.html
  */
-public class TrivialNakedSingle implements SolvingTechnique {
+public class TrivialNakedSingle implements Technique {
 
 	private static final Function<Type, Strategy> strategyByGroup = Strategy.typeMapper(//
 			Strategy.NakedSingleInRow, //
