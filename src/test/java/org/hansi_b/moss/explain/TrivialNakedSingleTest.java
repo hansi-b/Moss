@@ -5,7 +5,6 @@ import static org.hansi_b.moss.explain.MoveAsserts.*;
 import static org.junit.Assert.assertTrue;
 
 import org.hansi_b.moss.Sudoku;
-import static org.hansi_b.moss.SudokuTest.filledSudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 import org.junit.Test;
 
@@ -21,7 +20,7 @@ public class TrivialNakedSingleTest {
 				0, 0, 0, 0, //
 				0, 0, 0, 0, //
 				0, 0, 0, 0 };
-		final Sudoku su = filledSudoku(values);
+		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(technique.findMoves(su)).containsExactly(//
 				move(su, Strategy.NakedSingleInRow, 0, 1, 3));
@@ -35,7 +34,7 @@ public class TrivialNakedSingleTest {
 				0, 0, 0, 0, //
 				0, 0, 0, 0, //
 				0, 0, 0, 0 };
-		final Sudoku su = filledSudoku(values);
+		final Sudoku su = Sudoku.filled(values);
 
 		assertTrue(technique.findMoves(su).isEmpty());
 	}
@@ -48,7 +47,7 @@ public class TrivialNakedSingleTest {
 				0, 0, 0, 0, //
 				2, 0, 0, 0, //
 				3, 0, 0, 0 };
-		final Sudoku su = filledSudoku(values);
+		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(technique.findMoves(su)).containsExactly(//
 				move(su, Strategy.NakedSingleInCol, 1, 0, 4));
@@ -63,7 +62,7 @@ public class TrivialNakedSingleTest {
 				0, 0, 1, 0, //
 				0, 0, 3, 0 };
 
-		final Sudoku su = filledSudoku(values);
+		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(technique.findMoves(su)).containsExactly(//
 				move(su, Strategy.NakedSingleInBlock, 1, 3, 1));
@@ -78,7 +77,7 @@ public class TrivialNakedSingleTest {
 				0, 0, 2, 0, //
 				0, 0, 3, 0 };
 
-		final Sudoku su = filledSudoku(values);
+		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(technique.findMoves(su)).containsExactlyInAnyOrder(//
 				move(su, Strategy.NakedSingleInCol, 0, 2, 1), //

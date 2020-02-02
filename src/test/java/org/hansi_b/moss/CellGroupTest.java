@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.list;
 import static org.assertj.core.util.Sets.*;
 
-import static org.hansi_b.moss.SudokuTest.*;
 import org.hansi_b.moss.CellGroup.Type;
 import org.junit.Test;
 
@@ -18,7 +17,7 @@ public class CellGroupTest {
 				3, 1, 2, 0, //
 				0, 2, 1, 3 };
 
-		final Sudoku su = filledSudoku(values);
+		final Sudoku su = Sudoku.filled(values);
 		assertThat(row(su, 0).values()).isEqualTo(list(1, null, 4, 2));
 		assertThat(row(su, 1).values()).isEqualTo(list(2, 4, null, 1));
 		assertThat(row(su, 2).values()).isEqualTo(list(3, 1, 2, null));
@@ -32,7 +31,7 @@ public class CellGroupTest {
 				2, 4, 0, 1, //
 				3, 1, 2, 0, //
 				0, 2, 1, 3 };
-		final Sudoku su = filledSudoku(values);
+		final Sudoku su = Sudoku.filled(values);
 		assertThat(col(su, 0).values()).isEqualTo(list(1, 2, 3, null));
 		assertThat(col(su, 1).values()).isEqualTo(list(null, 4, 1, 2));
 		assertThat(col(su, 2).values()).isEqualTo(list(4, null, 2, 1));
@@ -47,7 +46,7 @@ public class CellGroupTest {
 				3, 1, 2, 0, //
 				0, 2, 1, 3 };
 
-		final Sudoku su = filledSudoku(values);
+		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(block(su, 0).values()).isEqualTo(list(1, null, 2, 4));
 		assertThat(block(su, 1).values()).isEqualTo(list(4, 2, null, 1));
@@ -63,7 +62,7 @@ public class CellGroupTest {
 				3, 0, 0, 0, //
 				0, 0, 0, 0 };
 
-		final Sudoku su = filledSudoku(values);
+		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(block(su, 0).missing()).isEqualTo(newTreeSet(3));
 		assertThat(block(su, 1).missing()).isEqualTo(newTreeSet(1, 3));
@@ -79,7 +78,7 @@ public class CellGroupTest {
 				0, 0, 0, 0, //
 				0, 0, 0, 0 };
 
-		final Sudoku su = filledSudoku(values);
+		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(row(su, 0).missing()).isEqualTo(newTreeSet(2, 3, 4));
 		assertThat(row(su, 1).missing()).isEqualTo(su.possibleValues());

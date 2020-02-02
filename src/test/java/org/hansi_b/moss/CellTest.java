@@ -1,7 +1,5 @@
 package org.hansi_b.moss;
 
-import static org.hansi_b.moss.SudokuTest.filledSudoku;
-
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
@@ -15,9 +13,9 @@ public class CellTest {
 	@Test
 	public void testIdentity() {
 
-		final Sudoku su1 = new Sudoku.Factory().empty();
+		final Sudoku su1 = Sudoku.empty();
 		su1.set(0, 0, 2);
-		final Sudoku su2 = new Sudoku.Factory().empty();
+		final Sudoku su2 = Sudoku.empty();
 		su2.set(0, 0, 2);
 
 		assertSame(su1.iterator().next(), su1.iterator().next());
@@ -32,7 +30,7 @@ public class CellTest {
 				0, 0, 0, 0, //
 				0, 0, 0, 0, //
 				0, 0, 0, 0 };
-		final Sudoku su = filledSudoku(values);
+		final Sudoku su = Sudoku.filled(values);
 		assertThat(su.getCell(Pos.at(0, 0)).getCandidates()).isEqualTo(//
 				newLinkedHashSet(3));
 		assertThat(su.getCell(Pos.at(0, 1)).getCandidates()).isEqualTo(//

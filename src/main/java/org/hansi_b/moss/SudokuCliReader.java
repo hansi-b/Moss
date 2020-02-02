@@ -72,7 +72,7 @@ public class SudokuCliReader {
 
 		final List<Integer> values = readValues(System.in);
 
-		final Sudoku su = new Sudoku.Factory().filled(values.toArray(new Integer[0]));
+		final Sudoku su = Sudoku.filled(values.toArray(new Integer[0]));
 		out("The sudoku %s solved.", su.isSolved() ? "_is_" : "is _not_");
 	}
 }

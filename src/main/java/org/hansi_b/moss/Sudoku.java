@@ -16,23 +16,17 @@ import org.hansi_b.moss.CellGroup.Type;
 
 public class Sudoku implements Iterable<Cell> {
 
-	public static class Factory {
+	private static class Factory {
 
 		private static final int DEFAULT_SIZE = 9;
 
 		private Sudoku sudoku;
 
-		/**
-		 * @return an empty Sudoku of the standard 9 x 9 size
-		 */
-		public Sudoku empty() {
+		Sudoku empty() {
 			return empty(DEFAULT_SIZE);
 		}
 
-		/**
-		 * @return an independent copy of the argument Sudoku
-		 */
-		public Sudoku copyOf(final Sudoku original) {
+		Sudoku copyOf(final Sudoku original) {
 
 			final Sudoku copy = empty(original.size);
 			for (int row = 0; row < original.size; row++)
@@ -42,12 +36,7 @@ public class Sudoku implements Iterable<Cell> {
 
 		private static final Integer ZERO = Integer.valueOf(0);
 
-		/**
-		 * @param values a flat array of integers containing the size × size values of
-		 *               the Sudoku, where null or zero denote an empty cell
-		 * @return a Sudoku filled with the argument numbers
-		 */
-		public Sudoku filled(final Integer... values) {
+		Sudoku filled(final Integer... values) {
 			final int size = (int) Math.sqrt(values.length);
 
 			final Integer[] mappedVals = Arrays.stream(values).map(v -> ZERO.equals(v) ? null : v)
@@ -59,12 +48,7 @@ public class Sudoku implements Iterable<Cell> {
 			return su;
 		}
 
-		/**
-		 * @param size the number of cells per row/column/block in the new Sudoku; must
-		 *             be a square number
-		 * @return a Sudoku square without any set values
-		 */
-		public Sudoku empty(final int size) {
+		Sudoku empty(final int size) {
 			final double sqrt = Math.sqrt(size);
 			final int sizeSqrt = (int) Math.floor(sqrt);
 			if (sizeSqrt != sqrt)
@@ -128,6 +112,38 @@ public class Sudoku implements Iterable<Cell> {
 		this.possibleValues = IntStream.range(1, size + 1).mapToObj(Integer::valueOf)
 				.collect(Collectors.toCollection(TreeSet::new));
 		this.cellValues = new Integer[size][size];
+	}
+
+	/**
+	 * @return an empty Sudoku of the standard 9 x 9 size
+	 */
+	public static Sudoku empty() {
+		return new Factory().empty();
+	}
+
+	/**
+	 * @param size the number of cells per row/column/block in the new Sudoku; must
+	 *             be a square number
+	 * @return a Sudoku square without any set values
+	 */
+	public static Sudoku empty(final int size) {
+		return new Factory().empty(size);
+	}
+
+	/**
+	 * @param values a flat array of integers containing the size × size values of
+	 *               the Sudoku, where null or zero denote an empty cell
+	 * @return a Sudoku filled with the argument numbers
+	 */
+	public static Sudoku filled(final Integer... values) {
+		return new Factory().filled(values);
+	}
+
+	/**
+	 * @return an independent copy of the argument Sudoku
+	 */
+	public static Sudoku copyOf(final Sudoku original) {
+		return new Factory().copyOf(original);
 	}
 
 	private static EnumMap<CellGroup.Type, CellGroup>[][] initCellGroups(final int size) {

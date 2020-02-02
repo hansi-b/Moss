@@ -19,11 +19,11 @@ public class Solver {
 
 	/**
 	 * Tries to solve the argument Sudoku
-	 * 
+	 *
 	 * @return a copy of the argument Sudoku, solved as far as possible
 	 */
 	public Sudoku solve(final Sudoku su) {
-		final Sudoku suCopy = new Sudoku.Factory().copyOf(su);
+		final Sudoku suCopy = Sudoku.copyOf(su);
 		for (List<Move> moves = findMoves(suCopy); //
 				!moves.isEmpty(); //
 				moves = findMoves(su)) {
