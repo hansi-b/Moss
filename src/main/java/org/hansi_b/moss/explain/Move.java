@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.hansi_b.moss.Cell;
-import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.CellGroup.Type;
 
 public class Move {
@@ -23,19 +22,16 @@ public class Move {
 			if (rowColBlockReturns.length != 3)
 				throw new IllegalArgumentException(String.format("Require three arguments to strategy mapping, got %s",
 						Arrays.toString(rowColBlockReturns)));
-			return new Function<CellGroup.Type, Move.Strategy>() {
-				@Override
-				public Strategy apply(final Type type) {
-					switch (type) {
-					case Row:
-						return rowColBlockReturns[0];
-					case Col:
-						return rowColBlockReturns[1];
-					case Block:
-						return rowColBlockReturns[2];
-					default:
-						throw new IllegalStateException(String.format("Unknown cell group type %s", type));
-					}
+			return (final Type type) -> {
+				switch (type) {
+				case Row:
+					return rowColBlockReturns[0];
+				case Col:
+					return rowColBlockReturns[1];
+				case Block:
+					return rowColBlockReturns[2];
+				default:
+					throw new IllegalStateException(String.format("Unknown cell group type %s", type));
 				}
 			};
 		}
@@ -80,6 +76,6 @@ public class Move {
 
 	@Override
 	public String toString() {
-		return String.format("%s: %s <- %d", strategy, cell, newValue);
+		return String.format("%s <- %d (%s)", cell, newValue, strategy);
 	}
 }

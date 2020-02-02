@@ -15,9 +15,9 @@ public class CellTest {
 	@Test
 	public void testIdentity() {
 
-		final Sudoku su1 = new Sudoku.Factory().create();
+		final Sudoku su1 = new Sudoku.Factory().empty();
 		su1.set(0, 0, 2);
-		final Sudoku su2 = new Sudoku.Factory().create();
+		final Sudoku su2 = new Sudoku.Factory().empty();
 		su2.set(0, 0, 2);
 
 		assertSame(su1.iterator().next(), su1.iterator().next());

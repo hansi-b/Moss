@@ -17,6 +17,20 @@ public class SudokuTest {
 	}
 
 	@Test
+	public void testCopyOf() {
+
+		final Sudoku su1 = defaultSudoku();
+		su1.set(4, 5, 1);
+
+		final Sudoku su2 = new Sudoku.Factory().copyOf(su1);
+		for (final Cell c : su1)
+			assertEquals(c.getValue(), su2.getCell(c.getPos()).getValue());
+
+		su1.set(4, 5, 9);
+		assertEquals(Integer.valueOf(1), su2.getValue(4, 5));
+	}
+
+	@Test
 	public void testConstructorWithInvalidSize() {
 		assertThatThrownBy(() -> sudokuOfSize(5)) //
 				.isExactlyInstanceOf(IllegalArgumentException.class) //
@@ -60,7 +74,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testCreateBigEmpty() {
+	public void testEmptyBigEmpty() {
 
 		/*
 		 * mainly to have the empty template lying around
@@ -83,7 +97,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testCreate() {
+	public void testEmpty() {
 		final Integer[] values = { //
 				1, 3, 4, 2, //
 				2, 4, 3, 1, //
@@ -94,7 +108,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testCreateIncomplete() {
+	public void testEmptyIncomplete() {
 		final Integer[] values = { //
 				1, 3, 4, 2, //
 				2, 4, null, 1, //
@@ -145,7 +159,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testCanSolve() {
+	public void testIsSolved() {
 		final Integer[] values = { //
 				1, 3, 4, 2, //
 				2, 4, null, 1, //
@@ -181,14 +195,14 @@ public class SudokuTest {
 	}
 
 	public static Sudoku filledSudoku(final Integer[] values) {
-		return new Sudoku.Factory().create(values);
+		return new Sudoku.Factory().filled(values);
 	}
 
 	public static Sudoku defaultSudoku() {
-		return new Sudoku.Factory().create();
+		return new Sudoku.Factory().empty();
 	}
 
 	public static Sudoku sudokuOfSize(final int size) {
-		return new Sudoku.Factory().create(size);
+		return new Sudoku.Factory().empty(size);
 	}
 }
