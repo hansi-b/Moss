@@ -1,39 +1,42 @@
 
 plugins {
-    id 'application'
-    id 'jacoco'
+	id 'application'
+	id 'jacoco'
 }
 
 sourceCompatibility = 1.8
 
 repositories {
-    // Use jcenter for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+	// Use jcenter for resolving your dependencies.
+	// You can declare any Maven/Ivy/file repository here.
+	jcenter()
 }
 
 dependencies {
 
-    compile 'org.assertj:assertj-core:3.11.1'
+	compile 'org.assertj:assertj-core:3.11.1'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.assertj:assertj-core:3.11.1'
+	testCompile ('junit:junit:4.13',
+			'org.assertj:assertj-core:3.11.1',
+			'org.codehaus.groovy:groovy-all:2.5.1',
+			'org.spockframework:spock-core:1.3-groovy-2.5'
+			)
 }
 
 jacocoTestReport {
-    reports {
-        xml.enabled true
-        html.enabled false
-    }
+	reports {
+		xml.enabled true
+		html.enabled false
+	}
 }
 check.dependsOn jacocoTestReport
 
 def mainClass = 'org.hansi_b.moss.SudokuCliReader'
 
 jar {
-    manifest {
-        attributes 'Main-Class': mainClass
-    }
+	manifest {
+		attributes 'Main-Class': mainClass
+	}
 }
 
 run {
