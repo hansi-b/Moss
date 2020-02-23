@@ -13,6 +13,10 @@ public class Cell {
 	private final Sudoku sudoku;
 	private final Pos pos;
 
+	/**
+	 * Create a cell for the given Sudoku and position. Should not have to be
+	 * called, but is constructed during Sudoku initialization.
+	 */
 	Cell(final Sudoku sudoku, final Pos pos) {
 		this.sudoku = sudoku;
 		this.pos = pos;
