@@ -1,9 +1,7 @@
 package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -50,12 +48,11 @@ public class HiddenSingle implements Technique {
 	@Override
 	public List<Move> findMoves(final Sudoku sudoku) {
 
-		// we will need these again and again
-		final Map<Cell, SortedSet<Integer>> candidatesCache = new HashMap<>();
+		final CachedCandidates cached = new CachedCandidates();
 		final List<Move> moves = new ArrayList<>();
 		for (final Cell cell : sudoku.iterateEmptyCells()) {
 			for (final CellGroup group : cell.getGroups()) {
-				final SortedSet<Integer> cands = filteredCandidates(group, cell, candidatesCache);
+				final SortedSet<Integer> cands = filteredCandidates(group, cell, cached);
 				if (cands.size() == 1) {
 					moves.add(new Move(strategyByGroup(group.type()), cell, cands.first()));
 				}
@@ -66,16 +63,11 @@ public class HiddenSingle implements Technique {
 	}
 
 	private static SortedSet<Integer> filteredCandidates(final CellGroup group, final Cell target,
-			final Map<Cell, SortedSet<Integer>> candidatesCache) {
-		final SortedSet<Integer> cands = new TreeSet<>(candidates(target, candidatesCache));
+			final CachedCandidates candidatesCache) {
+		final SortedSet<Integer> cands = new TreeSet<>(candidatesCache.candidates(target));
 		for (final Cell otherCell : group)
 			if (otherCell != target && otherCell.isEmpty())
-				cands.removeAll(candidates(otherCell, candidatesCache));
+				cands.removeAll(candidatesCache.candidates(otherCell));
 		return cands;
-	}
-
-	private static SortedSet<Integer> candidates(final Cell cell,
-			final Map<Cell, SortedSet<Integer>> candidatesByCell) {
-		return candidatesByCell.computeIfAbsent(cell, Cell::getCandidates);
 	}
 }
