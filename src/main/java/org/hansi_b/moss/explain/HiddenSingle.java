@@ -34,8 +34,7 @@ import org.hansi_b.moss.explain.Move.Strategy;
  *
  * This would often seem to be symmetric in the fashion that if you identify a
  * move on C relative to G, you can find the same move for C with respect to its
- * other groups. Note that this is less sophisticated than "hidden singles" or
- * "unique candidate".
+ * other groups.
  */
 public class HiddenSingle implements Technique {
 
