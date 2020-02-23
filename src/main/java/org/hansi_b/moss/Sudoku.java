@@ -258,4 +258,12 @@ public class Sudoku implements Iterable<Cell> {
 	public Iterator<Cell> iterator() {
 		return Arrays.stream(cells).flatMap(Arrays::stream).iterator();
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder cellValuesStr = new StringBuilder();
+		for (Integer[] row : cellValues)
+			cellValuesStr.append(Arrays.toString(row));
+		return String.format("Sudoku[%s]", cellValuesStr);
+	}
 }

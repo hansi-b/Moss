@@ -193,4 +193,15 @@ public class SudokuTest {
 		assertSame(block0, su.getGroup(Type.Block, Pos.at(1, 0)));
 		assertSame(block0, su.getGroup(Type.Block, Pos.at(1, 1)));
 	}
+
+	@Test
+	public void testToString() throws Exception {
+		final Integer[] values = { //
+				null, 3, 4, 2, //
+				2, 4, null, 1, //
+				3, 0, 2, 4, //
+				4, 2, 1, 3 };
+		assertEquals("Sudoku[[null, 3, 4, 2][2, 4, null, 1][3, null, 2, 4][4, 2, 1, 3]]",
+				Sudoku.filled(values).toString());
+	}
 }
