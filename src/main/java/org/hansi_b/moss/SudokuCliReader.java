@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import org.assertj.core.util.VisibleForTesting;
+import org.hansi_b.moss.testSupport.VisibleForTesting;
 
 /**
  * Reads a Sudoku from the command line and just prints whether it is solved.
