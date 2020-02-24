@@ -3,7 +3,7 @@ package org.hansi_b.moss;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.SortedSet;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -106,15 +106,19 @@ public class CellGroup implements Iterable<Cell> {
 	 *
 	 * @return a fresh sorted set on numbers missing in this group
 	 */
-	public SortedSet<Integer> missing() {
+	public Set<Integer> missing() {
 
-		final SortedSet<Integer> possibleValues = sudoku.possibleValues();
+		final Set<Integer> possibleValues = sudoku.possibleValues();
 		for (final Cell c : this) {
 			final Integer value = c.getValue();
 			if (value != null)
 				possibleValues.remove(value);
 		}
 		return possibleValues;
+	}
+
+	public Iterable<Cell> iterateEmptyCells() {
+		return cells.stream().filter(Cell::isEmpty)::iterator;
 	}
 
 	@Override

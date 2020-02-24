@@ -2,9 +2,10 @@ package org.hansi_b.moss;
 
 import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.SortedSet;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -209,10 +210,11 @@ public class Sudoku implements Iterable<Cell> {
 	}
 
 	/**
-	 * @return a fresh copy of this Sudoku's possible values
+	 * @return a fresh copy of this Sudoku's possible values, i.e., just the
+	 *         universe of all numbers any cell could take
 	 */
-	public SortedSet<Integer> possibleValues() {
-		return new TreeSet<>(possibleValues);
+	public Set<Integer> possibleValues() {
+		return new HashSet<>(possibleValues);
 	}
 
 	public boolean isSolved() {
@@ -261,8 +263,8 @@ public class Sudoku implements Iterable<Cell> {
 
 	@Override
 	public String toString() {
-		StringBuilder cellValuesStr = new StringBuilder();
-		for (Integer[] row : cellValues)
+		final StringBuilder cellValuesStr = new StringBuilder();
+		for (final Integer[] row : cellValues)
 			cellValuesStr.append(Arrays.toString(row));
 		return String.format("Sudoku[%s]", cellValuesStr);
 	}
