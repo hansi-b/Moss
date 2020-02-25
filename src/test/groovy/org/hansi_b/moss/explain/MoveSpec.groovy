@@ -6,14 +6,21 @@ import org.hansi_b.moss.Sudoku
 import org.hansi_b.moss.explain.Move.Strategy
 import org.junit.Before
 
-import spock.lang.Specification
-
-public class MoveSpec extends Specification {
+public class MoveSpec extends spock.lang.Specification {
 
 	Sudoku sudoku = Mock()
 	Pos pos = Mock()
 
 	def cell = new Cell(sudoku, pos)
+
+	def "strategy requires three arguments"() {
+
+		when:
+		Move.Strategy.typeMapper(Strategy.NakedSingleInRow)
+
+		then:
+		thrown IllegalArgumentException
+	}
 
 	def "moves are equal in all three positions"() {
 
@@ -23,7 +30,7 @@ public class MoveSpec extends Specification {
 		then:
 		move.equals(new Move(Strategy.HiddenSingleInBlock, cell, 2))
 	}
-	
+
 	def "differing strategy makes moves unequal"() {
 
 		when:
@@ -41,7 +48,7 @@ public class MoveSpec extends Specification {
 		then:
 		!move.equals(new Move(Strategy.HiddenSingleInBlock, new Cell(sudoku, pos), 2))
 	}
-	
+
 	def "differing new value makes moves unequal"() {
 
 		when:
