@@ -117,8 +117,8 @@ public class CellGroup implements Iterable<Cell> {
 		return possibleValues;
 	}
 
-	public Iterable<Cell> iterateEmptyCells() {
-		return cells.stream().filter(Cell::isEmpty)::iterator;
+	public Stream<Cell> emptyCells() {
+		return cells.stream().filter(Cell::isEmpty);
 	}
 
 	@Override

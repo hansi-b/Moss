@@ -16,7 +16,9 @@ public class Move {
 		NakedSingle, //
 		HiddenSingleInRow, //
 		HiddenSingleInCol, //
-		HiddenSingleInBlock;
+		HiddenSingleInBlock, //
+		NakedPairInRow, NakedPairInCol, NakedPairInBlock //
+		;
 
 		static Function<Type, Strategy> typeMapper(final Strategy... rowColBlockReturns) {
 			if (rowColBlockReturns.length != 3)
