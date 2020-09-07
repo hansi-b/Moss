@@ -14,6 +14,7 @@ public class Solver {
 				new TrivialNakedSingle(), //
 				new NakedSingle(), //
 				new HiddenSingle(), //
+				new NakedPair(), //
 		};
 	}
 
