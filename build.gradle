@@ -9,6 +9,9 @@ plugins {
 	id "com.github.ben-manes.versions" version "0.30.0"
 }
 
+group 'org.hansi_b'
+version gitVersion()
+
 sourceCompatibility = 1.8
 
 repositories {
