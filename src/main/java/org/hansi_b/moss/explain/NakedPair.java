@@ -6,12 +6,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Function;
 import java.util.Set;
+import java.util.function.Function;
+
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
-import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.CellGroup.Type;
+import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 
 /**
@@ -34,7 +35,7 @@ public class NakedPair implements Technique {
 	@Override
 	public List<Move> findMoves(final Sudoku sudoku) {
 
-		final CachedCandidates cached = new CachedCandidates();
+		final var cached = new CachedCandidates();
 
 		final List<Move> moves = new ArrayList<>();
 		sudoku.iterateGroups().forEach(group -> {
@@ -62,16 +63,15 @@ public class NakedPair implements Technique {
 			return;
 
 		for (final Entry<Set<Integer>, Set<Cell>> entry : cellsByCandidates.entrySet()) {
-			if (entry.getValue().size() == 2) {
-				final Set<Integer> nakedPair = entry.getKey();
-				possibleTargets.forEach(cell -> {
-					if (cached.candidates(cell).containsAll(nakedPair)) {
-						final HashSet<Integer> candsCopy = new HashSet<>(cached.candidates(cell));
-						candsCopy.removeAll(nakedPair);
-						resultMoves.add(new Move(strategyByGroup(group), cell, candsCopy.iterator().next()));
-					}
-				});
-			}
+			if (entry.getValue().size() != 2)
+				continue;
+
+			final Set<Integer> nakedPair = entry.getKey();
+			possibleTargets.stream().filter(c -> cached.candidates(c).containsAll(nakedPair)).forEach(c -> {
+				final var candsCopy = new HashSet<>(cached.candidates(c));
+				candsCopy.removeAll(nakedPair);
+				resultMoves.add(new Move(strategyByGroup(group), c, candsCopy.iterator().next()));
+			});
 		}
 	}
 
