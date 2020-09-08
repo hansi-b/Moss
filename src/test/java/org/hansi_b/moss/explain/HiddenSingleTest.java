@@ -5,7 +5,7 @@ import static org.hansi_b.moss.explain.MoveAsserts.move;
 
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class HiddenSingleTest {
 

@@ -1,12 +1,12 @@
 package org.hansi_b.moss;
 
-import static org.junit.Assert.*;
-
 import org.assertj.core.util.Sets;
 import org.hansi_b.moss.CellGroup.Type;
+import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.util.Sets.newTreeSet;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuTest {
 

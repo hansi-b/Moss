@@ -1,12 +1,12 @@
 package org.hansi_b.moss;
 
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.util.Sets.newLinkedHashSet;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CellTest {
 

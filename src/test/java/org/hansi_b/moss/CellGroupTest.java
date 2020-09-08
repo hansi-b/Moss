@@ -5,7 +5,7 @@ import static org.assertj.core.util.Lists.list;
 import static org.assertj.core.util.Sets.*;
 
 import org.hansi_b.moss.CellGroup.Type;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CellGroupTest {
 
