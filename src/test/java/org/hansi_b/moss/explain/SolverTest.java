@@ -3,16 +3,16 @@ package org.hansi_b.moss.explain;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hansi_b.moss.Sudoku;
+import org.hansi_b.moss.draw.Painter;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-@Disabled
 public class SolverTest {
 
 	public final Solver solver = new Solver();
 
 	@Test
-	public void testFindBig() {
+	public void testEasy() {
 
 		/*
 		 * from a city magazine (easy)
@@ -35,7 +35,7 @@ public class SolverTest {
 	}
 
 	@Test
-	public void testSolveBig() {
+	public void testLittleDifficult() {
 
 		/*
 		 * from a city magazine (difficult)
@@ -57,6 +57,7 @@ public class SolverTest {
 		assertTrue(solver.solve(su).isSolved());
 	}
 
+	@Disabled
 	@Test
 	public void testSehrSchwer() {
 
@@ -77,12 +78,14 @@ public class SolverTest {
 				0, 0, 0, 0, 8, 0, 0, 2, 0 //
 		};
 		final Sudoku su = Sudoku.filled(values);
-		assertTrue(solver.solve(su).isSolved());
+		final Sudoku filled = solver.solve(su);
+		System.out.println(new Painter().draw(filled));
+		assertTrue(filled.isSolved());
 	}
 
+	@Disabled
 	@Test
 	public void testSehrSchwer02() {
-
 		/*
 		 * Die Zeit (sehr schwer, 16th October 2019)
 		 */

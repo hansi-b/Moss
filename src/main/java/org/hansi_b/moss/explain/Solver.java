@@ -27,7 +27,7 @@ public class Solver {
 		final Sudoku suCopy = Sudoku.copyOf(su);
 		for (List<Move> moves = findMoves(suCopy); //
 				!moves.isEmpty(); //
-				moves = findMoves(su)) {
+				moves = findMoves(suCopy)) {
 			final Move move = moves.get(0);
 			move.getCell().setValue(move.getNewValue());
 		}
