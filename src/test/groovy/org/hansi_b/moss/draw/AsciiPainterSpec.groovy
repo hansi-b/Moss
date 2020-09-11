@@ -1,7 +1,9 @@
-package org.hansi_b.moss;
+package org.hansi_b.moss.draw;
 
+import org.hansi_b.moss.Sudoku
+import org.hansi_b.moss.draw.AsciiPainter
 
-class PainterSpec extends spock.lang.Specification {
+class AsciiPainterSpec extends spock.lang.Specification {
 
 	def "can draw 4x4 Sudoku"() {
 
@@ -16,7 +18,7 @@ class PainterSpec extends spock.lang.Specification {
 		Sudoku su = Sudoku.filled(values);
 
 		then:
-		new Painter().draw(su) == \
+		new AsciiPainter().draw(su) == \
 '''		╔═══╤═══╦═══╤═══╗
 		║ 1 │   ║ 2 │ 4 ║
 		╟───┼───╫───┼───╢
@@ -48,7 +50,7 @@ class PainterSpec extends spock.lang.Specification {
 		Sudoku su = Sudoku.filled(values);
 
 		then:
-		new Painter().draw(su) == \
+		new AsciiPainter().draw(su) == \
 '''	╔═══╤═══╤═══╦═══╤═══╤═══╦═══╤═══╤═══╗
 	║   │   │ 1 ║   │ 9 │   ║   │ 6 │   ║
 	╟───┼───┼───╫───┼───┼───╫───┼───┼───╢

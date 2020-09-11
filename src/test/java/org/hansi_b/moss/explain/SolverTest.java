@@ -3,7 +3,7 @@ package org.hansi_b.moss.explain;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hansi_b.moss.Sudoku;
-import org.hansi_b.moss.draw.Painter;
+import org.hansi_b.moss.draw.AsciiPainter;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ public class SolverTest {
 				//
 				0, 0, 5, 6, 2, 0, 0, 0, 0, //
 				1, 0, 0, 0, 8, 5, 0, 0, 6, //
-				0, 0, 0, 0, 0, 7, 0, 8, 0 //
+				0, 0, 0, 0, 0, 7, 0, 8, 0, //
 		};
 		final Sudoku su = Sudoku.filled(values);
 		assertTrue(solver.solve(su).isSolved());
@@ -79,7 +79,7 @@ public class SolverTest {
 		};
 		final Sudoku su = Sudoku.filled(values);
 		final Sudoku filled = solver.solve(su);
-		System.out.println(new Painter().draw(filled));
+		System.out.println(new AsciiPainter().draw(filled));
 		assertTrue(filled.isSolved());
 	}
 

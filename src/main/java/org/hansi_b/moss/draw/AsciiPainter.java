@@ -1,7 +1,6 @@
-package org.hansi_b.moss;
+package org.hansi_b.moss.draw;
 
-import java.util.Random;
-import org.hansi_b.moss.CellGroup.Type;
+import org.hansi_b.moss.CellGroup;
 
 /**
  * Draws an ASCII representation of a Sudoku, e.g.:
@@ -27,33 +26,16 @@ import org.hansi_b.moss.CellGroup.Type;
  * 	║   │   │   ║   │ 3 │ 6 ║   │ 4 │   ║
  *	╚═══╧═══╧═══╩═══╧═══╧═══╩═══╧═══╧═══╝
  */
-public class Painter {
+public class AsciiPainter extends AbstractLineBasedPrinter {
 
-	public String draw(final Sudoku su) {
-		final int size = su.size();
-		final int blockSize = (int) Math.sqrt(size);
-
-		final StringBuilder bld = new StringBuilder();
-		appendTopLine(blockSize, bld);
-
-		int rowIndex = 1;
-		for (final CellGroup row : su.iterateGroups(Type.Row)) {
-			appendValuesLine(row, blockSize, bld);
-			if (rowIndex < size) {
-				if (rowIndex % blockSize == 0)
-					appendLineBetweenBlocks(blockSize, bld);
-				else
-					appendLineInBlock(blockSize, bld);
-			}
-			rowIndex += 1;
-		}
-
-		appendBottomLine(blockSize, bld);
-		return bld.toString();
+	@Override
+	protected String topBorder(final int blockSize) {
+		return appendBorder(blockSize, '╔', '╤', '═', '╦', '╗');
 	}
 
-	private static void appendValuesLine(final CellGroup row, final int blockSize, final StringBuilder bld) {
-
+	@Override
+	protected String valuesLine(final CellGroup row, final int blockSize) {
+		final StringBuilder bld = new StringBuilder();
 		bld.append('║');
 		int cellIndex = 1;
 		for (final Integer val : row.values()) {
@@ -61,29 +43,29 @@ public class Painter {
 			bld.append(cellIndex % blockSize == 0 ? '║' : '│');
 			cellIndex += 1;
 		}
-		bld.append('\n');
+		return bld.toString();
 	}
 
-	private static void appendTopLine(final int blockSize, final StringBuilder builder) {
-		appendBorder(blockSize, '╔', '╤', '═', '╦', '╗', builder);
-	}
-
-	private static void appendBottomLine(final int blockSize, final StringBuilder builder) {
-		appendBorder(blockSize, '╚', '╧', '═', '╩', '╝', builder);
-	}
-
-	private static void appendLineInBlock(final int blockSize, final StringBuilder builder) {
+	@Override
+	protected String borderInBlock(final int blockSize) {
 		// ╟───┼───┼───╫───┼───┼───╫───┼───┼───╢
-		appendBorder(blockSize, '╟', '┼', '─', '╫', '╢', builder);
+		return appendBorder(blockSize, '╟', '┼', '─', '╫', '╢');
 	}
 
-	private static void appendLineBetweenBlocks(final int blockSize, final StringBuilder builder) {
+	@Override
+	protected String borderBetweenBlocks(final int blockSize) {
 		// ╠═══╪═══╪═══╬═══╪═══╪═══╬═══╪═══╪═══╣
-		appendBorder(blockSize, '╠', '╪', '═', '╬', '╣', builder);
+		return appendBorder(blockSize, '╠', '╪', '═', '╬', '╣');
 	}
 
-	private static void appendBorder(final int blockSize, final char leftCorner, final char inBlock, final char ruler,
-			final char betweenBlocks, final char rightCorner, final StringBuilder bld) {
+	@Override
+	protected String bottomBorder(final int blockSize) {
+		return appendBorder(blockSize, '╚', '╧', '═', '╩', '╝');
+	}
+
+	private static String appendBorder(final int blockSize, final char leftCorner, final char inBlock, final char ruler,
+			final char betweenBlocks, final char rightCorner) {
+		final StringBuilder bld = new StringBuilder();
 		bld.append(leftCorner);
 		for (int b = 0; b < blockSize; b++) {
 			for (int c = 0; c < blockSize; c++) {
@@ -94,11 +76,7 @@ public class Painter {
 			if (b < blockSize - 1)
 				bld.append(betweenBlocks);
 		}
-		bld.append(rightCorner).append('\n');
-	}
-
-	public static void main(final String[] args) {
-		final Integer[] vals = new Random().ints(9 * 9, -9, 9).map(i -> i < 0 ? 0 : i).boxed().toArray(Integer[]::new);
-		System.err.println(new Painter().draw(Sudoku.filled(vals)));
+		bld.append(rightCorner);
+		return bld.toString();
 	}
 }
