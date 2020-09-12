@@ -22,7 +22,7 @@ import org.hansi_b.moss.CellGroup;
 				0, 0, 0, 0, 8, 0, 0, 2, 0 //
 		};
  */
-public class ArrayPrinter extends AbstractLineBasedPrinter {
+public class JavaArrayPrinter extends AbstractLineBasedPrinter {
 
 	@Override
 	protected String topBorder(final int blockSize) {
@@ -30,9 +30,10 @@ public class ArrayPrinter extends AbstractLineBasedPrinter {
 	}
 
 	@Override
-	protected String valuesLine(final CellGroup row, final int blockSize) {
-		return String.format("\t%s, //",
-				row.values().stream().map(i -> i == null ? "0" : String.valueOf(i)).collect(Collectors.joining(", ")));
+	protected String valuesLine(final CellGroup row, final int blockSize, final boolean isLastRow) {
+		return String.format("\t%s%s //",
+				row.values().stream().map(i -> i == null ? "0" : String.valueOf(i)).collect(Collectors.joining(", ")),
+				isLastRow ? "" : ",");
 	}
 
 	@Override

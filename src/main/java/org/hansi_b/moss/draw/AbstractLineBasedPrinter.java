@@ -21,7 +21,7 @@ abstract class AbstractLineBasedPrinter {
 
 		int rowIndex = 1;
 		for (final CellGroup row : su.iterateGroups(Type.Row)) {
-			appendLine(valuesLine(row, blockSize), bld);
+			appendLine(valuesLine(row, blockSize, rowIndex == size), bld);
 			if (rowIndex < size) {
 				final String line;
 				if (rowIndex % blockSize == 0) {
@@ -46,7 +46,7 @@ abstract class AbstractLineBasedPrinter {
 
 	abstract protected String topBorder(final int blockSize);
 
-	abstract protected String valuesLine(final CellGroup row, final int blockSize);
+	abstract protected String valuesLine(final CellGroup row, final int blockSize, boolean isLastRow);
 
 	abstract protected String borderInBlock(final int blockSize);
 

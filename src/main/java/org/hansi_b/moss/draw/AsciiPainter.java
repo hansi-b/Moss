@@ -34,7 +34,7 @@ public class AsciiPainter extends AbstractLineBasedPrinter {
 	}
 
 	@Override
-	protected String valuesLine(final CellGroup row, final int blockSize) {
+	protected String valuesLine(final CellGroup row, final int blockSize, final boolean isLastRow) {
 		final StringBuilder bld = new StringBuilder();
 		bld.append('║');
 		int cellIndex = 1;
