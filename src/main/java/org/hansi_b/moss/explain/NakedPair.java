@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.Function;
 
 import org.hansi_b.moss.Cell;
@@ -50,7 +52,7 @@ public class NakedPair implements Technique {
 		final Map<Set<Integer>, Set<Cell>> cellsByCandidates = new HashMap<>();
 
 		group.emptyCells().forEach(cell -> {
-			final Set<Integer> cands = cached.candidates(cell);
+			final SortedSet<Integer> cands = cached.candidates(cell);
 			if (cands.size() == 2)
 				cellsByCandidates.computeIfAbsent(cands, k -> new HashSet<>()).add(cell);
 			else if (cands.size() == 3)
@@ -66,9 +68,9 @@ public class NakedPair implements Technique {
 
 			final Set<Integer> nakedPair = entry.getKey();
 			possibleTargets.stream().filter(c -> cached.candidates(c).containsAll(nakedPair)).forEach(c -> {
-				final var candsCopy = new HashSet<>(cached.candidates(c));
+				final var candsCopy = new TreeSet<>(cached.candidates(c));
 				candsCopy.removeAll(nakedPair);
-				resultMoves.add(new Move(strategyByGroup(group), c, candsCopy.iterator().next()));
+				resultMoves.add(new Move(strategyByGroup(group), c, candsCopy.first()));
 			});
 		}
 	}

@@ -2,14 +2,15 @@ package org.hansi_b.moss;
 
 import java.util.Arrays;
 import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import org.hansi_b.moss.CellGroup.Block;
 import org.hansi_b.moss.CellGroup.Col;
 import org.hansi_b.moss.CellGroup.Row;
@@ -213,8 +214,8 @@ public class Sudoku implements Iterable<Cell> {
 	 * @return a fresh copy of this Sudoku's possible values, i.e., just the
 	 *         universe of all numbers any cell could take
 	 */
-	public Set<Integer> possibleValues() {
-		return new HashSet<>(possibleValues);
+	public SortedSet<Integer> possibleValues() {
+		return new TreeSet<>(possibleValues);
 	}
 
 	public boolean isSolved() {
@@ -252,8 +253,12 @@ public class Sudoku implements Iterable<Cell> {
 		return groupsByType.get(groupType);
 	}
 
+	public Stream<Cell> streamEmptyCells() {
+		return Arrays.stream(cells).flatMap(Arrays::stream).filter(Cell::isEmpty);
+	}
+
 	public Iterable<Cell> iterateEmptyCells() {
-		return Arrays.stream(cells).flatMap(Arrays::stream).filter(Cell::isEmpty)::iterator;
+		return streamEmptyCells()::iterator;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package org.hansi_b.moss.explain;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hansi_b.moss.Sudoku;
+import org.hansi_b.moss.draw.ArrayPrinter;
 import org.hansi_b.moss.draw.AsciiPainter;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,6 @@ public class SolverTest {
 		assertTrue(solver.solve(su).isSolved());
 	}
 
-	@Disabled
 	@Test
 	public void testSehrSchwer() {
 
@@ -79,7 +79,7 @@ public class SolverTest {
 		};
 		final Sudoku su = Sudoku.filled(values);
 		final Sudoku filled = solver.solve(su);
-		System.out.println(new AsciiPainter().draw(filled));
+		System.out.println(new ArrayPrinter().draw(filled));
 		assertTrue(filled.isSolved());
 	}
 

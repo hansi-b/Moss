@@ -17,7 +17,8 @@ public class Move {
 		HiddenSingleInRow, //
 		HiddenSingleInCol, //
 		HiddenSingleInBlock, //
-		NakedPairInRow, NakedPairInCol, NakedPairInBlock //
+		NakedPairInRow, NakedPairInCol, NakedPairInBlock, //
+		XyWing //
 		;
 
 		static Function<Type, Strategy> typeMapper(final Strategy... rowColBlockReturns) {
