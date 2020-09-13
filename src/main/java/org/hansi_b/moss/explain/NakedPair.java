@@ -50,7 +50,7 @@ public class NakedPair implements Technique {
 		final Set<Cell> possibleTargets = new HashSet<>();
 		final Map<Set<Integer>, Set<Cell>> cellsByCandidates = new HashMap<>();
 
-		group.emptyCells().forEach(cell -> {
+		group.streamEmptyCells().forEach(cell -> {
 			final SortedSet<Integer> cands = cached.candidates(cell);
 			if (cands.size() == 2)
 				cellsByCandidates.computeIfAbsent(cands, k -> new HashSet<>()).add(cell);

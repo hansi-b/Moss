@@ -1,15 +1,15 @@
 package org.hansi_b.moss;
 
 import java.util.BitSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class CellGroup implements Iterable<Cell> {
+public class CellGroup {
 
 	public enum Type {
 
@@ -98,7 +98,16 @@ public class CellGroup implements Iterable<Cell> {
 	 *         iteration
 	 */
 	public List<Integer> values() {
-		return cells.stream().map(Cell::getValue).collect(Collectors.toList());
+		return streamAllCells().map(Cell::getValue).collect(Collectors.toList());
+	}
+
+	/**
+	 * The filled values in this group without duplicates or empty cells.
+	 *
+	 * @return a fresh sorted set of non-null values occurring in this group
+	 */
+	public SortedSet<Integer> filledValuesSet() {
+		return streamFilledCells().map(Cell::getValue).collect(Collectors.toCollection(TreeSet::new));
 	}
 
 	/**
@@ -106,40 +115,34 @@ public class CellGroup implements Iterable<Cell> {
 	 *
 	 * @return a fresh sorted set on numbers missing in this group
 	 */
-	public Set<Integer> missing() {
+	public SortedSet<Integer> missing() {
 
-		final Set<Integer> possibleValues = sudoku.possibleValues();
-		for (final Cell c : this) {
-			final Integer value = c.getValue();
-			if (value != null)
-				possibleValues.remove(value);
-		}
+		final SortedSet<Integer> possibleValues = sudoku.possibleValues();
+		streamFilledCells().forEach(c -> possibleValues.remove(c.getValue()));
 		return possibleValues;
 	}
 
-	public Stream<Cell> emptyCells() {
-		return cells.stream().filter(Cell::isEmpty);
+	public Stream<Cell> streamEmptyCells() {
+		return streamAllCells().filter(Cell::isEmpty);
 	}
 
-	@Override
-	public Iterator<Cell> iterator() {
-		return cells.iterator();
+	public Stream<Cell> streamFilledCells() {
+		return streamAllCells().filter(c -> !c.isEmpty());
 	}
 
-	@Override
-	public String toString() {
-		return String.format("%s%s", type, cells.toString());
+	private Stream<Cell> streamAllCells() {
+		return cells.stream();
 	}
 
 	public boolean isSolved() {
 
 		final BitSet targets = new BitSet(size());
-		for (final Cell e : this) {
-			final Integer v = e.getValue();
-			if (v != null)
-				targets.set(v - 1);
-		}
-
+		streamFilledCells().forEach(e -> targets.set(e.getValue() - 1));
 		return targets.cardinality() == size();
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s%s", type, cells.toString());
 	}
 }

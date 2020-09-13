@@ -1,9 +1,11 @@
 package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
@@ -38,27 +40,18 @@ public class TrivialNakedSingle implements Technique {
 	}
 
 	private static void findMove(final CellGroup group, final List<Move> moves) {
-		final BitSet values = new BitSet(group.size());
 
-		Cell emptyCell = null;
-		for (final Cell c : group) {
-			final Integer value = c.getValue();
-			if (value == null) {
-				if (emptyCell != null)
-					return; // second empty cell -> bail
-				emptyCell = c;
-			} else {
-				values.set(value - 1);
-			}
-		}
+		final Set<Cell> emptyCells = group.streamEmptyCells().collect(Collectors.toSet());
+		if (emptyCells.size() != 1)
+			return;
+
+		final SortedSet<Integer> missing = group.missing();
+		if (missing.size() != 1)
+			return;
 
 		/*
-		 * we want to have found exactly one empty cell, and all values but one must
-		 * have occurred
+		 * we want to have found exactly one empty cell, and only one value is missing
 		 */
-		final boolean canSolve = emptyCell != null && values.cardinality() == group.size() - 1;
-
-		if (canSolve)
-			moves.add(new Move(strategyByGroup(group.type()), emptyCell, 1 + values.nextClearBit(0)));
+		moves.add(new Move(strategyByGroup(group.type()), emptyCells.iterator().next(), missing.first()));
 	}
 }

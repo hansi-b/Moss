@@ -65,8 +65,8 @@ public class HiddenSingle implements Technique {
 	private static SortedSet<Integer> filteredCandidates(final CellGroup group, final Cell target,
 			final CachedCandidates candidatesCache) {
 		final SortedSet<Integer> cands = new TreeSet<>(candidatesCache.candidates(target));
-		group.forEach(c -> {
-			if (c != target && c.isEmpty())
+		group.streamEmptyCells().forEach(c -> {
+			if (c != target)
 				cands.removeAll(candidatesCache.candidates(c));
 		});
 		return cands;
