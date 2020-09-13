@@ -50,8 +50,8 @@ public class HiddenSingle implements Technique {
 
 		final CachedCandidates cached = new CachedCandidates();
 		final List<Move> moves = new ArrayList<>();
-		sudoku.iterateEmptyCells().forEach(c -> {
-			c.getGroups().forEach(g -> {
+		sudoku.streamEmptyCells().forEach(c -> {
+			c.streamGroups().forEach(g -> {
 				final SortedSet<Integer> cands = filteredCandidates(g, c, cached);
 				if (cands.size() == 1) {
 					moves.add(new Move(strategyByGroup(g.type()), c, cands.first()));

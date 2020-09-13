@@ -33,8 +33,7 @@ public class TrivialNakedSingle implements Technique {
 	public List<Move> findMoves(final Sudoku sudoku) {
 
 		final List<Move> moves = new ArrayList<>();
-		for (final CellGroup g : sudoku.iterateGroups())
-			findMove(g, moves);
+		sudoku.streamGroups().forEach(g -> findMove(g, moves));
 		return moves;
 	}
 

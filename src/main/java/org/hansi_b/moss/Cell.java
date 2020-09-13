@@ -1,8 +1,7 @@
 package org.hansi_b.moss;
 
-import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
+import java.util.stream.Stream;
 
 /**
  * A single field in the Sudoku. Has a row and a column (at least in the square
@@ -40,7 +39,7 @@ public class Cell {
 	 */
 	public SortedSet<Integer> getCandidates() {
 		final SortedSet<Integer> candidates = sudoku.possibleValues();
-		getGroups().forEach(g -> candidates.removeAll(g.values()));
+		streamGroups().forEach(g -> candidates.removeAll(g.values()));
 		return candidates;
 	}
 
@@ -52,8 +51,8 @@ public class Cell {
 		return sudoku.getGroup(groupType, pos);
 	}
 
-	public List<CellGroup> getGroups() {
-		return sudoku.getGroups(pos);
+	public Stream<CellGroup> streamGroups() {
+		return sudoku.streamGroups(pos);
 	}
 
 	public void setValue(final Integer newValue) {

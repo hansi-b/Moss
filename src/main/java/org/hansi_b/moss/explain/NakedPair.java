@@ -40,8 +40,7 @@ public class NakedPair implements Technique {
 		final var cached = new CachedCandidates();
 
 		final List<Move> moves = new ArrayList<>();
-		sudoku.iterateGroups().forEach(group -> findMovesInGroup(cached, group, moves));
-
+		sudoku.streamGroups().forEach(group -> findMovesInGroup(cached, group, moves));
 		return moves;
 	}
 

@@ -20,7 +20,7 @@ abstract class AbstractLineBasedPrinter {
 		appendLine(topBorder(blockSize), bld);
 
 		int rowIndex = 1;
-		for (final CellGroup row : su.iterateGroups(Type.Row)) {
+		for (final CellGroup row : su.getGroups(Type.Row)) {
 			appendLine(valuesLine(row, blockSize, rowIndex == size), bld);
 			if (rowIndex < size) {
 				final String line;

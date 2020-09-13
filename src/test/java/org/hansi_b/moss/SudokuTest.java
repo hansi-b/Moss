@@ -93,7 +93,7 @@ public class SudokuTest {
 				0, 0, 0, 0, 0, 0, 0, 0, 0 //
 		};
 		final Sudoku su = Sudoku.filled(values);
-		assertEquals(81, Sets.newHashSet(su.iterateEmptyCells()).size());
+		assertEquals(81, Sets.newHashSet(su.streamEmptyCells()::iterator).size());
 	}
 
 	@Test

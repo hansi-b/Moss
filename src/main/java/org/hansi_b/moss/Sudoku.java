@@ -220,7 +220,7 @@ public class Sudoku implements Iterable<Cell> {
 
 	public boolean isSolved() {
 		for (final Type groupType : Type.values())
-			for (final CellGroup g : iterateGroups(groupType))
+			for (final CellGroup g : getGroups(groupType))
 				if (!g.isSolved())
 					return false;
 		return true;
@@ -241,24 +241,20 @@ public class Sudoku implements Iterable<Cell> {
 		return groups[pos.row][pos.col].get(groupType);
 	}
 
-	public List<CellGroup> getGroups(final Pos pos) {
-		return Arrays.stream(Type.values()).map(groups[pos.row][pos.col]::get).collect(Collectors.toList());
+	public Stream<CellGroup> streamGroups(final Pos pos) {
+		return Arrays.stream(Type.values()).map(groups[pos.row][pos.col]::get);
 	}
 
-	public Iterable<CellGroup> iterateGroups() {
-		return Arrays.stream(Type.values()).map(groupsByType::get).flatMap(List::stream)::iterator;
+	public Stream<CellGroup> streamGroups() {
+		return Arrays.stream(Type.values()).map(groupsByType::get).flatMap(List::stream);
 	}
 
-	public Iterable<CellGroup> iterateGroups(final Type groupType) {
+	public List<CellGroup> getGroups(final Type groupType) {
 		return groupsByType.get(groupType);
 	}
 
 	public Stream<Cell> streamEmptyCells() {
 		return Arrays.stream(cells).flatMap(Arrays::stream).filter(Cell::isEmpty);
-	}
-
-	public Iterable<Cell> iterateEmptyCells() {
-		return streamEmptyCells()::iterator;
 	}
 
 	@Override
