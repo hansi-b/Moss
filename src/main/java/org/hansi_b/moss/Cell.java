@@ -1,5 +1,6 @@
 package org.hansi_b.moss;
 
+import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.stream.Stream;
 
@@ -49,6 +50,10 @@ public class Cell {
 
 	public CellGroup getGroup(final CellGroup.Type groupType) {
 		return sudoku.getGroup(groupType, pos);
+	}
+
+	public boolean sharesGroups(Cell other) {
+		return this == other || Arrays.stream(CellGroup.Type.values()).anyMatch(t -> getGroup(t) == other.getGroup(t));
 	}
 
 	public Stream<CellGroup> streamGroups() {
