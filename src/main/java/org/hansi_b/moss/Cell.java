@@ -1,6 +1,7 @@
 package org.hansi_b.moss;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.stream.Stream;
 
@@ -10,6 +11,9 @@ import java.util.stream.Stream;
  * itself actually immutable.
  */
 public class Cell {
+
+	public static final Comparator<Cell> positionComparator = (c1, c2) -> Pos.positionComparator.compare(c1.pos,
+			c2.pos);
 
 	private final Sudoku sudoku;
 	private final Pos pos;
@@ -52,7 +56,7 @@ public class Cell {
 		return sudoku.getGroup(groupType, pos);
 	}
 
-	public boolean sharesGroups(Cell other) {
+	public boolean sharesGroups(final Cell other) {
 		return this == other || Arrays.stream(CellGroup.Type.values()).anyMatch(t -> getGroup(t) == other.getGroup(t));
 	}
 

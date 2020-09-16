@@ -1,11 +1,6 @@
 package org.hansi_b.moss;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.util.Sets.newTreeSet;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertSame;
-
-import org.junit.jupiter.api.Test;
+import static org.hansi_b.moss.testSupport.Shortcuts.*
 
 import spock.lang.Specification
 
@@ -84,9 +79,5 @@ public class CellSpec extends Specification {
 
 		expect:
 		!cellAt(Sudoku.empty(), 0, 0).sharesGroups(cellAt(Sudoku.empty(), 0, 0))
-	}
-
-	static cellAt(su, x, y) {
-		su.getCell(Pos.at(x, y))
 	}
 }
