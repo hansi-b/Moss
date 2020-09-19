@@ -21,7 +21,7 @@ public class Move {
 		XyWing //
 		;
 
-		static Function<Type, Strategy> typeMapper(final Strategy... rowColBlockReturns) {
+		static Function<Type, Strategy> groupTypeMapper(final Strategy... rowColBlockReturns) {
 			if (rowColBlockReturns.length != 3)
 				throw new IllegalArgumentException(String.format("Require three arguments to strategy mapping, got %s",
 						Arrays.toString(rowColBlockReturns)));

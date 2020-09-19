@@ -4,7 +4,6 @@ import org.hansi_b.moss.Cell
 import org.hansi_b.moss.Pos
 import org.hansi_b.moss.Sudoku
 import org.hansi_b.moss.explain.Move.Strategy
-import org.junit.Before
 
 public class MoveSpec extends spock.lang.Specification {
 
@@ -16,7 +15,7 @@ public class MoveSpec extends spock.lang.Specification {
 	def "strategy requires three arguments"() {
 
 		when:
-		Move.Strategy.typeMapper(Strategy.NakedSingleInRow)
+		Move.Strategy.groupTypeMapper(Strategy.NakedSingleInRow)
 
 		then:
 		thrown IllegalArgumentException

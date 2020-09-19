@@ -89,7 +89,8 @@ class XyWingFinder {
 	 * <li>the two cells share at least one empty candidate cell
 	 * </ol>
 	 */
-	private List<WingTriple> findWings(final SortedMap<Integer, SortedMap<Integer, SortedSet<Cell>>> cellsByCandidates) {
+	private List<WingTriple> findWings(
+			final SortedMap<Integer, SortedMap<Integer, SortedSet<Cell>>> cellsByCandidates) {
 
 		final List<WingTriple> wings = new ArrayList<>();
 		cellsByCandidates.forEach((commonCand, innerMappings) -> {

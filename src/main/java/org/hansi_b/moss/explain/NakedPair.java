@@ -25,7 +25,7 @@ import org.hansi_b.moss.explain.Move.Strategy;
  * remains with only a single candidate, that is the move.
  */
 public class NakedPair implements Technique {
-	private static final Function<Type, Strategy> strategyByGroup = Strategy.typeMapper(//
+	private static final Function<Type, Strategy> strategyByGroup = Strategy.groupTypeMapper(//
 			Strategy.NakedPairInRow, //
 			Strategy.NakedPairInCol, //
 			Strategy.NakedPairInBlock);

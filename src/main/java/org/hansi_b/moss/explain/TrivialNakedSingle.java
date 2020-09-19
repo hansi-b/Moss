@@ -22,7 +22,7 @@ import org.hansi_b.moss.explain.Move.Strategy;
  */
 public class TrivialNakedSingle implements Technique {
 
-	private static final Function<Type, Strategy> strategyByGroup = Strategy.typeMapper(//
+	private static final Function<Type, Strategy> strategyByGroup = Strategy.groupTypeMapper(//
 			Strategy.NakedSingleInRow, //
 			Strategy.NakedSingleInCol, //
 			Strategy.NakedSingleInBlock);

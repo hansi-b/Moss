@@ -61,7 +61,7 @@ public class CollectUtils {
 	}
 
 	public static <E extends Comparable<E>> Comparator<SortedSet<E>> sortedSetComparator() {
-		return (SortedSet<E> s1, SortedSet<E> s2) -> {
+		return (final SortedSet<E> s1, final SortedSet<E> s2) -> {
 
 			if (s1 == s2)
 				return 0;
@@ -72,7 +72,7 @@ public class CollectUtils {
 			while (myIter.hasNext()) {
 				if (!otherIter.hasNext())
 					return 1;
-				int comp = myIter.next().compareTo(otherIter.next());
+				final int comp = myIter.next().compareTo(otherIter.next());
 				if (comp != 0)
 					return comp;
 			}

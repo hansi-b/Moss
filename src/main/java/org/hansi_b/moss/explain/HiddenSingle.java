@@ -36,7 +36,7 @@ import org.hansi_b.moss.explain.Move.Strategy;
  */
 public class HiddenSingle implements Technique {
 
-	private static final Function<Type, Strategy> strategyByGroup = Strategy.typeMapper(//
+	private static final Function<Type, Strategy> strategyByGroup = Strategy.groupTypeMapper(//
 			Strategy.HiddenSingleInRow, //
 			Strategy.HiddenSingleInCol, //
 			Strategy.HiddenSingleInBlock);
