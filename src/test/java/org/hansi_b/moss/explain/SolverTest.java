@@ -56,7 +56,6 @@ public class SolverTest {
 		assertTrue(solver.solve(su).isSolved());
 	}
 
-	@Disabled
 	@Test
 	public void testSehrSchwer() {
 
@@ -78,7 +77,6 @@ public class SolverTest {
 		};
 		final Sudoku su = Sudoku.filled(values);
 		final Sudoku filled = solver.solve(su);
-		// System.out.println(new GroovyArrayPrinter().draw(filled));
 		assertTrue(filled.isSolved());
 	}
 

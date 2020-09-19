@@ -15,6 +15,7 @@ public class Solver {
 				new NakedSingle(), //
 				new HiddenSingle(), //
 				new NakedPair(), //
+				new XyWing(), //
 		};
 	}
 
