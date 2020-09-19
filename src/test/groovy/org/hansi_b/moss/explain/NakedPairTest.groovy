@@ -1,9 +1,9 @@
 package org.hansi_b.moss.explain;
 
+import static org.hansi_b.moss.testSupport.Shortcuts.move;
+
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy
-
-import static org.hansi_b.moss.explain.MoveAsserts.move;
 
 class NakedPairTest extends spock.lang.Specification {
 

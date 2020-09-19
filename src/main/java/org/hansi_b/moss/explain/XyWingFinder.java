@@ -22,8 +22,12 @@ class XyWingFinder {
 	private final SortedSet<Cell> emptyCellsW2Cands;
 
 	XyWingFinder(final Sudoku sudoku) {
+		this(sudoku, new CachedCandidates());
+	}
+
+	XyWingFinder(final Sudoku sudoku, final CachedCandidates cachedCandidates) {
 		this.sudoku = sudoku;
-		this.cached = new CachedCandidates();
+		this.cached = cachedCandidates;
 		this.emptyCellsW2Cands = filterCandidates();
 	}
 
@@ -40,7 +44,7 @@ class XyWingFinder {
 
 		final SortedMap<Integer, SortedMap<Integer, SortedSet<Cell>>> candidatesMapping = filterAndMapCellsByCandidates();
 
-		final List<WingTriple> wings = findWings(candidatesMapping);
+		final List<WingTriple> wings = collectWingsFromMapping(candidatesMapping);
 		// wings.forEach(x -> System.out.println(x));
 		return wings;
 	}
@@ -80,16 +84,21 @@ class XyWingFinder {
 	}
 
 	/**
-	 * Find candidate wings:
+	 * Find wings from our candidate cells A - X - B which satisfy these
+	 * requirements:
 	 *
 	 * <ol>
-	 * <li>candidate values between cells overlap by one (that's guaranteed by the
-	 * argument mapping)
-	 * <li>the two cells have no common groups
-	 * <li>the two cells share at least one empty candidate cell
+	 * <li>candidate values between cells A+B overlap by one (that's guaranteed by
+	 * the argument mapping)
+	 * <li>the two cells A+B have no common group
+	 * <li>the cell X
+	 * <ol>
+	 * <li>has exactly the two candidate values not shared by A+B
+	 * <li>shares a group with each of A+B
+	 * </ol>
 	 * </ol>
 	 */
-	private List<WingTriple> findWings(
+	private List<WingTriple> collectWingsFromMapping(
 			final SortedMap<Integer, SortedMap<Integer, SortedSet<Cell>>> cellsByCandidates) {
 
 		final List<WingTriple> wings = new ArrayList<>();
@@ -110,14 +119,10 @@ class XyWingFinder {
 
 							final Integer nextCand = entry.getKey();
 
-							/*
-							 * the middle cell for the xy-wing needs to have exactly these two candidate
-							 * values and needs to share a group with each of the other cells
-							 */
 							final Set<Integer> requiredCands = Set.of(currentCand, nextCand);
-							emptyCellsW2Cands.stream()
-									.filter(x -> requiredCands.equals(cached.candidates(x)) && x.sharesGroups(currCell)
-											&& x.sharesGroups(nextCell))
+							emptyCellsW2Cands.stream().filter(x -> x != currCell && x != nextCell //
+									&& requiredCands.equals(cached.candidates(x)) //
+									&& x.sharesGroups(currCell) && x.sharesGroups(nextCell))
 									.forEach(x -> wings.add(new WingTriple(x, commonCand, currCell, nextCell)));
 						}
 			}

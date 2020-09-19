@@ -1,6 +1,11 @@
 package org.hansi_b.moss.explain;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.hansi_b.moss.Cell;
+import org.hansi_b.moss.CollectUtils;
 
 class WingTriple {
 
@@ -15,6 +20,13 @@ class WingTriple {
 		this.a = a;
 		this.b = b;
 		this.x = x;
+	}
+
+	Set<Cell> targetCells() {
+		final Set<Cell> empties = Stream.of(a, b).map(e -> e.streamEmptyCellsFromGroups().collect(Collectors.toSet()))
+				.reduce((a, b) -> CollectUtils.intersection(a, b)).get();
+		empties.remove(x);
+		return empties;
 	}
 
 	@Override

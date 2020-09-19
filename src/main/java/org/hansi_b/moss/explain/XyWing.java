@@ -1,8 +1,11 @@
 package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
 
 /**
@@ -28,10 +31,23 @@ public class XyWing implements Technique {
 
 		final List<Move> moves = new ArrayList<>();
 
-		final XyWingFinder xyWingFinder = new XyWingFinder(sudoku);
+		final CachedCandidates cachedCands = new CachedCandidates();
+		final XyWingFinder xyWingFinder = new XyWingFinder(sudoku, cachedCands);
 
 		final List<WingTriple> wings = xyWingFinder.findAllWings();
-		wings.forEach(x -> System.out.println(x));
+
+		/*
+		 * now find all empty cells in the intersection of the two wing cells (other
+		 * than the middle wing cell), and remove the wings's common candidate
+		 */
+		wings.forEach(wing -> {
+			final Set<Cell> targetCells = wing.targetCells();
+			for (final Cell c : targetCells) {
+				final Set<Integer> copiedCands = new HashSet<>(cachedCands.candidates(c));
+				if (copiedCands.remove(wing.commonCandidate) && copiedCands.size() == 1)
+					moves.add(new Move(Move.Strategy.XyWing, c, copiedCands.iterator().next()));
+			}
+		});
 
 		return moves;
 	}

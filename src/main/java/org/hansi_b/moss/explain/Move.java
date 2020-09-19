@@ -9,7 +9,7 @@ import org.hansi_b.moss.CellGroup.Type;
 
 public class Move {
 
-	enum Strategy {
+	public enum Strategy {
 		NakedSingleInRow, //
 		NakedSingleInCol, //
 		NakedSingleInBlock, //
@@ -44,7 +44,7 @@ public class Move {
 	private final Cell cell;
 	private final Integer newValue;
 
-	Move(final Strategy strategy, final Cell cell, final Integer newValue) {
+	public Move(final Strategy strategy, final Cell cell, final Integer newValue) {
 		this.strategy = strategy;
 		this.cell = cell;
 		this.newValue = newValue;

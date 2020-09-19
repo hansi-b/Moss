@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Marks an element as having increased visibility so it can be referenced from
  * tests.
- * 
+ *
  * Duplicated from countless other VisibleForTesting's so I would not have to
  * drag an extra dependency in just for this.
  */

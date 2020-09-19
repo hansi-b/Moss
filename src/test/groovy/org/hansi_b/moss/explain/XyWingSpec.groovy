@@ -1,17 +1,15 @@
-package org.hansi_b.moss.explain;
+package org.hansi_b.moss.explain
 
 import org.hansi_b.moss.Sudoku
-
-import spock.lang.Ignore
+import static org.hansi_b.moss.testSupport.Shortcuts.move
 
 class XyWingSpec extends spock.lang.Specification {
 
 	XyWing technique = new XyWing()
 
-	@Ignore
 	def testXyWing() {
 
-		when:
+		given:
 		final Integer[] values =
 				[5, 2, 0, 0, 0, 0, 0, 4, 0]+
 				[6, 3, 0, 4, 0, 0, 5, 0, 0]+
@@ -22,28 +20,11 @@ class XyWingSpec extends spock.lang.Specification {
 				[8, 6, 2, 7, 4, 3, 9, 1, 5]+
 				[4, 9, 3, 2, 5, 1, 8, 6, 7]+
 				[1, 7, 5, 9, 8, 6, 3, 2, 4]
-		Sudoku su = Sudoku.filled(values);
 
-		def actual = technique.findMoves(su) as Set
-
-		then:
-		actual == [] as Set
-	}
-
-	@Ignore
-	def "xy-wing in 4x4"() {
-
-		given:
-		Integer[] values =
-				[1, 0, 2, 4]+
-				[0, 0, 0, 0]+
-				[3, 0, 0, 0]+
-				[0, 0, 0, 0]
 		Sudoku su = Sudoku.filled(values)
 
-		def actual = technique.findMoves(su) as Set
-
 		expect:
-		actual == [ ] as Set
+		technique.findMoves(su) as Set == [
+			move(su, Move.Strategy.XyWing, 0, 6, 6)] as Set
 	}
 }

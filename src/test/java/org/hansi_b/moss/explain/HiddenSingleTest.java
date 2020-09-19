@@ -1,7 +1,7 @@
 package org.hansi_b.moss.explain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hansi_b.moss.explain.MoveAsserts.move;
+import static org.hansi_b.moss.testSupport.Shortcuts.move;
 
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;

@@ -1,13 +1,8 @@
 package org.hansi_b.moss.explain;
 
-import static org.hansi_b.moss.explain.MoveAsserts.move
-import static org.hansi_b.moss.testSupport.Shortcuts.*
+import static org.hansi_b.moss.testSupport.Shortcuts.*;
 
-import org.hansi_b.moss.Cell
 import org.hansi_b.moss.Sudoku
-import org.hansi_b.moss.explain.Move.Strategy
-
-import spock.lang.Ignore
 
 class XyWingFinderSpec extends spock.lang.Specification {
 
