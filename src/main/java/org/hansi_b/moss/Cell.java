@@ -2,7 +2,9 @@ package org.hansi_b.moss;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.SortedSet;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -62,6 +64,10 @@ public class Cell {
 
 	public Stream<CellGroup> streamGroups() {
 		return sudoku.streamGroups(pos);
+	}
+
+	public Stream<Cell> streamEmptyCellsFromGroups() {
+		return streamGroups().flatMap(CellGroup::streamEmptyCells);
 	}
 
 	public void setValue(final Integer newValue) {
