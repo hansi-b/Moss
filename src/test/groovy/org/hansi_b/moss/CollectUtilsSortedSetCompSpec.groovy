@@ -3,7 +3,7 @@ package org.hansi_b.moss;
 import spock.lang.Specification
 import spock.lang.Unroll
 
-public class CollectUtilsSortedSetComp extends Specification {
+public class CollectUtilsSortedSetCompSpec extends Specification {
 
 	def cmp = CollectUtils.sortedSetComparator()
 	SortedSet<Integer> mockedSoSe = Mock()

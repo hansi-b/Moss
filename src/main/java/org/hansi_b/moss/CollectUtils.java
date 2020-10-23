@@ -60,6 +60,12 @@ public class CollectUtils {
 		return Arrays.stream(collections).flatMap(Collection::stream).collect(Collectors.toSet());
 	}
 
+	/**
+	 * @return a comparator for SortedSets where order is defined by pairwise
+	 *         comparison of the elements (i.e., compare the first two elements,
+	 *         then the next two, etc.). If one set is a "prefix" of the other, it
+	 *         is considered smaller.
+	 */
 	public static <E extends Comparable<E>> Comparator<SortedSet<E>> sortedSetComparator() {
 		return (final SortedSet<E> s1, final SortedSet<E> s2) -> {
 

@@ -5,7 +5,7 @@ import static org.hansi_b.moss.testSupport.Shortcuts.move;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 
-class NakedSingleTest extends spock.lang.Specification {
+class NakedSingleSpec extends spock.lang.Specification {
 
 	NakedSingle technique = new NakedSingle()
 

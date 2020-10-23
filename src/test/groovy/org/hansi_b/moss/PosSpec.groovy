@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import spock.lang.Specification
 
-public class PosTest extends Specification {
+public class PosSpec extends Specification {
 
 	def testFlyweight() {
 

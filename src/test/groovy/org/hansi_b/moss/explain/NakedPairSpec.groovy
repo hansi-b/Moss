@@ -5,7 +5,7 @@ import static org.hansi_b.moss.testSupport.Shortcuts.move;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy
 
-class NakedPairTest extends spock.lang.Specification {
+class NakedPairSpec extends spock.lang.Specification {
 
 	NakedPair technique = new NakedPair()
 

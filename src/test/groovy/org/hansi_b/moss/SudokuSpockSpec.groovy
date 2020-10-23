@@ -1,6 +1,6 @@
 package org.hansi_b.moss
 
-class SudokuSpockTest extends spock.lang.Specification{
+class SudokuSpockSpec extends spock.lang.Specification{
 
 	def "Creating an empty sudoku"() {
 
