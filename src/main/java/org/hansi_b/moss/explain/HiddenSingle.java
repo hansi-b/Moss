@@ -1,13 +1,14 @@
 package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.hansi_b.moss.Cell;
-import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.explain.Move.Strategy;
@@ -18,14 +19,12 @@ import org.hansi_b.moss.explain.Move.Strategy;
  * For a given group and missing number, find a unique cell which is the only
  * possible place in that group for that number.
  *
- * In other words:
+ * Approach:
  * <ol>
- * <li>for each group G
- * <ol>
- * <li>for each empty cell C in G: get its candidates Ca(C)
- * <li>remove all candidates that are in any other empty cell in G
- * <li>if exactly one candidate is left, this is a move on C
- * </ol>
+ * <li>iterate over groups
+ * <li>build map from candidates to empty cells in group
+ * <li>candidates with exactly one empty cell are hidden singles with regard to
+ * that group
  * </ol>
  *
  * Also known as Unique Candidate.
@@ -50,25 +49,15 @@ public class HiddenSingle implements Technique {
 
 		final CachedCandidates cached = new CachedCandidates();
 		final List<Move> moves = new ArrayList<>();
-		sudoku.streamEmptyCells().forEach(c -> {
-			c.streamGroups().forEach(g -> {
-				final SortedSet<Integer> cands = filteredCandidates(g, c, cached);
-				if (cands.size() == 1) {
-					moves.add(new Move(strategyByGroup(g.type()), c, cands.first()));
-				}
+		sudoku.streamGroups().forEach(g -> {
+			final Map<Integer, Set<Cell>> cellsByCandidate = new HashMap<>();
+			g.streamEmptyCells().forEach(c -> cached.candidates(c)
+					.forEach(i -> cellsByCandidate.computeIfAbsent(i, v -> new HashSet<>()).add(c)));
+			cellsByCandidate.forEach((i, cells) -> {
+				if (cells.size() == 1)
+					moves.add(new Move(strategyByGroup(g.type()), cells.iterator().next(), i));
 			});
 		});
-
 		return moves;
-	}
-
-	private static SortedSet<Integer> filteredCandidates(final CellGroup group, final Cell target,
-			final CachedCandidates candidatesCache) {
-		final SortedSet<Integer> cands = new TreeSet<>(candidatesCache.candidates(target));
-		group.streamEmptyCells().forEach(c -> {
-			if (c != target)
-				cands.removeAll(candidatesCache.candidates(c));
-		});
-		return cands;
 	}
 }
