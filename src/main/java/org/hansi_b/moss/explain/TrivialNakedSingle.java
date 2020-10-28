@@ -2,10 +2,8 @@ package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
@@ -41,17 +39,18 @@ public class TrivialNakedSingle implements Technique {
 
 	private static void findMove(final CellGroup group, final List<Move> moves) {
 
-		final Set<Cell> emptyCells = group.streamEmptyCells().collect(Collectors.toSet());
-		if (emptyCells.size() != 1)
-			return;
-
 		final SortedSet<Integer> missing = group.missing();
 		if (missing.size() != 1)
+			return;
+
+		// double-check that there is only one empty cell
+		final SortedSet<Cell> emptyCells = Cell.collect(group.streamEmptyCells());
+		if (emptyCells.size() != 1)
 			return;
 
 		/*
 		 * we want to have found exactly one empty cell, and only one value is missing
 		 */
-		moves.add(new Move(strategyByGroup(group.type()), emptyCells.iterator().next(), missing.first()));
+		moves.add(new Move(strategyByGroup(group.type()), emptyCells.first(), missing.first()));
 	}
 }

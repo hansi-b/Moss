@@ -41,8 +41,7 @@ public class XyWing implements Technique {
 		 * than the middle wing cell), and remove the wings's common candidate
 		 */
 		wings.forEach(wing -> {
-			final Set<Cell> targetCells = wing.targetCells();
-			for (final Cell c : targetCells) {
+			for (final Cell c : wing.targetCells()) {
 				final Set<Integer> copiedCands = new HashSet<>(cachedCands.candidates(c));
 				if (copiedCands.remove(wing.commonCandidate) && copiedCands.size() == 1)
 					moves.add(new Move(Move.Strategy.XyWing, c, copiedCands.iterator().next()));

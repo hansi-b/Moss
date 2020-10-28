@@ -44,40 +44,40 @@ public class CellSpec extends Specification {
 
 		expect:
 		Sudoku su = Sudoku.empty()
-		cellAt(su, 0, 0).sharesGroups(cellAt(su, 0, 0))
+		cellAt(su, 0, 0).sharesAnyGroup(cellAt(su, 0, 0))
 	}
 
 	def "test cell shares block"() {
 
 		expect:
 		Sudoku su = Sudoku.empty()
-		cellAt(su, 0, 0).sharesGroups(cellAt(su, 1, 1))
+		cellAt(su, 0, 0).sharesAnyGroup(cellAt(su, 1, 1))
 	}
 
 	def "test cell shares column"() {
 
 		expect:
 		Sudoku su = Sudoku.empty()
-		cellAt(su, 0, 0).sharesGroups(cellAt(su, 0, 3))
+		cellAt(su, 0, 0).sharesAnyGroup(cellAt(su, 0, 3))
 	}
 
 	def "test cell shares row"() {
 
 		expect:
 		Sudoku su = Sudoku.empty()
-		cellAt(su, 0, 0).sharesGroups(cellAt(su, 3, 0))
+		cellAt(su, 0, 0).sharesAnyGroup(cellAt(su, 3, 0))
 	}
 
 	def "cells without shared groups"() {
 
 		expect:
 		Sudoku su = Sudoku.empty()
-		!cellAt(su, 0, 0).sharesGroups(cellAt(su, 5, 5))
+		!cellAt(su, 0, 0).sharesAnyGroup(cellAt(su, 5, 5))
 	}
 
 	def "same-pos cell shares no groups between different sudokus"() {
 
 		expect:
-		!cellAt(Sudoku.empty(), 0, 0).sharesGroups(cellAt(Sudoku.empty(), 0, 0))
+		!cellAt(Sudoku.empty(), 0, 0).sharesAnyGroup(cellAt(Sudoku.empty(), 0, 0))
 	}
 }

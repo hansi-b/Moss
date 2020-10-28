@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
@@ -34,7 +33,7 @@ class XyWingFinder {
 	@VisibleForTesting
 	SortedSet<Cell> filterCandidates() {
 		return sudoku.streamEmptyCells().filter(c -> cached.candidates(c).size() == 2)
-				.collect(Collectors.toCollection(() -> new TreeSet<>(Cell.positionComparator)));
+				.collect(Collectors.toCollection(() -> Cell.newPosSortedSet()));
 	}
 
 	List<WingTriple> findAllWings() {
@@ -43,10 +42,7 @@ class XyWingFinder {
 			return Collections.emptyList();
 
 		final SortedMap<Integer, SortedMap<Integer, SortedSet<Cell>>> candidatesMapping = filterAndMapCellsByCandidates();
-
-		final List<WingTriple> wings = collectWingsFromMapping(candidatesMapping);
-		// wings.forEach(x -> System.out.println(x));
-		return wings;
+		return collectWingsFromMapping(candidatesMapping);
 	}
 
 	/**
@@ -79,13 +75,12 @@ class XyWingFinder {
 
 	private static void putCell(final Cell c, final Integer outer, final Integer inner,
 			final SortedMap<Integer, SortedMap<Integer, SortedSet<Cell>>> result) {
-		result.computeIfAbsent(outer, i -> new TreeMap<>())
-				.computeIfAbsent(inner, i -> new TreeSet<>(Cell.positionComparator)).add(c);
+		result.computeIfAbsent(outer, i -> new TreeMap<>()).computeIfAbsent(inner, i -> Cell.newPosSortedSet()).add(c);
 	}
 
 	/**
-	 * Find wings from our candidate cells A - X - B which satisfy these
-	 * requirements:
+	 * Find wings from our candidate cells A - X - B (where each has two candidates)
+	 * which satisfy these requirements:
 	 *
 	 * <ol>
 	 * <li>candidate values between cells A+B overlap by one (that's guaranteed by
@@ -114,7 +109,7 @@ class XyWingFinder {
 					for (final Cell currCell : currentCells)
 						for (final Cell nextCell : entry.getValue()) {
 
-							if (currCell.sharesGroups(nextCell))
+							if (currCell.sharesAnyGroup(nextCell))
 								continue;
 
 							final Integer nextCand = entry.getKey();
@@ -122,7 +117,7 @@ class XyWingFinder {
 							final Set<Integer> requiredCands = Set.of(currentCand, nextCand);
 							emptyCellsW2Cands.stream().filter(x -> x != currCell && x != nextCell //
 									&& requiredCands.equals(cached.candidates(x)) //
-									&& x.sharesGroups(currCell) && x.sharesGroups(nextCell))
+									&& x.sharesAnyGroup(currCell) && x.sharesAnyGroup(nextCell))
 									.forEach(x -> wings.add(new WingTriple(x, commonCand, currCell, nextCell)));
 						}
 			}

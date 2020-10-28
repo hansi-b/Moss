@@ -3,6 +3,8 @@ package org.hansi_b.moss;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -12,7 +14,7 @@ import java.util.stream.Stream;
  */
 public class Cell {
 
-	public static final Comparator<Cell> positionComparator = (c1, c2) -> Pos.positionComparator.compare(c1.pos,
+	private static final Comparator<Cell> positionComparator = (c1, c2) -> Pos.positionComparator.compare(c1.pos,
 			c2.pos);
 
 	private final Sudoku sudoku;
@@ -56,7 +58,7 @@ public class Cell {
 		return sudoku.getGroup(groupType, pos);
 	}
 
-	public boolean sharesGroups(final Cell other) {
+	public boolean sharesAnyGroup(final Cell other) {
 		return this == other || Arrays.stream(CellGroup.Type.values()).anyMatch(t -> getGroup(t) == other.getGroup(t));
 	}
 
@@ -70,6 +72,20 @@ public class Cell {
 
 	public void setValue(final Integer newValue) {
 		sudoku.set(pos.row, pos.col, newValue);
+	}
+
+	/**
+	 * @return an empty sorted set with sorts Cells by their position
+	 */
+	public static SortedSet<Cell> newPosSortedSet() {
+		return new TreeSet<>(positionComparator);
+	}
+
+	/**
+	 * @return a set sorting on position of the argument stream of cells
+	 */
+	public static SortedSet<Cell> collect(Stream<Cell> cells) {
+		return cells.collect(Collectors.toCollection(() -> newPosSortedSet()));
 	}
 
 	@Override

@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
-import java.util.TreeSet;
-
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 
@@ -21,12 +19,12 @@ class CachedCandidates {
 	 * @return an unmodifiable view of the cell's candidate values
 	 */
 	SortedSet<Integer> candidates(final Cell cell) {
-		return Collections.unmodifiableSortedSet(candidatesByCell.computeIfAbsent(cell, Cell::getCandidates));
+		return candidatesByCell.computeIfAbsent(cell, c -> Collections.unmodifiableSortedSet(c.getCandidates()));
 	}
 
 	/**
 	 * Aggregates a mapping from missing numbers to cells in a group.
-	 * 
+	 *
 	 * @param group the group for which to aggregate the result map
 	 * @return a SortedMap mapping values missing in the argument group to cells in
 	 *         that group where the value is a candidate
@@ -34,7 +32,7 @@ class CachedCandidates {
 	SortedMap<Integer, SortedSet<Cell>> getCellsByCandidate(final CellGroup group) {
 		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = new TreeMap<>();
 		group.streamEmptyCells().forEach(c -> candidates(c)
-				.forEach(i -> cellsByCandidate.computeIfAbsent(i, v -> new TreeSet<>(Cell.positionComparator)).add(c)));
+				.forEach(i -> cellsByCandidate.computeIfAbsent(i, v -> Cell.newPosSortedSet()).add(c)));
 		return cellsByCandidate;
 	}
 }
