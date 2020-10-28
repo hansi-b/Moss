@@ -1,16 +1,11 @@
 package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 
-import org.hansi_b.moss.Cell;
-import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.CellGroup.Type;
+import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 
 /**
@@ -50,12 +45,9 @@ public class HiddenSingle implements Technique {
 		final CachedCandidates cached = new CachedCandidates();
 		final List<Move> moves = new ArrayList<>();
 		sudoku.streamGroups().forEach(g -> {
-			final Map<Integer, Set<Cell>> cellsByCandidate = new HashMap<>();
-			g.streamEmptyCells().forEach(c -> cached.candidates(c)
-					.forEach(i -> cellsByCandidate.computeIfAbsent(i, v -> new HashSet<>()).add(c)));
-			cellsByCandidate.forEach((i, cells) -> {
+			cached.getCellsByCandidate(g).forEach((i, cells) -> {
 				if (cells.size() == 1)
-					moves.add(new Move(strategyByGroup(g.type()), cells.iterator().next(), i));
+					moves.add(new Move(strategyByGroup(g.type()), cells.first(), i));
 			});
 		});
 		return moves;
