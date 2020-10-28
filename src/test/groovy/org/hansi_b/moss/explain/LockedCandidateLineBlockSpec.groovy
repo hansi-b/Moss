@@ -7,7 +7,7 @@ import org.hansi_b.moss.explain.Move.Strategy
 
 import spock.lang.Specification
 
-public class LockedCandidateBoxLineSpec extends Specification {
+public class LockedCandidateLineBlockSpec extends Specification {
 
 	def "can find simple example"() {
 		when:
@@ -27,11 +27,11 @@ public class LockedCandidateBoxLineSpec extends Specification {
 
 		Sudoku su = Sudoku.filled(values)
 
-		def actual = new LockedCandidateBoxLine().findMoves(su) as Set
+		def actual = new LockedCandidateBlockLine().findMoves(su) as Set
 
 		then:
 		assert actual == [
-			move(su, Strategy.LockedCandidateBoxLine, 3, 0, 4)
+			move(su, Strategy.LockedCandidateBlockCol, 3, 0, 4)
 		] as Set
 	}
 
@@ -52,12 +52,12 @@ public class LockedCandidateBoxLineSpec extends Specification {
 
 		Sudoku su = Sudoku.filled(values)
 
-		def actual = new LockedCandidateBoxLine().findMoves(su) as Set
+		def actual = new LockedCandidateBlockLine().findMoves(su) as Set
 
 		then:
 		assert actual == [
-			move(su, Strategy.LockedCandidateBoxLine, 6, 4, 6),
-			move(su, Strategy.LockedCandidateBoxLine, 1, 5, 5)
+			move(su, Strategy.LockedCandidateBlockCol, 6, 4, 6),
+			move(su, Strategy.LockedCandidateBlockCol, 1, 5, 5)
 		] as Set
 	}
 }

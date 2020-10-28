@@ -18,7 +18,10 @@ public class Move {
 		HiddenSingleInCol, //
 		HiddenSingleInBlock, //
 		NakedPairInRow, NakedPairInCol, NakedPairInBlock, //
-		LockedCandidateBoxLine, //
+		LockedCandidateBlockRow, //
+		LockedCandidateBlockCol, //
+		LockedCandidateRowBlock, //
+		LockedCandidateColBlock, //
 		XyWing //
 		;
 

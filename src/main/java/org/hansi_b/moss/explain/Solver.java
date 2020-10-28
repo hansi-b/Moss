@@ -16,6 +16,8 @@ public class Solver {
 				new HiddenSingle(), //
 				new NakedPair(), //
 				new XyWing(), //
+				new LockedCandidateBlockLine(), //
+				new LockedCandidateLineBlock(), //
 		};
 	}
 
