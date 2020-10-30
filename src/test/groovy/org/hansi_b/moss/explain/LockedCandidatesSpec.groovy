@@ -9,7 +9,7 @@ import spock.lang.Specification
 
 public class LockedCandidatesSpec extends Specification {
 
-	def "can find simple example"() {
+	def "can find simple BlockCol example"() {
 		when:
 		final Integer[] values = //
 				[0, 1, 2, 0, 0, 0, 0, 0, 0]+
@@ -35,7 +35,33 @@ public class LockedCandidatesSpec extends Specification {
 		] as Set
 	}
 
-	def "can find locked candidate from column"() {
+	def "can find simple BlockRow example"() {
+		when:
+		final Integer[] values = //
+				[0, 1, 2, 0, 0, 0, 4, 5, 6]+
+				[0, 0, 0, 0, 0, 0, 0, 0, 0]+
+				[0, 5, 6, 0, 0, 0, 0, 0, 0]+
+				//
+				[0, 0, 0, 0, 0, 0, 8, 3, 0]+
+				[0, 0, 0, 0, 0, 0, 7, 0, 0]+
+				[0, 0, 0, 0, 0, 0, 2, 0, 0]+
+				//
+				[0, 0, 0, 0, 0, 0, 1, 0, 0]+
+				[3, 0, 0, 0, 0, 0, 0, 0, 0]+
+				[0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+
+		Sudoku su = Sudoku.filled(values)
+
+		def actual = new LockedCandidates().findMoves(su) as Set
+
+		then:
+		assert actual == [
+			move(su, Strategy.LockedCandidateBlockRow, 1, 6, 9)
+		] as Set
+	}
+
+	def "can find overlapping locked candidates"() {
 
 		when:
 		final Integer[] values = //
