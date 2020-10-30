@@ -143,6 +143,6 @@ public class CellGroup {
 
 	@Override
 	public String toString() {
-		return String.format("%s%s", type, cells.toString());
+		return String.format("%s[%s ...]", type, cells.get(0));
 	}
 }
