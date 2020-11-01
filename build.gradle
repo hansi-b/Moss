@@ -16,8 +16,6 @@ version gitVersion()
 sourceCompatibility = 11
 
 repositories {
-	// Use jcenter for resolving your dependencies.
-	// You can declare any Maven/Ivy/file repository here.
 	jcenter()
 }
 
@@ -33,7 +31,7 @@ publishing {
 	repositories {
 		maven {
 			name = "GitHubPackages"
-			url = "https://maven.pkg.github.com/hansi_b/moss"
+			url = "https://maven.pkg.github.com/hansi-b/moss"
 			credentials {
 				username = project.hasProperty("GITHUB_ACTOR") ? GITHUB_ACTOR : ""
 				password = project.hasProperty("GITHUB_REPO_PAT") ? GITHUB_REPO_PAT : ""
