@@ -1,8 +1,8 @@
 Moss
 ====
 
-.. image:: https://travis-ci.com/hansi-b/moss.svg?branch=master
-    :target: https://travis-ci.com/hansi-b/moss
+.. image:: https://circleci.com/gh/hansi-b/Moss.svg?style=svg
+    :target: https://circleci.com/gh/hansi-b/Moss
 
 .. image:: https://codecov.io/gh/hansi-b/moss/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/hansi-b/moss
