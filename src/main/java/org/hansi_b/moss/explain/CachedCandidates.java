@@ -8,6 +8,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
+import org.hansi_b.moss.Errors;
 
 /**
  * A minimal cache of candidate values for cells.
@@ -19,7 +20,27 @@ class CachedCandidates {
 	 * @return an unmodifiable view of the cell's candidate values
 	 */
 	SortedSet<Integer> candidates(final Cell cell) {
-		return candidatesByCell.computeIfAbsent(cell, c -> Collections.unmodifiableSortedSet(c.getCandidates()));
+		return Collections.unmodifiableSortedSet(candidatesInternal(cell));
+	}
+
+	private SortedSet<Integer> candidatesInternal(final Cell cell) {
+		return candidatesByCell.computeIfAbsent(cell, c -> c.getCandidates());
+	}
+
+	/**
+	 * Removes the given candidate from the given cell. Is strict in that it will
+	 * throw an exception if the argument candidate is not an option for the
+	 * argument cell.
+	 * 
+	 * @throws IllegalArgumentException if the given candidate is not a candidate
+	 *                                  for the given cell
+	 */
+	void remove(final Cell cell, final int candidate) {
+		final SortedSet<Integer> cands = candidatesInternal(cell);
+		if (!cands.contains(candidate))
+			throw Errors.illegalArg("Argument '%d' is not in candidates %s of cell %s", candidate, cands, cell);
+
+		cands.remove(candidate);
 	}
 
 	/**
@@ -31,7 +52,7 @@ class CachedCandidates {
 	 */
 	SortedMap<Integer, SortedSet<Cell>> getCellsByCandidate(final CellGroup group) {
 		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = new TreeMap<>();
-		group.streamEmptyCells().forEach(c -> candidates(c)
+		group.streamEmptyCells().forEach(c -> candidatesInternal(c)
 				.forEach(i -> cellsByCandidate.computeIfAbsent(i, v -> Cell.newPosSortedSet()).add(c)));
 		return cellsByCandidate;
 	}

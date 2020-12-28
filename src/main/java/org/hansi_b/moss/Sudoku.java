@@ -54,8 +54,7 @@ public class Sudoku implements Iterable<Cell> {
 			final double sqrt = Math.sqrt(size);
 			final int sizeSqrt = (int) Math.floor(sqrt);
 			if (sizeSqrt != sqrt)
-				throw new IllegalArgumentException(
-						String.format("Sudoku cannot be initialised with a non-square size (got %d)", size));
+				throw Errors.illegalArg("Sudoku cannot be initialised with a non-square size (got %d)", size);
 
 			sudoku = new Sudoku(size);
 			initCells();
@@ -199,15 +198,13 @@ public class Sudoku implements Iterable<Cell> {
 
 	private Integer checkValueArg(final Integer newValue) {
 		if (newValue != null && (newValue < 1 || newValue > size))
-			throw new IllegalArgumentException(
-					String.format("Cell value must be null or between one and at most %d (is %d)", size, newValue));
+			throw Errors.illegalArg("Cell value must be null or between one and at most %d (is %d)", size, newValue);
 		return newValue;
 	}
 
 	private void checkArg(final int arg, final String label) {
 		if (arg < 0 || arg >= size)
-			throw new IllegalArgumentException(
-					String.format("%s argument must not be negative and at most %d (is %d)", label, size - 1, arg));
+			throw Errors.illegalArg("%s argument must not be negative and at most %d (is %d)", label, size - 1, arg);
 	}
 
 	/**
