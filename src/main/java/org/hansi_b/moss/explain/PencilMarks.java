@@ -73,7 +73,7 @@ public class PencilMarks {
 	 * @param cell     the cell that has been filled
 	 * @param newValue the value that has been filled in
 	 */
-	public void updateByMove(Cell cell, int newValue) {
+	public void updateByInsertion(Cell cell, int newValue) {
 		cell.streamEmptyCellsFromGroups().forEach(c -> candidatesInternal(c).remove(newValue));
 		candidatesInternal(cell).clear();
 	}

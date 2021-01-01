@@ -82,7 +82,7 @@ public class PencilMarksSpec extends Specification {
 		def marks = new PencilMarks()
 
 		when:
-		marks.updateByMove(cellAt(su, 1, 0), 4)
+		marks.updateByInsertion(cellAt(su, 1, 0), 4)
 
 		then:
 		marks.candidates(cellAt(su,1,0)).isEmpty()

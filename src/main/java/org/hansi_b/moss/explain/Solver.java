@@ -32,7 +32,7 @@ public class Solver {
 		List<Move> moves = findMoves(suCopy, pencilMarks);
 		while (!moves.isEmpty()) {
 			Move move = moves.get(0);
-			pencilMarks.updateByMove(move.cell, move.newValue);
+			pencilMarks.updateByInsertion(move.cell, move.newValue);
 			move.apply();
 			moves = findMoves(suCopy, pencilMarks);
 		}
