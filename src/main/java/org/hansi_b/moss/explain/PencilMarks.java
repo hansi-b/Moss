@@ -35,6 +35,20 @@ public class PencilMarks {
 	}
 
 	/**
+	 * Aggregates a mapping from missing numbers to cells in the given group.
+	 *
+	 * @param group the group for which to aggregate the result map
+	 * @return a SortedMap mapping values missing in the argument group to cells in
+	 *         that group where the value is a candidate
+	 */
+	public SortedMap<Integer, SortedSet<Cell>> getCellsByCandidate(final CellGroup group) {
+		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = new TreeMap<>();
+		group.streamEmptyCells().forEach(c -> candidatesInternal(c)
+				.forEach(i -> cellsByCandidate.computeIfAbsent(i, v -> Cell.newPosSortedSet()).add(c)));
+		return cellsByCandidate;
+	}
+
+	/**
 	 * Removes the given candidate from the given cell. Is strict in that it will
 	 * throw an exception if the argument candidate is not an option for the
 	 * argument cell.
@@ -51,16 +65,16 @@ public class PencilMarks {
 	}
 
 	/**
-	 * Aggregates a mapping from missing numbers to cells in the given group.
-	 *
-	 * @param group the group for which to aggregate the result map
-	 * @return a SortedMap mapping values missing in the argument group to cells in
-	 *         that group where the value is a candidate
+	 * Updates the pencil marks to reflect that the argument cell has been assigned
+	 * the argument value: The cell is cleared of all candidates, and the value is
+	 * removed from the candidates of all other empty cells in the argument cell's
+	 * groups.
+	 * 
+	 * @param cell     the cell that has been filled
+	 * @param newValue the value that has been filled in
 	 */
-	public SortedMap<Integer, SortedSet<Cell>> getCellsByCandidate(final CellGroup group) {
-		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = new TreeMap<>();
-		group.streamEmptyCells().forEach(c -> candidatesInternal(c)
-				.forEach(i -> cellsByCandidate.computeIfAbsent(i, v -> Cell.newPosSortedSet()).add(c)));
-		return cellsByCandidate;
+	public void updateByMove(Cell cell, int newValue) {
+		cell.streamEmptyCellsFromGroups().forEach(c -> candidatesInternal(c).remove(newValue));
+		candidatesInternal(cell).clear();
 	}
 }

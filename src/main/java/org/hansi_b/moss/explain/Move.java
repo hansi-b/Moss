@@ -44,18 +44,14 @@ public class Move {
 		}
 	}
 
-	private final Strategy strategy;
-	private final Cell cell;
-	private final Integer newValue;
+	final Strategy strategy;
+	final Cell cell;
+	final Integer newValue;
 
 	public Move(final Strategy strategy, final Cell cell, final Integer newValue) {
 		this.strategy = strategy;
 		this.cell = cell;
 		this.newValue = newValue;
-	}
-
-	public Strategy getStrategy() {
-		return strategy;
 	}
 
 	void apply() {

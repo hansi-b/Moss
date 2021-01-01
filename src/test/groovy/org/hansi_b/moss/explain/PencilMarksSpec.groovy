@@ -54,25 +54,43 @@ public class PencilMarksSpec extends Specification {
 
 		given:
 		final Integer[] values = //
-				// first row contains a naked pair of 3,4
 				[1, 2, 3, 4]+
 				[0, 3, 0, 1]+
 				[0, 0, 0, 0]+
 				[0, 0, 0, 0]
 
 		Sudoku su = Sudoku.filled(values)
-		def caca = new PencilMarks()
+		def marks = new PencilMarks()
 
 		when:
-		caca.remove(cellAt(su, 2, 1), 4)
+		marks.remove(cellAt(su, 2, 1), 4)
 
 		then:
-		caca.candidates(cellAt(su, 2, 1)) == [1] as Set
+		marks.candidates(cellAt(su, 2, 1)) == [1] as Set
 
 		when:
-		caca.remove(cellAt(su, 2, 1), 4)
+		marks.remove(cellAt(su, 2, 1), 4)
 
 		then:
 		thrown IllegalArgumentException
+	}
+
+	def "update removes candidates"() {
+
+		given:
+		Sudoku su = Sudoku.empty()
+		def marks = new PencilMarks()
+
+		when:
+		marks.updateByMove(cellAt(su, 1, 0), 4)
+
+		then:
+		marks.candidates(cellAt(su,1,0)).isEmpty()
+		(0..su.size()-1).each{ col ->
+			!marks.candidates(cellAt(su, 1, col)).contains(4)
+		}
+		(0..su.size()-1).each{ row ->
+			!marks.candidates(cellAt(su, row, 0)).contains(4)
+		}
 	}
 }
