@@ -54,7 +54,7 @@ public class LockedCandidates implements Technique {
 		for (final LockType lockType : LockType.values()) {
 			sudoku.getGroups(lockType.lockingType).forEach(lockingGroup -> {
 				final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidate(lockingGroup);
-				cellsByCandidate.forEach((i, cells) -> {
+				cellsByCandidate.forEach((cand, cells) -> {
 					final Set<CellGroup> groups = cells.stream().map(c -> c.getGroup(lockType.targetType))
 							.collect(Collectors.toSet());
 					if (groups.size() != 1)
@@ -67,9 +67,9 @@ public class LockedCandidates implements Technique {
 					target.streamEmptyCells().filter(c -> c.getGroup(lockingGroup.type()) != lockingGroup)
 							.forEach(c -> {
 								final SortedSet<Integer> candidates = marks.candidates(c);
-								if (candidates.size() == 2 && candidates.contains(i)) {
+								if (candidates.size() == 2 && candidates.contains(cand)) {
 									final HashSet<Integer> cands = new HashSet<Integer>(candidates);
-									cands.remove(i);
+									cands.remove(cand);
 									moves.add(new Insertion(lockType.moveStrategy, c, cands.iterator().next()));
 								}
 							});
