@@ -1,9 +1,10 @@
 package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
@@ -27,9 +28,9 @@ import org.hansi_b.moss.Sudoku;
 public class XyWing implements Technique {
 
 	@Override
-	public List<Insertion> findMoves(final Sudoku sudoku, final PencilMarks marks) {
+	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
 
-		final List<Insertion> moves = new ArrayList<>();
+		final List<Move> moves = new ArrayList<>();
 
 		final XyWingFinder xyWingFinder = new XyWingFinder(sudoku, marks);
 
@@ -40,11 +41,11 @@ public class XyWing implements Technique {
 		 * than the middle wing cell), and remove the wings's common candidate
 		 */
 		wings.forEach(wing -> {
-			for (final Cell c : wing.targetCells()) {
-				final Set<Integer> copiedCands = new HashSet<>(marks.candidates(c));
-				if (copiedCands.remove(wing.commonCandidate) && copiedCands.size() == 1)
-					moves.add(new Insertion(Move.Strategy.XyWing, c, copiedCands.iterator().next()));
-			}
+			final Set<Cell> targetCells = wing.targetCells().stream()
+					.filter(c -> marks.candidates(c).contains(wing.commonCandidate)).collect(Collectors.toSet());
+			if (!targetCells.isEmpty())
+				moves.add(new Elimination(Move.Strategy.XyWing, targetCells,
+						Collections.singleton(wing.commonCandidate)));
 		});
 
 		return moves;

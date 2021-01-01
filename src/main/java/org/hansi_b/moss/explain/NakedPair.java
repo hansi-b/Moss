@@ -34,15 +34,15 @@ public class NakedPair implements Technique {
 	}
 
 	@Override
-	public List<Insertion> findMoves(final Sudoku sudoku, final PencilMarks cached) {
+	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks cached) {
 
-		final List<Insertion> moves = new ArrayList<>();
+		final List<Move> moves = new ArrayList<>();
 		sudoku.streamGroups().forEach(group -> findMovesInGroup(cached, group, moves));
 		return moves;
 	}
 
 	private static void findMovesInGroup(final PencilMarks cached, final CellGroup group,
-			final List<Insertion> resultMoves) {
+			final List<Move> resultMoves) {
 
 		final Set<Cell> possibleTargets = new HashSet<>();
 		final Map<Set<Integer>, Set<Cell>> cellsByCandidates = new HashMap<>();

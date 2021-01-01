@@ -29,14 +29,14 @@ public class TrivialNakedSingle implements Technique {
 	}
 
 	@Override
-	public List<Insertion> findMoves(final Sudoku sudoku, final PencilMarks cached) {
+	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks cached) {
 
-		final List<Insertion> moves = new ArrayList<>();
+		final List<Move> moves = new ArrayList<>();
 		sudoku.streamGroups().forEach(g -> findMove(g, moves));
 		return moves;
 	}
 
-	private static void findMove(final CellGroup group, final List<Insertion> moves) {
+	private static void findMove(final CellGroup group, final List<Move> moves) {
 
 		final SortedSet<Integer> missing = group.missing();
 		if (missing.size() != 1)

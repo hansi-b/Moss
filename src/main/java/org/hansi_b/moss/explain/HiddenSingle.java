@@ -39,9 +39,9 @@ public class HiddenSingle implements Technique {
 	}
 
 	@Override
-	public List<Insertion> findMoves(final Sudoku sudoku, final PencilMarks marks) {
+	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
 
-		final List<Insertion> moves = new ArrayList<>();
+		final List<Move> moves = new ArrayList<>();
 		sudoku.streamGroups().forEach(g -> {
 			marks.getCellsByCandidate(g).forEach((i, cells) -> {
 				if (cells.size() == 1)
