@@ -21,7 +21,7 @@ class XyWingFinderSpec extends spock.lang.Specification {
 				[1, 7, 5, 9, 8, 6, 3, 2, 4]
 		Sudoku su = Sudoku.filled(values);
 
-		def wings = new XyWingFinder(su).findAllWings() as Set
+		def wings = new XyWingFinder(su, new PencilMarks()).findAllWings() as Set
 
 		then:
 		wings.size() == 1
@@ -42,7 +42,7 @@ class XyWingFinderSpec extends spock.lang.Specification {
 				[0, 0, 0, 0]
 		Sudoku su = Sudoku.filled(values)
 		when:
-		XyWingFinder finder = new XyWingFinder(su)
+		XyWingFinder finder = new XyWingFinder(su, new PencilMarks())
 		def wings = finder.findAllWings() as Set
 
 		def mapping = finder.filterAndMapCellsByCandidates()

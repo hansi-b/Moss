@@ -1,7 +1,8 @@
 package org.hansi_b.moss.explain
 
-import org.hansi_b.moss.Sudoku
 import static org.hansi_b.moss.testSupport.Shortcuts.move
+
+import org.hansi_b.moss.Sudoku
 
 class XyWingSpec extends spock.lang.Specification {
 
@@ -24,7 +25,7 @@ class XyWingSpec extends spock.lang.Specification {
 		Sudoku su = Sudoku.filled(values)
 
 		expect:
-		technique.findMoves(su) as Set == [
+		technique.findMoves(su, new PencilMarks()) as Set == [
 			move(su, Move.Strategy.XyWing, 0, 6, 6)] as Set
 	}
 }

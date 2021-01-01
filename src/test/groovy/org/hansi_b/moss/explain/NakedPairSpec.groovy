@@ -21,7 +21,7 @@ class NakedPairSpec extends spock.lang.Specification {
 
 		Sudoku su = Sudoku.filled(values);
 
-		def actual = technique.findMoves(su) as Set
+		def actual = technique.findMoves(su, new PencilMarks()) as Set
 
 		then:
 		assert actual == [
@@ -50,7 +50,7 @@ class NakedPairSpec extends spock.lang.Specification {
 
 		Sudoku su = Sudoku.filled(values);
 
-		def actual = technique.findMoves(su) as Set
+		def actual = technique.findMoves(su, new PencilMarks()) as Set
 
 		then:
 		assert actual == [

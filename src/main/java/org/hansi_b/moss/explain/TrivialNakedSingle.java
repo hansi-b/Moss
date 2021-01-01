@@ -30,7 +30,7 @@ public class TrivialNakedSingle implements Technique {
 	}
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku) {
+	public List<Move> findMoves(final Sudoku sudoku, PencilMarks cached) {
 
 		final List<Move> moves = new ArrayList<>();
 		sudoku.streamGroups().forEach(g -> findMove(g, moves));

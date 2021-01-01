@@ -27,18 +27,17 @@ public class Solver {
 	 */
 	public Sudoku solve(final Sudoku su) {
 		final Sudoku suCopy = Sudoku.copyOf(su);
-		for (List<Move> moves = findMoves(suCopy); //
-				!moves.isEmpty(); //
-				moves = findMoves(suCopy)) {
-			final Move move = moves.get(0);
-			move.getCell().setValue(move.getNewValue());
+		List<Move> moves = findMoves(suCopy);
+		while (!moves.isEmpty()) {
+			moves.get(0).apply();
+			moves = findMoves(suCopy);
 		}
 		return suCopy;
 	}
 
 	private List<Move> findMoves(final Sudoku sudoku) {
 		for (final Technique t : techniques) {
-			final List<Move> moves = t.findMoves(sudoku);
+			final List<Move> moves = t.findMoves(sudoku, new PencilMarks());
 			if (!moves.isEmpty())
 				return moves;
 		}

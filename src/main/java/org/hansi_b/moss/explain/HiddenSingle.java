@@ -40,12 +40,11 @@ public class HiddenSingle implements Technique {
 	}
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku) {
+	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
 
-		final CachedCandidates cached = new CachedCandidates();
 		final List<Move> moves = new ArrayList<>();
 		sudoku.streamGroups().forEach(g -> {
-			cached.getCellsByCandidate(g).forEach((i, cells) -> {
+			marks.getCellsByCandidate(g).forEach((i, cells) -> {
 				if (cells.size() == 1)
 					moves.add(new Move(strategyByGroup(g.type()), cells.first(), i));
 			});

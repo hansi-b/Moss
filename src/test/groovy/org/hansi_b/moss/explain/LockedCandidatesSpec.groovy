@@ -27,7 +27,7 @@ public class LockedCandidatesSpec extends Specification {
 
 		Sudoku su = Sudoku.filled(values)
 
-		def actual = new LockedCandidates().findMoves(su) as Set
+		def actual = new LockedCandidates().findMoves(su, new PencilMarks()) as Set
 
 		then:
 		assert actual == [
@@ -53,7 +53,7 @@ public class LockedCandidatesSpec extends Specification {
 
 		Sudoku su = Sudoku.filled(values)
 
-		def actual = new LockedCandidates().findMoves(su) as Set
+		def actual = new LockedCandidates().findMoves(su, new PencilMarks()) as Set
 
 		then:
 		assert actual == [
@@ -78,7 +78,7 @@ public class LockedCandidatesSpec extends Specification {
 
 		Sudoku su = Sudoku.filled(values)
 
-		def actual = new LockedCandidates().findMoves(su) as Set
+		def actual = new LockedCandidates().findMoves(su, new PencilMarks()) as Set
 
 		then:
 		assert actual == [
@@ -107,7 +107,7 @@ public class LockedCandidatesSpec extends Specification {
 
 
 		Sudoku su = Sudoku.filled(values)
-		def actual = new LockedCandidates().findMoves(su) as Set
+		def actual = new LockedCandidates().findMoves(su, new PencilMarks()) as Set
 
 		then:
 		assert actual == [

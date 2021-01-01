@@ -2,6 +2,7 @@ package org.hansi_b.moss.explain
 
 import org.hansi_b.moss.Cell
 import org.hansi_b.moss.CellGroup.Type
+import org.hansi_b.moss.explain.PencilMarks
 import org.hansi_b.moss.Pos
 
 import java.util.stream.Collectors
@@ -11,7 +12,7 @@ import org.hansi_b.moss.Sudoku
 
 import spock.lang.Specification
 
-public class CachedCandidatesSpec extends Specification {
+public class PencilMarksSpec extends Specification {
 
 
 	def "getCellsByCandidate for empty row returns full matrix"() {
@@ -22,7 +23,7 @@ public class CachedCandidatesSpec extends Specification {
 		def cells = group.streamEmptyCells().collect(Collectors.toList()) as Set
 
 		when:
-		def result = new CachedCandidates().getCellsByCandidate(group)
+		def result = new PencilMarks().getCellsByCandidate(group)
 
 		then:
 		result.size() == su.possibleValues().size()
@@ -44,9 +45,9 @@ public class CachedCandidatesSpec extends Specification {
 		Sudoku su = Sudoku.filled(values)
 
 		then:
-		new CachedCandidates().getCellsByCandidate(su.getGroup(Type.Row, 0)).isEmpty()
+		new PencilMarks().getCellsByCandidate(su.getGroup(Type.Row, 0)).isEmpty()
 
-		new CachedCandidates().getCellsByCandidate(su.getGroup(Type.Block, 0)) == [ 4 : [cellAt(su, 1, 0)] as Set ]
+		new PencilMarks().getCellsByCandidate(su.getGroup(Type.Block, 0)) == [ 4 : [cellAt(su, 1, 0)] as Set ]
 	}
 
 	def "can remove candidate"() {
@@ -60,14 +61,14 @@ public class CachedCandidatesSpec extends Specification {
 				[0, 0, 0, 0]
 
 		Sudoku su = Sudoku.filled(values)
-		def caca = new CachedCandidates()
-		
+		def caca = new PencilMarks()
+
 		when:
 		caca.remove(cellAt(su, 2, 1), 4)
-		
+
 		then:
 		caca.candidates(cellAt(su, 2, 1)) == [1] as Set
-		
+
 		when:
 		caca.remove(cellAt(su, 2, 1), 4)
 

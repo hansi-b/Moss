@@ -27,12 +27,11 @@ import org.hansi_b.moss.Sudoku;
 public class XyWing implements Technique {
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku) {
+	public List<Move> findMoves(final Sudoku sudoku, PencilMarks marks) {
 
 		final List<Move> moves = new ArrayList<>();
 
-		final CachedCandidates cachedCands = new CachedCandidates();
-		final XyWingFinder xyWingFinder = new XyWingFinder(sudoku, cachedCands);
+		final XyWingFinder xyWingFinder = new XyWingFinder(sudoku, marks);
 
 		final List<WingTriple> wings = xyWingFinder.findAllWings();
 
@@ -42,7 +41,7 @@ public class XyWing implements Technique {
 		 */
 		wings.forEach(wing -> {
 			for (final Cell c : wing.targetCells()) {
-				final Set<Integer> copiedCands = new HashSet<>(cachedCands.candidates(c));
+				final Set<Integer> copiedCands = new HashSet<>(marks.candidates(c));
 				if (copiedCands.remove(wing.commonCandidate) && copiedCands.size() == 1)
 					moves.add(new Move(Move.Strategy.XyWing, c, copiedCands.iterator().next()));
 			}

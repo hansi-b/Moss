@@ -6,20 +6,27 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
+
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.Errors;
 
 /**
- * A minimal cache of candidate values for cells.
+ * A notebook for candidate values for cells. For each cell, these are initially
+ * derived from the filled cells in the Sudoku, and can then be reduced
+ * successively.
  */
-class CachedCandidates {
+public class PencilMarks {
 	private final Map<Cell, SortedSet<Integer>> candidatesByCell = new HashMap<>();
+
+	public PencilMarks() {
+		// does nothing currently
+	}
 
 	/**
 	 * @return an unmodifiable view of the cell's candidate values
 	 */
-	SortedSet<Integer> candidates(final Cell cell) {
+	public SortedSet<Integer> candidates(final Cell cell) {
 		return Collections.unmodifiableSortedSet(candidatesInternal(cell));
 	}
 
@@ -31,7 +38,7 @@ class CachedCandidates {
 	 * Removes the given candidate from the given cell. Is strict in that it will
 	 * throw an exception if the argument candidate is not an option for the
 	 * argument cell.
-	 * 
+	 *
 	 * @throws IllegalArgumentException if the given candidate is not a candidate
 	 *                                  for the given cell
 	 */
@@ -44,13 +51,13 @@ class CachedCandidates {
 	}
 
 	/**
-	 * Aggregates a mapping from missing numbers to cells in a group.
+	 * Aggregates a mapping from missing numbers to cells in the given group.
 	 *
 	 * @param group the group for which to aggregate the result map
 	 * @return a SortedMap mapping values missing in the argument group to cells in
 	 *         that group where the value is a candidate
 	 */
-	SortedMap<Integer, SortedSet<Cell>> getCellsByCandidate(final CellGroup group) {
+	public SortedMap<Integer, SortedSet<Cell>> getCellsByCandidate(final CellGroup group) {
 		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = new TreeMap<>();
 		group.streamEmptyCells().forEach(c -> candidatesInternal(c)
 				.forEach(i -> cellsByCandidate.computeIfAbsent(i, v -> Cell.newPosSortedSet()).add(c)));

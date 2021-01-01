@@ -17,14 +17,10 @@ import org.hansi_b.moss.testSupport.VisibleForTesting;
 
 class XyWingFinder {
 	private final Sudoku sudoku;
-	private final CachedCandidates cached;
+	private final PencilMarks cached;
 	private final SortedSet<Cell> emptyCellsW2Cands;
 
-	XyWingFinder(final Sudoku sudoku) {
-		this(sudoku, new CachedCandidates());
-	}
-
-	XyWingFinder(final Sudoku sudoku, final CachedCandidates cachedCandidates) {
+	XyWingFinder(final Sudoku sudoku, final PencilMarks cachedCandidates) {
 		this.sudoku = sudoku;
 		this.cached = cachedCandidates;
 		this.emptyCellsW2Cands = filterCandidates();

@@ -48,9 +48,7 @@ public class LockedCandidates implements Technique {
 	}
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku) {
-
-		final var cached = new CachedCandidates();
+	public List<Move> findMoves(final Sudoku sudoku, PencilMarks cached) {
 
 		final List<Move> moves = new ArrayList<>();
 		for (final LockType lockType : LockType.values()) {

@@ -58,12 +58,8 @@ public class Move {
 		return strategy;
 	}
 
-	public Cell getCell() {
-		return cell;
-	}
-
-	public Integer getNewValue() {
-		return newValue;
+	void apply() {
+		cell.setValue(newValue);
 	}
 
 	@Override

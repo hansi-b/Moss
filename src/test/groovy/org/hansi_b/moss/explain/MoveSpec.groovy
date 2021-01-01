@@ -8,7 +8,7 @@ import org.hansi_b.moss.explain.Move.Strategy
 public class MoveSpec extends spock.lang.Specification {
 
 	Sudoku sudoku = Mock()
-	Pos pos = Mock()
+	Pos pos = new Pos(3,5)
 
 	def cell = new Cell(sudoku, pos)
 
@@ -55,5 +55,14 @@ public class MoveSpec extends spock.lang.Specification {
 
 		then:
 		!move.equals(new Move(Strategy.HiddenSingleInBlock, cell, 1))
+	}
+
+	def "applying move delegates to Cell/Sudoku"() {
+
+		when:
+		new Move(Strategy.HiddenSingleInBlock, cell, 2).apply()
+
+		then:
+		1 * sudoku.set(3, 5, 2)
 	}
 }

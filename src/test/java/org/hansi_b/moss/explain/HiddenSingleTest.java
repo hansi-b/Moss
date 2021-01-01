@@ -21,7 +21,7 @@ public class HiddenSingleTest {
 				0, 0, 0, 0 };
 		final Sudoku su = Sudoku.filled(values);
 
-		assertThat(technique.findMoves(su)).containsExactlyInAnyOrder(//
+		assertThat(technique.findMoves(su, new PencilMarks())).containsExactlyInAnyOrder(//
 				move(su, Strategy.HiddenSingleInRow, 0, 0, 1), //
 				move(su, Strategy.HiddenSingleInCol, 0, 0, 1), //
 				move(su, Strategy.HiddenSingleInBlock, 0, 0, 1), //
@@ -40,7 +40,7 @@ public class HiddenSingleTest {
 				0, 0, 0, 0 };
 		final Sudoku su = Sudoku.filled(values);
 
-		assertThat(technique.findMoves(su)).containsExactlyInAnyOrder(//
+		assertThat(technique.findMoves(su, new PencilMarks())).containsExactlyInAnyOrder(//
 				move(su, Strategy.HiddenSingleInCol, 0, 0, 1), //
 				move(su, Strategy.HiddenSingleInBlock, 0, 0, 1), //
 				move(su, Strategy.HiddenSingleInCol, 3, 1, 2), //
@@ -69,7 +69,7 @@ public class HiddenSingleTest {
 		};
 		final Sudoku su = Sudoku.filled(values);
 
-		assertThat(technique.findMoves(su)).containsExactly(//
+		assertThat(technique.findMoves(su, new PencilMarks())).containsExactly(//
 				move(su, Strategy.HiddenSingleInRow, 4, 4, 4), //
 				move(su, Strategy.HiddenSingleInBlock, 4, 4, 4) //
 		);
@@ -97,7 +97,7 @@ public class HiddenSingleTest {
 
 		final Sudoku su = Sudoku.filled(values);
 
-		assertThat(technique.findMoves(su)).containsExactlyInAnyOrder(//
+		assertThat(technique.findMoves(su, new PencilMarks())).containsExactlyInAnyOrder(//
 				move(su, Strategy.HiddenSingleInCol, 1, 0, 7), //
 				move(su, Strategy.HiddenSingleInBlock, 1, 0, 7),
 				//
