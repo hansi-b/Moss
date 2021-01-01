@@ -9,7 +9,6 @@ import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.Sudoku;
-import org.hansi_b.moss.explain.Move.Strategy;
 
 /**
  * The trivial variant of NakedSingle:
@@ -20,24 +19,24 @@ import org.hansi_b.moss.explain.Move.Strategy;
  */
 public class TrivialNakedSingle implements Technique {
 
-	private static final Function<Type, Strategy> strategyByGroup = Strategy.groupTypeMapper(//
-			Strategy.NakedSingleInRow, //
-			Strategy.NakedSingleInCol, //
-			Strategy.NakedSingleInBlock);
+	private static final Function<Type, Move.Strategy> strategyByGroup = Move.Strategy.groupTypeMapper(//
+			Move.Strategy.NakedSingleInRow, //
+			Move.Strategy.NakedSingleInCol, //
+			Move.Strategy.NakedSingleInBlock);
 
-	private static Strategy strategyByGroup(final Type type) {
+	private static Move.Strategy strategyByGroup(final Type type) {
 		return strategyByGroup.apply(type);
 	}
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku, PencilMarks cached) {
+	public List<Insertion> findMoves(final Sudoku sudoku, final PencilMarks cached) {
 
-		final List<Move> moves = new ArrayList<>();
+		final List<Insertion> moves = new ArrayList<>();
 		sudoku.streamGroups().forEach(g -> findMove(g, moves));
 		return moves;
 	}
 
-	private static void findMove(final CellGroup group, final List<Move> moves) {
+	private static void findMove(final CellGroup group, final List<Insertion> moves) {
 
 		final SortedSet<Integer> missing = group.missing();
 		if (missing.size() != 1)
@@ -51,6 +50,6 @@ public class TrivialNakedSingle implements Technique {
 		/*
 		 * we want to have found exactly one empty cell, and only one value is missing
 		 */
-		moves.add(new Move(strategyByGroup(group.type()), emptyCells.first(), missing.first()));
+		moves.add(new Insertion(strategyByGroup(group.type()), emptyCells.first(), missing.first()));
 	}
 }

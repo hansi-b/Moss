@@ -15,7 +15,6 @@ import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.Sudoku;
-import org.hansi_b.moss.explain.Move.Strategy;
 
 /**
  * As explained, e.g., on https://www.learn-sudoku.com/naked-pairs.html
@@ -25,25 +24,25 @@ import org.hansi_b.moss.explain.Move.Strategy;
  * remains with only a single candidate, that is the move.
  */
 public class NakedPair implements Technique {
-	private static final Function<Type, Strategy> strategyByGroup = Strategy.groupTypeMapper(//
-			Strategy.NakedPairInRow, //
-			Strategy.NakedPairInCol, //
-			Strategy.NakedPairInBlock);
+	private static final Function<Type, Move.Strategy> strategyByGroup = Move.Strategy.groupTypeMapper(//
+			Move.Strategy.NakedPairInRow, //
+			Move.Strategy.NakedPairInCol, //
+			Move.Strategy.NakedPairInBlock);
 
-	private static Strategy strategyByGroup(final CellGroup group) {
+	private static Move.Strategy strategyByGroup(final CellGroup group) {
 		return strategyByGroup.apply(group.type());
 	}
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku, PencilMarks cached) {
+	public List<Insertion> findMoves(final Sudoku sudoku, final PencilMarks cached) {
 
-		final List<Move> moves = new ArrayList<>();
+		final List<Insertion> moves = new ArrayList<>();
 		sudoku.streamGroups().forEach(group -> findMovesInGroup(cached, group, moves));
 		return moves;
 	}
 
 	private static void findMovesInGroup(final PencilMarks cached, final CellGroup group,
-			final List<Move> resultMoves) {
+			final List<Insertion> resultMoves) {
 
 		final Set<Cell> possibleTargets = new HashSet<>();
 		final Map<Set<Integer>, Set<Cell>> cellsByCandidates = new HashMap<>();
@@ -67,7 +66,7 @@ public class NakedPair implements Technique {
 			possibleTargets.stream().filter(c -> cached.candidates(c).containsAll(nakedPair)).forEach(c -> {
 				final var candsCopy = new TreeSet<>(cached.candidates(c));
 				candsCopy.removeAll(nakedPair);
-				resultMoves.add(new Move(strategyByGroup(group), c, candsCopy.first()));
+				resultMoves.add(new Insertion(strategyByGroup(group), c, candsCopy.first()));
 			});
 		}
 	}

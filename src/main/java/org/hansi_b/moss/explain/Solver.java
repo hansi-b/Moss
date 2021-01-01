@@ -29,9 +29,9 @@ public class Solver {
 		final Sudoku suCopy = Sudoku.copyOf(su);
 		final PencilMarks pencilMarks = new PencilMarks();
 
-		List<Move> moves = findMoves(suCopy, pencilMarks);
+		List<Insertion> moves = findMoves(suCopy, pencilMarks);
 		while (!moves.isEmpty()) {
-			Move move = moves.get(0);
+			final Insertion move = moves.get(0);
 			pencilMarks.updateByInsertion(move.cell, move.newValue);
 			move.apply();
 			moves = findMoves(suCopy, pencilMarks);
@@ -39,9 +39,9 @@ public class Solver {
 		return suCopy;
 	}
 
-	private List<Move> findMoves(final Sudoku sudoku, final PencilMarks pencilMarks) {
+	private List<Insertion> findMoves(final Sudoku sudoku, final PencilMarks pencilMarks) {
 		for (final Technique t : techniques) {
-			final List<Move> moves = t.findMoves(sudoku, pencilMarks);
+			final List<Insertion> moves = t.findMoves(sudoku, pencilMarks);
 			if (!moves.isEmpty())
 				return moves;
 		}

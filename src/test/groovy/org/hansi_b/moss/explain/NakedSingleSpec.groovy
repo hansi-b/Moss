@@ -1,9 +1,9 @@
 package org.hansi_b.moss.explain;
 
-import static org.hansi_b.moss.testSupport.Shortcuts.move;
+import static org.hansi_b.moss.testSupport.Shortcuts.insert;
 
 import org.hansi_b.moss.Sudoku;
-import org.hansi_b.moss.explain.Move.Strategy;
+import org.hansi_b.moss.explain.Move.Strategy
 
 class NakedSingleSpec extends spock.lang.Specification {
 
@@ -22,7 +22,7 @@ class NakedSingleSpec extends spock.lang.Specification {
 
 		then:
 		assert technique.findMoves(su, new PencilMarks()) == [
-			move(su, Strategy.NakedSingle, 0, 1, 3)
+			insert(su, Strategy.NakedSingle, 0, 1, 3)
 		]
 	}
 
@@ -39,7 +39,7 @@ class NakedSingleSpec extends spock.lang.Specification {
 
 		then:
 		technique.findMoves(su, new PencilMarks()) == [
-			move(su, Strategy.NakedSingle, 1, 1, 4)
+			insert(su, Strategy.NakedSingle, 1, 1, 4)
 		]
 	}
 
@@ -56,10 +56,10 @@ class NakedSingleSpec extends spock.lang.Specification {
 		then:
 
 		technique.findMoves(su, new PencilMarks()) as Set == [
-			move(su, Strategy.NakedSingle, 1, 0, 2),
-			move(su, Strategy.NakedSingle, 1, 1, 4),
-			move(su, Strategy.NakedSingle, 2, 2, 1),
-			move(su, Strategy.NakedSingle, 3, 0, 3)] as Set
+			insert(su, Strategy.NakedSingle, 1, 0, 2),
+			insert(su, Strategy.NakedSingle, 1, 1, 4),
+			insert(su, Strategy.NakedSingle, 2, 2, 1),
+			insert(su, Strategy.NakedSingle, 3, 0, 3)] as Set
 	}
 
 	def testFindBig() {
@@ -85,7 +85,7 @@ class NakedSingleSpec extends spock.lang.Specification {
 
 		then:
 		technique.findMoves(su, new PencilMarks()) == [
-			move(su, Strategy.NakedSingle, 5, 5, 3)
+			insert(su, Strategy.NakedSingle, 5, 5, 3)
 		]
 	}
 }

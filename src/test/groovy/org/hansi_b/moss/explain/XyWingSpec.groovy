@@ -1,6 +1,6 @@
 package org.hansi_b.moss.explain
 
-import static org.hansi_b.moss.testSupport.Shortcuts.move
+import static org.hansi_b.moss.testSupport.Shortcuts.insert
 
 import org.hansi_b.moss.Sudoku
 
@@ -26,6 +26,6 @@ class XyWingSpec extends spock.lang.Specification {
 
 		expect:
 		technique.findMoves(su, new PencilMarks()) as Set == [
-			move(su, Move.Strategy.XyWing, 0, 6, 6)] as Set
+			insert(su, Move.Strategy.XyWing, 0, 6, 6)] as Set
 	}
 }

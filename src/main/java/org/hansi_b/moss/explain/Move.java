@@ -1,13 +1,11 @@
 package org.hansi_b.moss.explain;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.function.Function;
 
-import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup.Type;
 
-public class Move {
+public interface Move {
 
 	public enum Strategy {
 		NakedSingleInRow, //
@@ -44,37 +42,5 @@ public class Move {
 		}
 	}
 
-	final Strategy strategy;
-	final Cell cell;
-	final Integer newValue;
-
-	public Move(final Strategy strategy, final Cell cell, final Integer newValue) {
-		this.strategy = strategy;
-		this.cell = cell;
-		this.newValue = newValue;
-	}
-
-	void apply() {
-		cell.setValue(newValue);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (!(obj instanceof Move))
-			return false;
-		final Move m = (Move) obj;
-		return strategy == m.strategy && //
-				cell == m.cell && //
-				newValue.intValue() == m.newValue.intValue();
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(strategy, cell, newValue);
-	}
-
-	@Override
-	public String toString() {
-		return String.format("%s <- %d (%s)", cell, newValue, strategy);
-	}
+	public void apply();
 }

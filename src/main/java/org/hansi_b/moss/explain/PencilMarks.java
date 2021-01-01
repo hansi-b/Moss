@@ -69,11 +69,11 @@ public class PencilMarks {
 	 * the argument value: The cell is cleared of all candidates, and the value is
 	 * removed from the candidates of all other empty cells in the argument cell's
 	 * groups.
-	 * 
+	 *
 	 * @param cell     the cell that has been filled
 	 * @param newValue the value that has been filled in
 	 */
-	public void updateByInsertion(Cell cell, int newValue) {
+	public void updateByInsertion(final Cell cell, final int newValue) {
 		cell.streamEmptyCellsFromGroups().forEach(c -> candidatesInternal(c).remove(newValue));
 		candidatesInternal(cell).clear();
 	}

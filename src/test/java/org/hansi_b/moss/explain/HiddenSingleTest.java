@@ -1,7 +1,7 @@
 package org.hansi_b.moss.explain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hansi_b.moss.testSupport.Shortcuts.move;
+import static org.hansi_b.moss.testSupport.Shortcuts.insert;
 
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
@@ -22,12 +22,12 @@ public class HiddenSingleTest {
 		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(technique.findMoves(su, new PencilMarks())).containsExactlyInAnyOrder(//
-				move(su, Strategy.HiddenSingleInRow, 0, 0, 1), //
-				move(su, Strategy.HiddenSingleInCol, 0, 0, 1), //
-				move(su, Strategy.HiddenSingleInBlock, 0, 0, 1), //
-				move(su, Strategy.HiddenSingleInRow, 3, 3, 1), //
-				move(su, Strategy.HiddenSingleInCol, 3, 3, 1), //
-				move(su, Strategy.HiddenSingleInBlock, 3, 3, 1));
+				insert(su, Move.Strategy.HiddenSingleInRow, 0, 0, 1), //
+				insert(su, Move.Strategy.HiddenSingleInCol, 0, 0, 1), //
+				insert(su, Move.Strategy.HiddenSingleInBlock, 0, 0, 1), //
+				insert(su, Move.Strategy.HiddenSingleInRow, 3, 3, 1), //
+				insert(su, Move.Strategy.HiddenSingleInCol, 3, 3, 1), //
+				insert(su, Move.Strategy.HiddenSingleInBlock, 3, 3, 1));
 	}
 
 	@Test
@@ -41,10 +41,10 @@ public class HiddenSingleTest {
 		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(technique.findMoves(su, new PencilMarks())).containsExactlyInAnyOrder(//
-				move(su, Strategy.HiddenSingleInCol, 0, 0, 1), //
-				move(su, Strategy.HiddenSingleInBlock, 0, 0, 1), //
-				move(su, Strategy.HiddenSingleInCol, 3, 1, 2), //
-				move(su, Strategy.HiddenSingleInBlock, 3, 1, 2) //
+				insert(su, Move.Strategy.HiddenSingleInCol, 0, 0, 1), //
+				insert(su, Move.Strategy.HiddenSingleInBlock, 0, 0, 1), //
+				insert(su, Move.Strategy.HiddenSingleInCol, 3, 1, 2), //
+				insert(su, Move.Strategy.HiddenSingleInBlock, 3, 1, 2) //
 		);
 	}
 
@@ -70,8 +70,8 @@ public class HiddenSingleTest {
 		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(technique.findMoves(su, new PencilMarks())).containsExactly(//
-				move(su, Strategy.HiddenSingleInRow, 4, 4, 4), //
-				move(su, Strategy.HiddenSingleInBlock, 4, 4, 4) //
+				insert(su, Move.Strategy.HiddenSingleInRow, 4, 4, 4), //
+				insert(su, Move.Strategy.HiddenSingleInBlock, 4, 4, 4) //
 		);
 	}
 
@@ -98,21 +98,21 @@ public class HiddenSingleTest {
 		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(technique.findMoves(su, new PencilMarks())).containsExactlyInAnyOrder(//
-				move(su, Strategy.HiddenSingleInCol, 1, 0, 7), //
-				move(su, Strategy.HiddenSingleInBlock, 1, 0, 7),
+				insert(su, Move.Strategy.HiddenSingleInCol, 1, 0, 7), //
+				insert(su, Move.Strategy.HiddenSingleInBlock, 1, 0, 7),
 				//
-				move(su, Strategy.HiddenSingleInRow, 3, 7, 7), //
-				move(su, Strategy.HiddenSingleInCol, 3, 7, 7), //
-				move(su, Strategy.HiddenSingleInBlock, 3, 7, 7),
+				insert(su, Move.Strategy.HiddenSingleInRow, 3, 7, 7), //
+				insert(su, Move.Strategy.HiddenSingleInCol, 3, 7, 7), //
+				insert(su, Move.Strategy.HiddenSingleInBlock, 3, 7, 7),
 				//
-				move(su, Strategy.HiddenSingleInCol, 4, 8, 2),
+				insert(su, Move.Strategy.HiddenSingleInCol, 4, 8, 2),
 				//
-				move(su, Strategy.HiddenSingleInCol, 5, 1, 6), //
-				move(su, Strategy.HiddenSingleInBlock, 5, 1, 6),
+				insert(su, Move.Strategy.HiddenSingleInCol, 5, 1, 6), //
+				insert(su, Move.Strategy.HiddenSingleInBlock, 5, 1, 6),
 				//
-				move(su, Strategy.HiddenSingleInRow, 6, 7, 6), //
-				move(su, Strategy.HiddenSingleInCol, 6, 7, 6), //
-				move(su, Strategy.HiddenSingleInBlock, 6, 7, 6) //
+				insert(su, Move.Strategy.HiddenSingleInRow, 6, 7, 6), //
+				insert(su, Move.Strategy.HiddenSingleInCol, 6, 7, 6), //
+				insert(su, Move.Strategy.HiddenSingleInBlock, 6, 7, 6) //
 		);
 	}
 }

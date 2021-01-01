@@ -1,6 +1,6 @@
 package org.hansi_b.moss.explain;
 
-import static org.hansi_b.moss.testSupport.Shortcuts.move;
+import static org.hansi_b.moss.testSupport.Shortcuts.insert;
 
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy
@@ -25,10 +25,10 @@ class NakedPairSpec extends spock.lang.Specification {
 
 		then:
 		assert actual == [
-			move(su, Strategy.NakedPairInRow, 0, 0, 1),
-			move(su, Strategy.NakedPairInRow, 1, 2, 2),
-			move(su, Strategy.NakedPairInBlock, 0, 0, 1),
-			move(su, Strategy.NakedPairInBlock, 1, 2, 2)
+			insert(su, Strategy.NakedPairInRow, 0, 0, 1),
+			insert(su, Strategy.NakedPairInRow, 1, 2, 2),
+			insert(su, Strategy.NakedPairInBlock, 0, 0, 1),
+			insert(su, Strategy.NakedPairInBlock, 1, 2, 2)
 		] as Set
 	}
 
@@ -54,7 +54,7 @@ class NakedPairSpec extends spock.lang.Specification {
 
 		then:
 		assert actual == [
-			move(su, Strategy.NakedPairInBlock, 8, 0, 3)
+			insert(su, Strategy.NakedPairInBlock, 8, 0, 3)
 		] as Set
 	}
 }

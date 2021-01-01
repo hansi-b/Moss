@@ -3,6 +3,7 @@ package org.hansi_b.moss.testSupport;
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Pos;
 import org.hansi_b.moss.Sudoku;
+import org.hansi_b.moss.explain.Insertion;
 import org.hansi_b.moss.explain.Move;
 
 public class Shortcuts {
@@ -11,8 +12,8 @@ public class Shortcuts {
 		return su.getCell(Pos.at(x, y));
 	}
 
-	public static Move move(final Sudoku sudoku, final Move.Strategy strategy, final int row, final int col,
+	public static Insertion insert(final Sudoku sudoku, final Move.Strategy strategy, final int row, final int col,
 			final int newValue) {
-		return new Move(strategy, sudoku.getCell(Pos.at(row, col)), newValue);
+		return new Insertion(strategy, sudoku.getCell(Pos.at(row, col)), newValue);
 	}
 }

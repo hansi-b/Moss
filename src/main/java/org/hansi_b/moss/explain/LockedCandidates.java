@@ -48,9 +48,9 @@ public class LockedCandidates implements Technique {
 	}
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku, PencilMarks marks) {
+	public List<Insertion> findMoves(final Sudoku sudoku, final PencilMarks marks) {
 
-		final List<Move> moves = new ArrayList<>();
+		final List<Insertion> moves = new ArrayList<>();
 		for (final LockType lockType : LockType.values()) {
 			sudoku.getGroups(lockType.lockingType).forEach(lockingGroup -> {
 				final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidate(lockingGroup);
@@ -70,7 +70,7 @@ public class LockedCandidates implements Technique {
 								if (candidates.size() == 2 && candidates.contains(i)) {
 									final HashSet<Integer> cands = new HashSet<Integer>(candidates);
 									cands.remove(i);
-									moves.add(new Move(lockType.moveStrategy, c, cands.iterator().next()));
+									moves.add(new Insertion(lockType.moveStrategy, c, cands.iterator().next()));
 								}
 							});
 				});

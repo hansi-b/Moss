@@ -1,6 +1,6 @@
 package org.hansi_b.moss.explain
 
-import static org.hansi_b.moss.testSupport.Shortcuts.move
+import static org.hansi_b.moss.testSupport.Shortcuts.insert
 
 import org.hansi_b.moss.Sudoku
 import org.hansi_b.moss.explain.Move.Strategy
@@ -31,7 +31,7 @@ public class LockedCandidatesSpec extends Specification {
 
 		then:
 		assert actual == [
-			move(su, Strategy.LockedCandidateBlockCol, 3, 0, 4)
+			insert(su, Strategy.LockedCandidateBlockCol, 3, 0, 4)
 		] as Set
 	}
 
@@ -57,7 +57,7 @@ public class LockedCandidatesSpec extends Specification {
 
 		then:
 		assert actual == [
-			move(su, Strategy.LockedCandidateBlockRow, 1, 6, 9)
+			insert(su, Strategy.LockedCandidateBlockRow, 1, 6, 9)
 		] as Set
 	}
 
@@ -82,10 +82,10 @@ public class LockedCandidatesSpec extends Specification {
 
 		then:
 		assert actual == [
-			move(su, Strategy.LockedCandidateBlockCol, 6, 4, 6),
-			move(su, Strategy.LockedCandidateBlockCol, 1, 5, 5),
-			move(su, Strategy.LockedCandidateColBlock, 6, 4, 6),
-			move(su, Strategy.LockedCandidateColBlock, 1, 5, 5)
+			insert(su, Strategy.LockedCandidateBlockCol, 6, 4, 6),
+			insert(su, Strategy.LockedCandidateBlockCol, 1, 5, 5),
+			insert(su, Strategy.LockedCandidateColBlock, 6, 4, 6),
+			insert(su, Strategy.LockedCandidateColBlock, 1, 5, 5)
 		] as Set
 	}
 
@@ -111,7 +111,7 @@ public class LockedCandidatesSpec extends Specification {
 
 		then:
 		assert actual == [
-			move(su, Strategy.LockedCandidateColBlock, 5, 0, 8)
+			insert(su, Strategy.LockedCandidateColBlock, 5, 0, 8)
 		] as Set
 	}
 }
