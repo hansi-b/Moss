@@ -20,8 +20,9 @@ public class Insertion implements Move {
 	}
 
 	@Override
-	public void apply() {
+	public void apply(final PencilMarks marks) {
 		cell.setValue(newValue);
+		marks.updateByInsertion(cell, newValue);
 	}
 
 	@Override

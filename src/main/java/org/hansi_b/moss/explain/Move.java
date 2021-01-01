@@ -42,5 +42,5 @@ public interface Move {
 		}
 	}
 
-	public void apply();
+	public void apply(final PencilMarks marks);
 }

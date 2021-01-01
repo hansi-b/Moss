@@ -23,7 +23,7 @@ public class TrivialNakedSingleTest {
 		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(technique.findMoves(su, new PencilMarks())).containsExactly(//
-				insert(su, Move.Strategy.NakedSingleInRow, 0, 1, 3));
+				insert(su, Strategy.NakedSingleInRow, 0, 1, 3));
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class TrivialNakedSingleTest {
 		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(technique.findMoves(su, new PencilMarks())).containsExactly(//
-				insert(su, Move.Strategy.NakedSingleInCol, 1, 0, 4));
+				insert(su, Strategy.NakedSingleInCol, 1, 0, 4));
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class TrivialNakedSingleTest {
 		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(technique.findMoves(su, new PencilMarks())).containsExactly(//
-				insert(su, Move.Strategy.NakedSingleInBlock, 1, 3, 1));
+				insert(su, Strategy.NakedSingleInBlock, 1, 3, 1));
 	}
 
 	@Test
@@ -80,8 +80,8 @@ public class TrivialNakedSingleTest {
 		final Sudoku su = Sudoku.filled(values);
 
 		assertThat(technique.findMoves(su, new PencilMarks())).containsExactlyInAnyOrder(//
-				insert(su, Move.Strategy.NakedSingleInCol, 0, 2, 1), //
-				insert(su, Move.Strategy.NakedSingleInBlock, 0, 2, 2), //
-				insert(su, Move.Strategy.NakedSingleInRow, 0, 2, 4));
+				insert(su, Strategy.NakedSingleInCol, 0, 2, 1), //
+				insert(su, Strategy.NakedSingleInBlock, 0, 2, 2), //
+				insert(su, Strategy.NakedSingleInRow, 0, 2, 4));
 	}
 }

@@ -57,12 +57,16 @@ public class InsertionSpec extends spock.lang.Specification {
 		!move.equals(new Insertion(Strategy.HiddenSingleInBlock, cell, 1))
 	}
 
-	def "applying move delegates to Cell/Sudoku"() {
+	def "applying move delegates to Cell/Sudoku & PencilMarks"() {
+
+		given:
+		PencilMarks marks = Mock()
 
 		when:
-		new Insertion(Strategy.HiddenSingleInBlock, cell, 2).apply()
+		new Insertion(Strategy.HiddenSingleInBlock, cell, 2).apply(marks)
 
 		then:
 		1 * sudoku.set(3, 5, 2)
+		1 * marks.updateByInsertion(cell, 2)
 	}
 }
