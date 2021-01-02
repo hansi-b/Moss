@@ -11,7 +11,7 @@ import org.hansi_b.moss.Pos;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Elimination;
 import org.hansi_b.moss.explain.Insertion;
-import org.hansi_b.moss.explain.Move;
+import org.hansi_b.moss.explain.Move.Strategy;
 
 public class Shortcuts {
 
@@ -25,18 +25,21 @@ public class Shortcuts {
 				.toArray(new Cell[] {});
 	}
 
-	public static Insertion insert(final Sudoku sudoku, final Move.Strategy strategy, final int row, final int col,
+	public static Insertion insert(final Sudoku sudoku, final Strategy strategy, final int row, final int col,
 			final int newValue) {
 		return new Insertion(strategy, sudoku.getCell(Pos.at(row, col)), newValue);
 	}
 
-	public static Elimination eliminate(final Sudoku sudoku, final Move.Strategy strategy, final int row, final int col,
+	public static Elimination eliminate(final Sudoku sudoku, final Strategy strategy, final int row, final int col,
 			final int candidate) {
-		return new Elimination(strategy).with(Collections.singleton(sudoku.getCell(Pos.at(row, col))),
-				Collections.singleton(candidate));
+		return eliminate(strategy, candidate, sudoku.getCell(Pos.at(row, col)));
 	}
 
-	public static Elimination eliminate(final Move.Strategy strategy, final int candidate, final Cell... cells) {
+	public static Elimination eliminate(final Strategy strategy, final int candidate, final Cell... cells) {
 		return new Elimination(strategy).with(Set.of(cells), Collections.singleton(candidate));
+	}
+
+	public static Elimination eliminate(final Strategy strategy, final ArrayList<Integer> cands, final Cell... cells) {
+		return new Elimination(strategy).with(Set.of(cells), Set.copyOf(cands));
 	}
 }

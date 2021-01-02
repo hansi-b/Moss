@@ -8,12 +8,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.function.Function;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.CellGroup.Type;
+import org.hansi_b.moss.CollectUtils;
 import org.hansi_b.moss.Sudoku;
 
 /**
@@ -34,40 +34,41 @@ public class NakedPair implements Technique {
 	}
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks cached) {
+	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
 
 		final List<Move> moves = new ArrayList<>();
-		sudoku.streamGroups().forEach(group -> findMovesInGroup(cached, group, moves));
+		sudoku.streamGroups().forEach(group -> findMovesInGroup(marks, group, moves));
 		return moves;
 	}
 
-	private static void findMovesInGroup(final PencilMarks cached, final CellGroup group,
-			final List<Move> resultMoves) {
+	private static void findMovesInGroup(final PencilMarks marks, final CellGroup group, final List<Move> resultMoves) {
 
-		final Set<Cell> possibleTargets = new HashSet<>();
-		final Map<Set<Integer>, Set<Cell>> cellsByCandidates = new HashMap<>();
+		final Map<Set<Integer>, Set<Cell>> cellsByPairs = new HashMap<>();
 
 		group.streamEmptyCells().forEach(cell -> {
-			final SortedSet<Integer> cands = cached.candidates(cell);
+			final SortedSet<Integer> cands = marks.candidates(cell);
 			if (cands.size() == 2)
-				cellsByCandidates.computeIfAbsent(cands, k -> new HashSet<>()).add(cell);
-			else if (cands.size() == 3)
-				possibleTargets.add(cell);
+				cellsByPairs.computeIfAbsent(cands, k -> new HashSet<>()).add(cell);
 		});
 
-		if (possibleTargets.isEmpty())
-			return;
-
-		for (final Entry<Set<Integer>, Set<Cell>> entry : cellsByCandidates.entrySet()) {
-			if (entry.getValue().size() != 2)
+		for (final Entry<Set<Integer>, Set<Cell>> candidatePairEntry : cellsByPairs.entrySet()) {
+			final Set<Cell> nakedPairCells = candidatePairEntry.getValue();
+			if (nakedPairCells.size() != 2)
 				continue;
 
-			final Set<Integer> nakedPair = entry.getKey();
-			possibleTargets.stream().filter(c -> cached.candidates(c).containsAll(nakedPair)).forEach(c -> {
-				final var candsCopy = new TreeSet<>(cached.candidates(c));
-				candsCopy.removeAll(nakedPair);
-				resultMoves.add(new Insertion(strategyByGroup(group), c, candsCopy.first()));
+			// group our target cells by which subset of the candidates they contain
+			final Set<Integer> nakedPair = candidatePairEntry.getKey();
+			Map<Set<Integer>, Set<Cell>> toRemoveBySubsets = new HashMap<>();
+			group.streamEmptyCells().filter(c -> !nakedPairCells.contains(c)).forEach(c -> {
+				final Set<Integer> candsToRemove = CollectUtils.intersection(marks.candidates(c), nakedPair);
+				if (!candsToRemove.isEmpty())
+					toRemoveBySubsets.computeIfAbsent(candsToRemove, k -> new HashSet<>()).add(c);
 			});
+			if (!toRemoveBySubsets.isEmpty()) {
+				Elimination move = new Elimination(strategyByGroup(group));
+				toRemoveBySubsets.forEach((cands, cells) -> move.with(cells, cands));
+				resultMoves.add(move);
+			}
 		}
 	}
 }

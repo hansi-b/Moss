@@ -1,6 +1,6 @@
 package org.hansi_b.moss.explain;
 
-import static org.hansi_b.moss.testSupport.Shortcuts.insert;
+import static org.hansi_b.moss.testSupport.Shortcuts.*;
 
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy
@@ -13,9 +13,8 @@ class NakedPairSpec extends spock.lang.Specification {
 
 		when:
 		final Integer[] values = //
-				// first row contains a naked pair of 3,4
-				[0, 2, 0, 0]+
-				[0, 0, 0, 1]+
+				[1, 2, 0, 0]+
+				[0, 0, 0, 0]+
 				[0, 0, 0, 0]+
 				[0, 0, 0, 0]
 
@@ -25,10 +24,8 @@ class NakedPairSpec extends spock.lang.Specification {
 
 		then:
 		assert actual == [
-			insert(su, Strategy.NakedPairInRow, 0, 0, 1),
-			insert(su, Strategy.NakedPairInRow, 1, 2, 2),
-			insert(su, Strategy.NakedPairInBlock, 0, 0, 1),
-			insert(su, Strategy.NakedPairInBlock, 1, 2, 2)
+			eliminate(Strategy.NakedPairInRow, [3, 4], cellsAt(su, [1, 2], [1, 3])),
+			eliminate(Strategy.NakedPairInBlock, [3, 4], cellsAt(su, [1, 2], [1, 3])),
 		] as Set
 	}
 
@@ -39,13 +36,13 @@ class NakedPairSpec extends spock.lang.Specification {
 		// http://sudoku.org.uk/solvingtechniques/nakedpairs.asp
 		final Integer[] values = //
 				[0, 0, 0, 0, 0, 0, 0, 0, 0]+
-				[0, 0, 0, 0, 0, 0, 0, 0, 0]+
+				[0, 0, 5, 0, 0, 0, 1, 4, 0]+
 				[0, 0, 0, 0, 0, 0, 0, 0, 0]+
 				[6, 0, 0, 0, 0, 0, 0, 0, 0]+
 				[9, 0, 0, 0, 0, 0, 0, 0, 0]+
 				[5, 0, 0, 0, 0, 0, 0, 0, 0]+
 				[7, 2, 0, 0, 8, 4, 0, 3, 9]+
-				[0, 8, 0, 9, 3, 6, 0, 5, 0]+
+				[0, 8, 0, 9, 3, 0, 6, 0, 0]+
 				[0, 0, 0, 0, 7, 2, 0, 0, 0]
 
 		Sudoku su = Sudoku.filled(values);
@@ -53,8 +50,10 @@ class NakedPairSpec extends spock.lang.Specification {
 		def actual = technique.findMoves(su, new PencilMarks()) as Set
 
 		then:
+		// row 7 & block 3/0: some occurrences of 1 + 4 can go (tied to 7/0 and 7/2)
 		assert actual == [
-			insert(su, Strategy.NakedPairInBlock, 8, 0, 3)
+			eliminate(Strategy.NakedPairInRow, 1, cellsAt(su, [7, 5], [7, 7])).with([cellAt(su,7,8)] as Set, [1, 4] as Set),
+			eliminate(Strategy.NakedPairInBlock, [1, 4], cellsAt(su, [8, 0], [8, 1], [8, 2])).with([cellAt(su,6,2)] as Set, [1] as Set)
 		] as Set
 	}
 }
