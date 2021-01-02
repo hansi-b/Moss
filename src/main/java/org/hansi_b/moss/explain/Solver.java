@@ -10,15 +10,11 @@ public class Solver {
 	private final Technique[] techniques;
 
 	public Solver() {
-		this.techniques = new Technique[] { //
-				new TrivialNakedSingle(), //
-				new NakedSingle(), //
-				new NakedSinglePencilMark(), //
-				new HiddenSingle(), //
-				new NakedPair(), //
-				new XyWing(), //
-				new LockedCandidates(), //
-		};
+		this(Technique.allTechniques());
+	}
+
+	public Solver(Technique... techniques) {
+		this.techniques = techniques;
 	}
 
 	/**
