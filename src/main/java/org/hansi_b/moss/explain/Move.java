@@ -12,6 +12,7 @@ public interface Move {
 		NakedSingleInCol, //
 		NakedSingleInBlock, //
 		NakedSingle, //
+		NakedSinglePencilMark, //
 		HiddenSingleInRow, //
 		HiddenSingleInCol, //
 		HiddenSingleInBlock, //

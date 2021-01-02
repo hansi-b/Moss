@@ -13,6 +13,7 @@ public class Solver {
 		this.techniques = new Technique[] { //
 				new TrivialNakedSingle(), //
 				new NakedSingle(), //
+				new NakedSinglePencilMark(), //
 				new HiddenSingle(), //
 				new NakedPair(), //
 				new XyWing(), //

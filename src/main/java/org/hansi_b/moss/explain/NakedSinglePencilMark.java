@@ -7,18 +7,13 @@ import org.hansi_b.moss.Sudoku;
 
 /**
  *
- * After https://www.sudoku-solutions.com/index.php?page=solvingnakedsubsets
- *
  * Also known as: Singleton, Sole Candidate, Lone Single
  * (https://www.learn-sudoku.com/lone-singles.html)
- *
- * Finds cells where the combinations of the cell's row+block+column contain all
- * numbers but one.
  * 
- * Does not use the pencil marks - that is done by the generalization
- * {@link NakedSinglePencilMark}
+ * A generalization of the {@link NakedSingle}: Looks at the pencil marks
+ * instead of filled cells.
  */
-public class NakedSingle implements Technique {
+public class NakedSinglePencilMark implements Technique {
 
 	@Override
 	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
@@ -26,8 +21,8 @@ public class NakedSingle implements Technique {
 		// TODO: use the marks instead of looking at the cells directly?
 		// then again, that's not really the spirit here
 		return sudoku.streamEmptyCells().//
-				filter(c -> c.getCandidates().size() == 1)
-				.map(c -> new Insertion(Move.Strategy.NakedSingle, c, c.getCandidates().first()))//
+				filter(c -> marks.candidates(c).size() == 1)
+				.map(c -> new Insertion(Move.Strategy.NakedSinglePencilMark, c, marks.candidates(c).first()))//
 				.collect(Collectors.toList());
 	}
 }
