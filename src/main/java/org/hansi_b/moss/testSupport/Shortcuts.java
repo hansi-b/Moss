@@ -32,11 +32,11 @@ public class Shortcuts {
 
 	public static Elimination eliminate(final Sudoku sudoku, final Move.Strategy strategy, final int row, final int col,
 			final int candidate) {
-		return new Elimination(strategy, Collections.singleton(sudoku.getCell(Pos.at(row, col))),
+		return new Elimination(strategy).with(Collections.singleton(sudoku.getCell(Pos.at(row, col))),
 				Collections.singleton(candidate));
 	}
 
 	public static Elimination eliminate(final Move.Strategy strategy, final int candidate, final Cell... cells) {
-		return new Elimination(strategy, Set.of(cells), Collections.singleton(candidate));
+		return new Elimination(strategy).with(Set.of(cells), Collections.singleton(candidate));
 	}
 }
