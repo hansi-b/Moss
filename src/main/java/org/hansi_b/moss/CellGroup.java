@@ -58,17 +58,32 @@ public class CellGroup {
 		Row(final Sudoku sudoku, final List<Cell> cells) {
 			super(sudoku, Type.Row, cells);
 		}
+
+		@Override
+		public String toString() {
+			return String.format("%s %d", Type.Row, firstRow());
+		}
 	}
 
 	public static class Col extends CellGroup {
 		Col(final Sudoku sudoku, final List<Cell> cells) {
 			super(sudoku, Type.Col, cells);
 		}
+
+		@Override
+		public String toString() {
+			return String.format("%s %d", Type.Col, firstCol());
+		}
 	}
 
 	public static class Block extends CellGroup {
 		Block(final Sudoku sudoku, final List<Cell> cells) {
 			super(sudoku, Type.Block, cells);
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%s %d/%d", Type.Block, firstRow(), firstCol());
 		}
 	}
 
@@ -139,6 +154,14 @@ public class CellGroup {
 		final BitSet targets = new BitSet(size());
 		streamFilledCells().forEach(e -> targets.set(e.getValue() - 1));
 		return targets.cardinality() == size();
+	}
+
+	protected int firstRow() {
+		return cells.get(0).getPos().row;
+	}
+
+	protected int firstCol() {
+		return cells.get(0).getPos().col;
 	}
 
 	@Override

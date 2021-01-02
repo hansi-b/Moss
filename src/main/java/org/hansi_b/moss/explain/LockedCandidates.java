@@ -1,7 +1,7 @@
 package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
@@ -64,15 +64,14 @@ public class LockedCandidates implements Technique {
 					 * the locking group.
 					 */
 					final CellGroup target = groups.iterator().next();
-					target.streamEmptyCells().filter(c -> c.getGroup(lockingGroup.type()) != lockingGroup)
-							.forEach(c -> {
-								final SortedSet<Integer> candidates = marks.candidates(c);
-								if (candidates.size() == 2 && candidates.contains(cand)) {
-									final HashSet<Integer> cands = new HashSet<Integer>(candidates);
-									cands.remove(cand);
-									moves.add(new Insertion(lockType.moveStrategy, c, cands.iterator().next()));
-								}
-							});
+					final Set<Cell> targetCells = target.streamEmptyCells().filter(
+							c -> c.getGroup(lockingGroup.type()) != lockingGroup && marks.candidates(c).contains(cand))
+							.collect(Collectors.toSet());
+					if (!targetCells.isEmpty()) {
+						moves.add(new Elimination(lockType.moveStrategy, targetCells, Collections.singleton(cand)));
+						System.out.println(String.format("Locked by %s: %d only in %s -> %s", lockingGroup, cand,
+								target, targetCells));
+					}
 				});
 			});
 		}
