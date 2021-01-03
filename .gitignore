@@ -16,4 +16,4 @@ gradle-app.setting
 
 # Intellij
 .idea
-tmp
+examples
