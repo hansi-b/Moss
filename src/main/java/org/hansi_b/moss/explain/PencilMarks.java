@@ -31,7 +31,7 @@ public class PencilMarks {
 	}
 
 	private SortedSet<Integer> candidatesInternal(final Cell cell) {
-		return candidatesByCell.computeIfAbsent(cell, c -> c.getCandidates());
+		return candidatesByCell.computeIfAbsent(cell, Cell::getCandidates);
 	}
 
 	/**

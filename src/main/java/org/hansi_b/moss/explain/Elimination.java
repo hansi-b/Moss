@@ -27,7 +27,7 @@ public class Elimination implements Move {
 	 * Marks each of the argument candidates to be removed from each of the argument
 	 * cells.
 	 */
-	public Elimination with(final Set<Cell> cells, final Set<Integer> candidates) {
+	public Elimination with(final Set<Integer> candidates, final Set<Cell> cells) {
 		cells.forEach(c -> candidatesByCells.computeIfAbsent(c, k -> new TreeSet<>()).addAll(candidates));
 		return this;
 	}

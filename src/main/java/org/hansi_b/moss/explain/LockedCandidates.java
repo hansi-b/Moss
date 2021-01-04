@@ -69,7 +69,7 @@ public class LockedCandidates implements Technique {
 							.collect(Collectors.toSet());
 					if (!targetCells.isEmpty()) {
 						moves.add(
-								new Elimination(lockType.moveStrategy).with(targetCells, Collections.singleton(cand)));
+								new Elimination(lockType.moveStrategy).with(Collections.singleton(cand), targetCells));
 //						System.out.println(String.format("Locked by %s: %d only in %s -> %s", lockingGroup, cand,
 //								target, targetCells));
 					}

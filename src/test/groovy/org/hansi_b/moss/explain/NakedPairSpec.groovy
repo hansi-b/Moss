@@ -52,8 +52,8 @@ class NakedPairSpec extends spock.lang.Specification {
 		then:
 		// row 7 & block 3/0: some occurrences of 1 + 4 can go (tied to 7/0 and 7/2)
 		assert actual == [
-			eliminate(Strategy.NakedPairInRow, 1, cellsAt(su, [7, 5], [7, 7])).with([cellAt(su,7,8)] as Set, [1, 4] as Set),
-			eliminate(Strategy.NakedPairInBlock, [1, 4], cellsAt(su, [8, 0], [8, 1], [8, 2])).with([cellAt(su,6,2)] as Set, [1] as Set)
+			eliminate(Strategy.NakedPairInRow, 1, cellsAt(su, [7, 5], [7, 7])).with([1, 4] as Set, [cellAt(su,7,8)] as Set),
+			eliminate(Strategy.NakedPairInBlock, [1, 4], cellsAt(su, [8, 0], [8, 1], [8, 2])).with([1] as Set, [cellAt(su,6,2)] as Set)
 		] as Set
 	}
 }

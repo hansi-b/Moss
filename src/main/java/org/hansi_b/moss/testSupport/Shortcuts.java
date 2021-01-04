@@ -3,6 +3,7 @@ package org.hansi_b.moss.testSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,10 +37,10 @@ public class Shortcuts {
 	}
 
 	public static Elimination eliminate(final Strategy strategy, final int candidate, final Cell... cells) {
-		return new Elimination(strategy).with(Set.of(cells), Collections.singleton(candidate));
+		return new Elimination(strategy).with(Collections.singleton(candidate), Set.of(cells));
 	}
 
-	public static Elimination eliminate(final Strategy strategy, final ArrayList<Integer> cands, final Cell... cells) {
-		return new Elimination(strategy).with(Set.of(cells), Set.copyOf(cands));
+	public static Elimination eliminate(final Strategy strategy, final List<Integer> cands, final Cell... cells) {
+		return new Elimination(strategy).with(Set.copyOf(cands), Set.of(cells));
 	}
 }

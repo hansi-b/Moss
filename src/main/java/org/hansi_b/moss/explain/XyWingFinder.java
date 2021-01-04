@@ -29,7 +29,7 @@ class XyWingFinder {
 	@VisibleForTesting
 	SortedSet<Cell> filterCandidates() {
 		return sudoku.streamEmptyCells().filter(c -> cached.candidates(c).size() == 2)
-				.collect(Collectors.toCollection(() -> Cell.newPosSortedSet()));
+				.collect(Collectors.toCollection(Cell::newPosSortedSet));
 	}
 
 	List<WingTriple> findAllWings() {
@@ -109,8 +109,8 @@ class XyWingFinder {
 								continue;
 
 							final Integer nextCand = entry.getKey();
-
 							final Set<Integer> requiredCands = Set.of(currentCand, nextCand);
+
 							emptyCellsW2Cands.stream().filter(x -> x != currCell && x != nextCell //
 									&& requiredCands.equals(cached.candidates(x)) //
 									&& x.sharesAnyGroup(currCell) && x.sharesAnyGroup(nextCell))

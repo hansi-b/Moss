@@ -58,15 +58,15 @@ public class NakedPair implements Technique {
 
 			// group our target cells by which subset of the candidates they contain
 			final Set<Integer> nakedPair = candidatePairEntry.getKey();
-			Map<Set<Integer>, Set<Cell>> toRemoveBySubsets = new HashMap<>();
+			final Map<Set<Integer>, Set<Cell>> toRemoveBySubsets = new HashMap<>();
 			group.streamEmptyCells().filter(c -> !nakedPairCells.contains(c)).forEach(c -> {
 				final Set<Integer> candsToRemove = CollectUtils.intersection(marks.candidates(c), nakedPair);
 				if (!candsToRemove.isEmpty())
 					toRemoveBySubsets.computeIfAbsent(candsToRemove, k -> new HashSet<>()).add(c);
 			});
 			if (!toRemoveBySubsets.isEmpty()) {
-				Elimination move = new Elimination(strategyByGroup(group));
-				toRemoveBySubsets.forEach((cands, cells) -> move.with(cells, cands));
+				final Elimination move = new Elimination(strategyByGroup(group));
+				toRemoveBySubsets.forEach(move::with);
 				resultMoves.add(move);
 			}
 		}

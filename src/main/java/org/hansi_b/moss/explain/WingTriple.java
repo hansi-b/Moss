@@ -24,7 +24,7 @@ class WingTriple {
 
 	Set<Cell> targetCells() {
 		final Set<Cell> empties = Stream.of(a, b).map(e -> e.streamEmptyCellsFromGroups().collect(Collectors.toSet()))
-				.reduce((a, b) -> CollectUtils.intersection(a, b)).get();
+				.reduce(CollectUtils::intersection).orElseThrow(IllegalStateException::new);
 		empties.remove(x);
 		return empties;
 	}

@@ -44,8 +44,8 @@ public class XyWing implements Technique {
 			final Set<Cell> targetCells = wing.targetCells().stream()
 					.filter(c -> marks.candidates(c).contains(wing.commonCandidate)).collect(Collectors.toSet());
 			if (!targetCells.isEmpty())
-				moves.add(new Elimination(Move.Strategy.XyWing).with(targetCells,
-						Collections.singleton(wing.commonCandidate)));
+				moves.add(new Elimination(Move.Strategy.XyWing).with(Collections.singleton(wing.commonCandidate),
+						targetCells));
 		});
 
 		return moves;
