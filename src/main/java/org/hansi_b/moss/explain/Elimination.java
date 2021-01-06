@@ -32,6 +32,10 @@ public class Elimination implements Move {
 		return this;
 	}
 
+	boolean isEmpty() {
+		return candidatesByCells.isEmpty();
+	}
+
 	@Override
 	public void apply(final PencilMarks marks) {
 		candidatesByCells.forEach((cell, cands) -> cands.forEach(cand -> marks.remove(cell, cand)));

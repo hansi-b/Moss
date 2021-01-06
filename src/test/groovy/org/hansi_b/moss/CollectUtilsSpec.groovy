@@ -7,8 +7,8 @@ import spock.lang.Unroll
 
 public class CollectUtilsSpec extends Specification {
 
-	@Unroll
-	def "get empty combinations for size #size" () {
+	@Unroll def"get empty combinations for size #size"()
+	{
 		given:
 		def x = CollectUtils.combinations([1, 2, 3] as SortedSet, size)
 
@@ -19,19 +19,22 @@ public class CollectUtilsSpec extends Specification {
 		size << [-1, 0]
 	}
 
-	def "get sole combination" () {
+	def"get sole combination"()
+	{
 
 		expect:
 		CollectUtils.combinations([1, 2, 3] as SortedSet, 3) == sortedTreeSets([[1, 2, 3]])
 	}
 
-	def "get combinations 1 from 3" () {
+	def"get combinations 1 from 3"()
+	{
 
 		expect:
 		CollectUtils.combinations([1, 2, 3] as SortedSet, 1) == sortedTreeSets([[1], [2], [3]])
 	}
 
-	def "get more combinations" () {
+	def"get more combinations"()
+	{
 
 		expect:
 		CollectUtils.combinations([1, 2, 3, 4, 5] as SortedSet, 3) == sortedTreeSets([
@@ -48,7 +51,8 @@ public class CollectUtilsSpec extends Specification {
 		])
 	}
 
-	def "get combinations for custom comparator" () {
+	def"get combinations for custom comparator"()
+	{
 
 		given:
 		Sudoku su = Sudoku.empty()
@@ -66,11 +70,10 @@ public class CollectUtilsSpec extends Specification {
 			return s
 		}
 
-
 		CollectUtils.combinations(cells, 2) == res
 	}
 
-	def sortedTreeSets(collOfColls) {
+	def sortedTreeSets(final collOfColls) {
 		collOfColls.collect { new TreeSet(it) }
 	}
 

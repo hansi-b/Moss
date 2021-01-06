@@ -5,11 +5,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
+import org.hansi_b.moss.CollectUtils;
 import org.hansi_b.moss.Pos;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Elimination;
@@ -48,8 +47,6 @@ public class Shortcuts {
 	}
 
 	public static void marks(final PencilMarks pm, final Cell cell, final Integer... cands) {
-		final SortedSet<Integer> targets = new TreeSet<>(pm.candidates(cell));
-		targets.removeAll(Arrays.asList(cands));
-		targets.forEach(v -> pm.remove(cell, v));
+		CollectUtils.difference(pm.candidates(cell), Arrays.asList(cands)).forEach(v -> pm.remove(cell, v));
 	}
 }

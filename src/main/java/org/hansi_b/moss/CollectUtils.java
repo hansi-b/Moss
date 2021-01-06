@@ -63,4 +63,13 @@ public class CollectUtils {
 		}
 		return result;
 	}
+
+	/**
+	 * @return a copy of the 'one' set without the elements from the other
+	 */
+	public static <T> SortedSet<T> difference(final SortedSet<T> one, final Collection<T> other) {
+		final TreeSet<T> base = new TreeSet<>(one);
+		base.removeAll(other);
+		return base;
+	}
 }
