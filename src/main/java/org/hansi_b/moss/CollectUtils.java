@@ -1,28 +1,40 @@
 package org.hansi_b.moss;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class CollectUtils {
 
-	/**
-	 * @return a list of all integer combinations up to (max-1)
+	/*
+	 * inefficient & naively recursive combinations method - good enough for our
+	 * purposes here
 	 */
-	public static List<Integer[]> getPairCombinations(final int max) {
-		final List<Integer[]> indices = new ArrayList<>();
-		for (int x = 0; x < max - 1; x++)
-			for (int y = x + 1; y < max; y++)
-				indices.add(new Integer[] { x, y });
-		return indices;
+	public static <T> List<SortedSet<T>> combinations(final SortedSet<T> elements, final int count) {
+		if (count > elements.size() || count < 1)
+			return Collections.emptyList();
+
+		if (count == elements.size()) {
+			return Collections.singletonList(new TreeSet<>(elements));
+		}
+
+		if (count == 1) {
+			return elements.stream().map(e -> new TreeSet<>(Set.of(e))).collect(Collectors.toList());
+		}
+
+		final List<SortedSet<T>> result = new ArrayList<>();
+		for (final T e : elements) {
+			final List<SortedSet<T>> subcombs = combinations(elements.headSet(e), count - 1);
+			subcombs.forEach(s -> s.add(e));
+			result.addAll(subcombs);
+		}
+		return result;
 	}
 
 	/**
@@ -44,45 +56,5 @@ public class CollectUtils {
 				return Collections.emptySet();
 		}
 		return result;
-	}
-
-	/**
-	 * Provides the union set of the argument collection, i.e., all elements which
-	 * are present in any argument collection.
-	 *
-	 * @return the union set of the argument collections
-	 */
-	@SafeVarargs
-	public static <T> Set<T> union(final Collection<T>... collections) {
-		if (collections.length == 0)
-			return Collections.emptySet();
-
-		return Arrays.stream(collections).flatMap(Collection::stream).collect(Collectors.toSet());
-	}
-
-	/**
-	 * @return a comparator for SortedSets where order is defined by pairwise
-	 *         comparison of the elements (i.e., compare the first two elements,
-	 *         then the next two, etc.). If one set is a "prefix" of the other, it
-	 *         is considered smaller.
-	 */
-	public static <E extends Comparable<E>> Comparator<SortedSet<E>> sortedSetComparator() {
-		return (final SortedSet<E> s1, final SortedSet<E> s2) -> {
-
-			if (s1 == s2)
-				return 0;
-
-			final Iterator<E> myIter = s1.iterator();
-			final Iterator<E> otherIter = s2.iterator();
-
-			while (myIter.hasNext()) {
-				if (!otherIter.hasNext())
-					return 1;
-				final int comp = myIter.next().compareTo(otherIter.next());
-				if (comp != 0)
-					return comp;
-			}
-			return otherIter.hasNext() ? -1 : 0;
-		};
 	}
 }
