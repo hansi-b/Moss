@@ -56,7 +56,7 @@ public class PencilMarks {
 	 * @throws IllegalArgumentException if the given candidate is not a candidate
 	 *                                  for the given cell
 	 */
-	void remove(final Cell cell, final int candidate) {
+	public void remove(final Cell cell, final int candidate) {
 		final SortedSet<Integer> cands = candidatesInternal(cell);
 		if (!cands.contains(candidate))
 			throw Errors.illegalArg("Argument '%d' is not in candidates %s of cell %s", candidate, cands, cell);
