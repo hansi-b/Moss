@@ -2,7 +2,9 @@ package org.hansi_b.moss;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -82,10 +84,17 @@ public class Cell {
 	}
 
 	/**
+	 * @return an empty sorted set with sorts Cells by their position
+	 */
+	public static <E> SortedMap<Cell, E> newPosSortedMap() {
+		return new TreeMap<>(positionComparator);
+	}
+
+	/**
 	 * @return a set sorting on position of the argument stream of cells
 	 */
-	public static SortedSet<Cell> collect(Stream<Cell> cells) {
-		return cells.collect(Collectors.toCollection(() -> newPosSortedSet()));
+	public static SortedSet<Cell> collect(final Stream<Cell> cells) {
+		return cells.collect(Collectors.toCollection(Cell::newPosSortedSet));
 	}
 
 	@Override

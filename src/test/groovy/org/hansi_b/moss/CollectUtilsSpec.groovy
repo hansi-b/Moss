@@ -1,5 +1,7 @@
 package org.hansi_b.moss;
 
+import static org.hansi_b.moss.testSupport.Shortcuts.cellAt
+
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -44,6 +46,28 @@ public class CollectUtilsSpec extends Specification {
 			[2, 4, 5],
 			[3, 4, 5]
 		])
+	}
+
+	def "get combinations for custom comparator" () {
+
+		given:
+		Sudoku su = Sudoku.empty()
+		def cells = Cell.newPosSortedSet();
+		def c1 = cellAt(su, 1, 0)
+		def c2 = cellAt(su, 1, 1)
+		def c3 = cellAt(su, 2, 0)
+		cells.addAll([c1, c2, c3])
+
+		expect:
+
+		def res = [[c1, c2], [c1, c3], [c2, c3]].collect {
+			def s = Cell.newPosSortedSet()
+			s.addAll(it)
+			return s
+		}
+
+
+		CollectUtils.combinations(cells, 2) == res
 	}
 
 	def sortedTreeSets(collOfColls) {

@@ -21,11 +21,17 @@ public class CollectUtils {
 			return Collections.emptyList();
 
 		if (count == elements.size()) {
+			final SortedSet<T> res = new TreeSet<>(elements.comparator());
+			res.addAll(elements);
 			return Collections.singletonList(new TreeSet<>(elements));
 		}
 
 		if (count == 1) {
-			return elements.stream().map(e -> new TreeSet<>(Set.of(e))).collect(Collectors.toList());
+			return elements.stream().map(e -> {
+				final SortedSet<T> res = new TreeSet<>(elements.comparator());
+				res.add(e);
+				return res;
+			}).collect(Collectors.toList());
 		}
 
 		final List<SortedSet<T>> result = new ArrayList<>();
