@@ -50,6 +50,45 @@ public class PencilMarksSpec extends Specification {
 		new PencilMarks().getCellsByCandidate(su.getGroup(Type.Block, 0)) == [ 4 : [cellAt(su, 1, 0)] as Set ]
 	}
 
+	def "getCandidatesByCell for empty row returns all values"() {
+
+		given:
+		Sudoku su = Sudoku.empty()
+		def group = su.getGroup(Type.Row, 0)
+		def cells = group.streamEmptyCells().collect(Collectors.toList()) as Set
+
+		when:
+		def result = new PencilMarks().getCandidatesByCell(group)
+
+		then:
+		result.size() == group.size()
+		cells.each { i ->
+			result.get(i) == su.possibleValues()
+		}
+	}
+
+	def "getCandidatesByCell does not contain filled-in cells and values"() {
+
+		when:
+		final Integer[] values = //
+				// first row contains a naked pair of 3,4
+				[1, 2, 3, 4]+
+				[0, 3, 0, 1]+
+				[0, 0, 0, 0]+
+				[0, 0, 0, 0]
+
+		Sudoku su = Sudoku.filled(values)
+
+		then:
+		new PencilMarks().getCandidatesByCell(su.getGroup(Type.Row, 0)).isEmpty()
+
+		new PencilMarks().getCandidatesByCell(su.getGroup(Type.Block, 0)) == [ (cellAt(su, 1, 0)) : [4] as Set ]
+		new PencilMarks().getCandidatesByCell(su.getGroup(Type.Row, 1)) == [
+			(cellAt(su, 1, 0)) : [4] as Set,
+			(cellAt(su, 1, 2)) : [2] as Set
+		]
+	}
+
 	def "can remove candidate"() {
 
 		given:
