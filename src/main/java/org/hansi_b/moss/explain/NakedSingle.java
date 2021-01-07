@@ -23,8 +23,6 @@ public class NakedSingle implements Technique {
 	@Override
 	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
 
-		// TODO: use the marks instead of looking at the cells directly?
-		// then again, that's not really the spirit here
 		return sudoku.streamEmptyCells().//
 				filter(c -> c.getCandidates().size() == 1)
 				.map(c -> new Insertion(Move.Strategy.NakedSingle, c, c.getCandidates().first()))//
