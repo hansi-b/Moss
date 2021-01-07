@@ -13,6 +13,7 @@ interface Technique {
 				new NakedSinglePencilMark(), //
 				new HiddenSingle(), //
 				new NakedPair(), //
+				new NakedTriple(), //
 				new LockedCandidates(), //
 				new XyWing(), //
 		};
