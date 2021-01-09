@@ -98,24 +98,30 @@ class XyWingFinder {
 			while (iter.hasNext()) {
 				final Integer currentCand = next;
 				next = iter.next();
-				final SortedSet<Cell> currentCells = innerMappings.get(currentCand);
-				for (final Entry<Integer, SortedSet<Cell>> entry : innerMappings.tailMap(next).entrySet())
-					for (final Cell currCell : currentCells)
-						for (final Cell nextCell : entry.getValue()) {
-
-							if (currCell.sharesAnyGroup(nextCell))
-								continue;
-
-							final Integer nextCand = entry.getKey();
-							final Set<Integer> requiredCands = Set.of(currentCand, nextCand);
-
-							emptyCellsW2Cands.stream().filter(x -> x != currCell && x != nextCell //
-									&& requiredCands.equals(cached.candidates(x)) //
-									&& x.sharesAnyGroup(currCell) && x.sharesAnyGroup(nextCell))
-									.forEach(x -> wings.add(new WingTriple(x, commonCand, currCell, nextCell)));
-						}
+				collectWingsFromTail(innerMappings.get(currentCand), innerMappings.tailMap(next).entrySet(),
+						currentCand, commonCand, wings);
 			}
 		});
 		return wings;
+	}
+
+	private void collectWingsFromTail(final SortedSet<Cell> currentCells,
+			final Set<Entry<Integer, SortedSet<Cell>>> nextCells, final Integer currentCand, final Integer commonCand,
+			final List<WingTriple> wings) {
+		for (final Entry<Integer, SortedSet<Cell>> entry : nextCells)
+			for (final Cell currCell : currentCells)
+				for (final Cell nextCell : entry.getValue()) {
+
+					if (currCell.sharesAnyGroup(nextCell))
+						continue;
+
+					final Integer nextCand = entry.getKey();
+					final Set<Integer> requiredCands = Set.of(currentCand, nextCand);
+
+					emptyCellsW2Cands.stream().filter(x -> x != currCell && x != nextCell //
+							&& requiredCands.equals(cached.candidates(x)) //
+							&& x.sharesAnyGroup(currCell) && x.sharesAnyGroup(nextCell))
+							.forEach(x -> wings.add(new WingTriple(x, commonCand, currCell, nextCell)));
+				}
 	}
 }
