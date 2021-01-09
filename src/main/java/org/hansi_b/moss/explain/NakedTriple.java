@@ -16,11 +16,8 @@ import org.hansi_b.moss.CollectUtils;
 import org.hansi_b.moss.Sudoku;
 
 /**
- * As explained, e.g., on https://www.learn-sudoku.com/naked-pairs.html
- *
- * For each group, determine the candidates. If a pair of cells has the same two
- * candidates, eliminate these from all other cell candidates. Then, if a cell
- * remains with only a single candidate, that is the move.
+ * As explained, e.g., on https://sudoku9x9.com/naked_pair.html (along with
+ * pairs)
  */
 public class NakedTriple implements Technique {
 	private static final Function<Type, Move.Strategy> strategyByGroup = Move.Strategy.groupTypeMapper(//
