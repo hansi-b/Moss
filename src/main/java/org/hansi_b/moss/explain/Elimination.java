@@ -1,44 +1,80 @@
 package org.hansi_b.moss.explain;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
+import org.hansi_b.moss.CollectUtils;
 
 /**
  * Remove specific candidates from specific cells.
  */
 public class Elimination implements Move {
 
-	final Strategy strategy;
-	private final Map<Cell, SortedSet<Integer>> candidatesByCells;
+	public static class Builder {
+		private final Strategy strategy;
+		final Map<Cell, SortedSet<Integer>> candsBySingleCell;
 
-	public Elimination(final Move.Strategy strategy) {
-		this.strategy = strategy;
-		this.candidatesByCells = new HashMap<>();
+		public Builder(final Move.Strategy strategy) {
+			this.strategy = strategy;
+			this.candsBySingleCell = Cell.newPosSortedMap();
+		}
+
+		public Builder with(final Cell cell, final int candidate) {
+			targetSet(cell).add(candidate);
+			return this;
+		}
+
+		public Builder with(final Collection<Cell> cells, final Collection<Integer> candidates) {
+			for (final Cell cell : cells)
+				targetSet(cell).addAll(candidates);
+			return this;
+		}
+
+		private SortedSet<Integer> targetSet(final Cell cell) {
+			return candsBySingleCell.computeIfAbsent(cell, k -> new TreeSet<>());
+		}
+
+		public Elimination build() {
+			// aggregate cells by candidates
+			final Map<SortedSet<Integer>, SortedSet<Cell>> cellsByCands = new HashMap<>();
+			candsBySingleCell.entrySet().forEach(
+					e -> cellsByCands.computeIfAbsent(e.getValue(), k -> Cell.newPosSortedSet()).add(e.getKey()));
+			/*
+			 * NB: by construction, there can be no duplicate values in cellsByCands, so we
+			 * can just turn it around
+			 */
+			final Map<SortedSet<Cell>, SortedSet<Integer>> candsByCells = new TreeMap<>(
+					CollectUtils.sortedSetComparator(Cell.positionComparator));
+			cellsByCands.forEach((k, v) -> candsByCells.put(v, k));
+
+			return new Elimination(strategy, candsByCells);
+		}
 	}
 
-	/**
-	 * Marks each of the argument candidates to be removed from each of the argument
-	 * cells.
-	 */
-	public Elimination with(final Set<Integer> candidates, final Set<Cell> cells) {
-		cells.forEach(c -> candidatesByCells.computeIfAbsent(c, k -> new TreeSet<>()).addAll(candidates));
-		return this;
+	final Strategy strategy;
+	private final Map<SortedSet<Cell>, SortedSet<Integer>> candidatesCellsBy;
+
+	private Elimination(final Move.Strategy strategy,
+			final Map<SortedSet<Cell>, SortedSet<Integer>> cellsByCandidates) {
+		this.strategy = strategy;
+		this.candidatesCellsBy = cellsByCandidates;
 	}
 
 	boolean isEmpty() {
-		return candidatesByCells.isEmpty();
+		return candidatesCellsBy.isEmpty();
 	}
 
 	@Override
 	public void apply(final PencilMarks marks) {
-		candidatesByCells.forEach((cell, cands) -> cands.forEach(cand -> marks.remove(cell, cand)));
+		candidatesCellsBy
+				.forEach((cells, cands) -> cells.forEach(cell -> cands.forEach(cand -> marks.remove(cell, cand))));
 	}
 
 	@Override
@@ -47,20 +83,18 @@ public class Elimination implements Move {
 			return false;
 		final Elimination m = (Elimination) obj;
 		return strategy == m.strategy && //
-				candidatesByCells.equals(m.candidatesByCells);
+				candidatesCellsBy.equals(m.candidatesCellsBy);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(strategy, candidatesByCells);
+		return Objects.hash(strategy, candidatesCellsBy);
 	}
 
 	@Override
 	public String toString() {
-		final SortedSet<Cell> sortedCells = Cell.newPosSortedSet();
-		sortedCells.addAll(candidatesByCells.keySet());
-		final String joined = String.join(", ", sortedCells.stream()
-				.map(c -> String.format("%s - %s", c, candidatesByCells.get(c))).collect(Collectors.toList()));
+		final String joined = String.join(", ", candidatesCellsBy.entrySet().stream()
+				.map(e -> String.format("%s - %s", e.getKey(), e.getValue())).collect(Collectors.toList()));
 		return String.format("Eliminate: %s (%s)", joined, strategy);
 	}
 }

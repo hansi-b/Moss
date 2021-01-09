@@ -1,7 +1,6 @@
 package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -49,8 +48,7 @@ public class NakedTriple implements Technique {
 		if (candsByCell.isEmpty())
 			return;
 
-		final SortedSet<Cell> sortedCells = Cell.newPosSortedSet();
-		sortedCells.addAll(candsByCell.keySet());
+		final SortedSet<Cell> sortedCells = Cell.newPosSortedSet(candsByCell.keySet());
 
 		final List<SortedSet<Cell>> possibleCombinations = CollectUtils.combinations(sortedCells, 3).stream()
 				.filter(combi -> getCandidates(combi, candsByCell).size() == 3).collect(Collectors.toList());
@@ -59,13 +57,10 @@ public class NakedTriple implements Technique {
 
 		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidate(group);
 		possibleCombinations.forEach(combi -> {
-			final Elimination move = new Elimination(strategyByGroup(group));
-			final SortedSet<Integer> cands = getCandidates(combi, candsByCell);
-			cands.forEach(c -> {
-				final SortedSet<Cell> diff = CollectUtils.difference(cellsByCandidate.get(c), combi);
-				if (!diff.isEmpty())
-					move.with(Collections.singleton(c), diff);
-			});
+			final Elimination.Builder moveBuilder = new Elimination.Builder(strategyByGroup(group));
+			getCandidates(combi, candsByCell).forEach(cand -> CollectUtils.difference(cellsByCandidate.get(cand), combi)
+					.forEach(cell -> moveBuilder.with(cell, cand)));
+			final Elimination move = moveBuilder.build();
 			if (!move.isEmpty())
 				moves.add(move);
 		});

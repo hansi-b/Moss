@@ -1,7 +1,6 @@
 package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
@@ -29,7 +28,7 @@ import org.hansi_b.moss.explain.Move.Strategy;
  */
 public class LockedCandidates implements Technique {
 
-	static enum LockType {
+	enum LockType {
 
 		BlockCol(Type.Block, Type.Col, Strategy.LockedCandidateBlockCol), //
 		BlockRow(Type.Block, Type.Row, Strategy.LockedCandidateBlockRow), //
@@ -68,10 +67,10 @@ public class LockedCandidates implements Technique {
 							c -> c.getGroup(lockingGroup.type()) != lockingGroup && marks.candidates(c).contains(cand))
 							.collect(Collectors.toSet());
 					if (!targetCells.isEmpty()) {
-						moves.add(
-								new Elimination(lockType.moveStrategy).with(Collections.singleton(cand), targetCells));
-//						System.out.println(String.format("Locked by %s: %d only in %s -> %s", lockingGroup, cand,
-//								target, targetCells));
+						final Elimination.Builder builder = new Elimination.Builder(lockType.moveStrategy);
+						for (final Cell c : targetCells)
+							builder.with(c, cand);
+						moves.add(builder.build());
 					}
 				});
 			});

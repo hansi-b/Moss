@@ -1,7 +1,6 @@
 package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -43,9 +42,11 @@ public class XyWing implements Technique {
 		wings.forEach(wing -> {
 			final Set<Cell> targetCells = wing.targetCells().stream()
 					.filter(c -> marks.candidates(c).contains(wing.commonCandidate)).collect(Collectors.toSet());
-			if (!targetCells.isEmpty())
-				moves.add(new Elimination(Move.Strategy.XyWing).with(Collections.singleton(wing.commonCandidate),
-						targetCells));
+			if (!targetCells.isEmpty()) {
+				final Elimination.Builder builder = new Elimination.Builder(Move.Strategy.XyWing);
+				targetCells.forEach(cell -> builder.with(cell, wing.commonCandidate));
+				moves.add(builder.build());
+			}
 		});
 
 		return moves;

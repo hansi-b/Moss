@@ -27,12 +27,12 @@ public class LockedCandidatesSpec extends Specification {
 
 		Sudoku su = Sudoku.filled(values)
 
-		def actual = new LockedCandidates().findMoves(su, new PencilMarks()) as Set
+		def actual = new LockedCandidates().findMoves(su, new PencilMarks())
 
 		then:
 		assert actual == [
-			eliminate(Strategy.LockedCandidateBlockCol, 3, cellsAt(su, [3, 0], [7, 0], [8, 0]))
-		] as Set
+			eliminate(Strategy.LockedCandidateBlockCol, [3], cellsAt(su, [3, 0], [7, 0], [8, 0]))
+		]
 	}
 
 	def "can find simple BlockRow example"() {
@@ -53,12 +53,12 @@ public class LockedCandidatesSpec extends Specification {
 
 		Sudoku su = Sudoku.filled(values)
 
-		def actual = new LockedCandidates().findMoves(su, new PencilMarks()) as Set
+		def actual = new LockedCandidates().findMoves(su, new PencilMarks())
 
 		then:
 		assert actual == [
-			eliminate(Strategy.LockedCandidateBlockRow, 3, cellsAt(su, [1, 3], [1, 5], [1, 6], [1, 7]))
-		] as Set
+			eliminate(Strategy.LockedCandidateBlockRow, [3], cellsAt(su, [1, 3], [1, 5], [1, 6], [1, 7]))
+		]
 	}
 
 	def "can find overlapping locked candidates"() {
@@ -85,12 +85,12 @@ public class LockedCandidatesSpec extends Specification {
 		then:
 		// seems to be correct, but double-check expectation if this ever fails
 		assert actual == [
-			eliminate(Strategy.LockedCandidateBlockRow, 6, cellsAt(su, [5, 6], [5, 8])),
-			eliminate(Strategy.LockedCandidateRowBlock, 6, cellsAt(su, [5, 6], [5, 8])),
-			eliminate(Strategy.LockedCandidateBlockCol, 7, cellsAt(su, [1, 5])),
-			eliminate(Strategy.LockedCandidateColBlock, 7, cellsAt(su, [1, 5])),
-			eliminate(Strategy.LockedCandidateBlockCol, 8, cellsAt(su, [6, 4], [7, 4])),
-			eliminate(Strategy.LockedCandidateColBlock, 8, cellsAt(su, [6, 4], [7, 4])),
+			eliminate(Strategy.LockedCandidateBlockRow, [6], cellsAt(su, [5, 6], [5, 8])),
+			eliminate(Strategy.LockedCandidateRowBlock, [6], cellsAt(su, [5, 6], [5, 8])),
+			eliminate(Strategy.LockedCandidateBlockCol, [7], cellsAt(su, [1, 5])),
+			eliminate(Strategy.LockedCandidateColBlock, [7], cellsAt(su, [1, 5])),
+			eliminate(Strategy.LockedCandidateBlockCol, [8], cellsAt(su, [6, 4], [7, 4])),
+			eliminate(Strategy.LockedCandidateColBlock, [8], cellsAt(su, [6, 4], [7, 4])),
 		] as Set
 	}
 
@@ -118,11 +118,11 @@ public class LockedCandidatesSpec extends Specification {
 		then:
 		assert actual == [
 			// col 0
-			eliminate(Strategy.LockedCandidateColBlock, 1, cellsAt(su, [3, 2], [4, 1], [4, 2], [5, 2])),
+			eliminate(Strategy.LockedCandidateColBlock, [1], cellsAt(su, [3, 2], [4, 1], [4, 2], [5, 2])),
 			// col 1
-			eliminate(Strategy.LockedCandidateColBlock, 1, cellsAt(su, [3, 2], [4, 0], [4, 2], [5, 0], [5, 2])),
+			eliminate(Strategy.LockedCandidateColBlock, [1], cellsAt(su, [3, 2], [4, 0], [4, 2], [5, 0], [5, 2])),
 			// col 2
-			eliminate(Strategy.LockedCandidateColBlock, 1, cellsAt(su, [4, 0], [4, 1], [5, 0])),
+			eliminate(Strategy.LockedCandidateColBlock, [1], cellsAt(su, [4, 0], [4, 1], [5, 0])),
 		] as Set
 	}
 }

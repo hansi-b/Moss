@@ -2,7 +2,6 @@ package org.hansi_b.moss.testSupport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,17 +32,8 @@ public class Shortcuts {
 		return new Insertion(strategy, sudoku.getCell(Pos.at(row, col)), newValue);
 	}
 
-	public static Elimination eliminate(final Sudoku sudoku, final Strategy strategy, final int row, final int col,
-			final int candidate) {
-		return eliminate(strategy, candidate, sudoku.getCell(Pos.at(row, col)));
-	}
-
-	public static Elimination eliminate(final Strategy strategy, final int candidate, final Cell... cells) {
-		return new Elimination(strategy).with(Collections.singleton(candidate), Set.of(cells));
-	}
-
 	public static Elimination eliminate(final Strategy strategy, final List<Integer> cands, final Cell... cells) {
-		return new Elimination(strategy).with(Set.copyOf(cands), Set.of(cells));
+		return new Elimination.Builder(strategy).with(Set.of(cells), cands).build();
 	}
 
 	public static void marks(final PencilMarks pm, final Cell cell, final Integer... cands) {

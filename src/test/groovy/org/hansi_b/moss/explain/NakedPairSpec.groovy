@@ -1,6 +1,6 @@
 package org.hansi_b.moss.explain;
 
-import static org.hansi_b.moss.testSupport.Shortcuts.*;
+import static org.hansi_b.moss.testSupport.Shortcuts.*
 
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy
@@ -25,7 +25,7 @@ class NakedPairSpec extends spock.lang.Specification {
 		then:
 		assert actual == [
 			eliminate(Strategy.NakedPairInRow, [3, 4], cellsAt(su, [1, 2], [1, 3])),
-			eliminate(Strategy.NakedPairInBlock, [3, 4], cellsAt(su, [1, 2], [1, 3])),
+			eliminate(Strategy.NakedPairInBlock, [3, 4], cellsAt(su, [1, 2], [1, 3]))
 		] as Set
 	}
 
@@ -52,8 +52,10 @@ class NakedPairSpec extends spock.lang.Specification {
 		then:
 		// row 7 & block 3/0: some occurrences of 1 + 4 can go (tied to 7/0 and 7/2)
 		assert actual == [
-			eliminate(Strategy.NakedPairInRow, 1, cellsAt(su, [7, 5], [7, 7])).with([1, 4] as Set, [cellAt(su,7,8)] as Set),
-			eliminate(Strategy.NakedPairInBlock, [1, 4], cellsAt(su, [8, 0], [8, 1], [8, 2])).with([1] as Set, [cellAt(su,6,2)] as Set)
+			new Elimination.Builder(Strategy.NakedPairInRow)
+			.with(cellsAt(su, [7, 5], [7, 7]) as Set, [1]).with([cellAt(su,7,8)], [1, 4]).build(),
+			new Elimination.Builder(Strategy.NakedPairInBlock)
+			.with(cellsAt(su, [8, 0], [8, 1], [8, 2]) as Set, [1, 4]).with([cellAt(su,6,2)], [1]).build()
 		] as Set
 	}
 }

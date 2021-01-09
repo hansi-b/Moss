@@ -43,6 +43,27 @@ public class NakedPair implements Technique {
 
 	private static void findMovesInGroup(final PencilMarks marks, final CellGroup group, final List<Move> resultMoves) {
 
+		final Map<Set<Integer>, Set<Cell>> cellsByPairs = findCellsByPairs(marks, group);
+
+		for (final Entry<Set<Integer>, Set<Cell>> candidatePairEntry : cellsByPairs.entrySet()) {
+			final Set<Cell> nakedPairCells = candidatePairEntry.getValue();
+			if (nakedPairCells.size() != 2)
+				continue;
+			final Set<Integer> nakedPair = candidatePairEntry.getKey();
+
+			final Elimination.Builder builder = new Elimination.Builder(strategyByGroup(group));
+			group.streamEmptyCells().filter(c -> !nakedPairCells.contains(c)).forEach(c -> {
+				final Set<Integer> candsToRemove = CollectUtils.intersection(marks.candidates(c), nakedPair);
+				candsToRemove.forEach(cand -> builder.with(c, cand));
+			});
+			final Elimination move = builder.build();
+			if (!move.isEmpty()) {
+				resultMoves.add(move);
+			}
+		}
+	}
+
+	private static Map<Set<Integer>, Set<Cell>> findCellsByPairs(final PencilMarks marks, final CellGroup group) {
 		final Map<Set<Integer>, Set<Cell>> cellsByPairs = new HashMap<>();
 
 		group.streamEmptyCells().forEach(cell -> {
@@ -50,25 +71,6 @@ public class NakedPair implements Technique {
 			if (cands.size() == 2)
 				cellsByPairs.computeIfAbsent(cands, k -> new HashSet<>()).add(cell);
 		});
-
-		for (final Entry<Set<Integer>, Set<Cell>> candidatePairEntry : cellsByPairs.entrySet()) {
-			final Set<Cell> nakedPairCells = candidatePairEntry.getValue();
-			if (nakedPairCells.size() != 2)
-				continue;
-
-			// group our target cells by which subset of the candidates they contain
-			final Set<Integer> nakedPair = candidatePairEntry.getKey();
-			final Map<Set<Integer>, Set<Cell>> toRemoveBySubsets = new HashMap<>();
-			group.streamEmptyCells().filter(c -> !nakedPairCells.contains(c)).forEach(c -> {
-				final Set<Integer> candsToRemove = CollectUtils.intersection(marks.candidates(c), nakedPair);
-				if (!candsToRemove.isEmpty())
-					toRemoveBySubsets.computeIfAbsent(candsToRemove, k -> new HashSet<>()).add(c);
-			});
-			if (!toRemoveBySubsets.isEmpty()) {
-				final Elimination move = new Elimination(strategyByGroup(group));
-				toRemoveBySubsets.forEach(move::with);
-				resultMoves.add(move);
-			}
-		}
+		return cellsByPairs;
 	}
 }

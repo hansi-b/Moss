@@ -3,7 +3,9 @@ package org.hansi_b.moss;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -11,6 +13,40 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class CollectUtils {
+
+	/**
+	 * Defines a comparator over SortedSets of Comparable elements: Order is defined
+	 * by pairwise comparison of the elements (i.e., compare the first two elements,
+	 * then the next two, etc.) according to the iteration order of the respective
+	 * sets. If one set is a "prefix" of the other, it is considered smaller.
+	 */
+	private static final class SortedSetComparator<E> implements Comparator<SortedSet<E>> {
+
+		private final Comparator<E> elementComparator;
+
+		public SortedSetComparator(final Comparator<E> elementComparator) {
+			this.elementComparator = elementComparator;
+		}
+
+		@Override
+		public int compare(final SortedSet<E> s1, final SortedSet<E> s2) {
+
+			if (s1 == s2)
+				return 0;
+
+			final Iterator<E> myIter = s1.iterator();
+			final Iterator<E> otherIter = s2.iterator();
+
+			while (myIter.hasNext()) {
+				if (!otherIter.hasNext())
+					return 1;
+				final int comp = elementComparator.compare(myIter.next(), otherIter.next());
+				if (comp != 0)
+					return comp;
+			}
+			return otherIter.hasNext() ? -1 : 0;
+		}
+	}
 
 	/*
 	 * inefficient & naively recursive combinations method - good enough for our
@@ -71,5 +107,13 @@ public class CollectUtils {
 		final TreeSet<T> base = new TreeSet<>(one);
 		base.removeAll(other);
 		return base;
+	}
+
+	public static <E> Comparator<SortedSet<E>> sortedSetComparator(final Comparator<E> comparator) {
+		return new SortedSetComparator<>(comparator);
+	}
+
+	public static <E extends Comparable<E>> Comparator<SortedSet<E>> sortedSetComparator() {
+		return new SortedSetComparator<>((e1, e2) -> e1.compareTo(e2));
 	}
 }

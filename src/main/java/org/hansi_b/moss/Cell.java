@@ -1,6 +1,7 @@
 package org.hansi_b.moss;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -16,7 +17,7 @@ import java.util.stream.Stream;
  */
 public class Cell {
 
-	private static final Comparator<Cell> positionComparator = (c1, c2) -> Pos.positionComparator.compare(c1.pos,
+	public static final Comparator<Cell> positionComparator = (c1, c2) -> Pos.positionComparator.compare(c1.pos,
 			c2.pos);
 
 	private final Sudoku sudoku;
@@ -81,6 +82,15 @@ public class Cell {
 	 */
 	public static SortedSet<Cell> newPosSortedSet() {
 		return new TreeSet<>(positionComparator);
+	}
+
+	/**
+	 * @return a set with the argument Cells sorted by their position
+	 */
+	public static SortedSet<Cell> newPosSortedSet(Collection<Cell> cells) {
+		TreeSet<Cell> res = new TreeSet<>(positionComparator);
+		res.addAll(cells);
+		return res;
 	}
 
 	/**
