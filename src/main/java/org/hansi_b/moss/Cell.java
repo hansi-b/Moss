@@ -3,12 +3,15 @@ package org.hansi_b.moss;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.hansi_b.moss.CellGroup.Type;
 
 /**
  * A single field in the Sudoku. Has a row and a column (at least in the square
@@ -75,6 +78,10 @@ public class Cell {
 
 	public void setValue(final Integer newValue) {
 		sudoku.set(pos.row, pos.col, newValue);
+	}
+
+	public static Set<CellGroup> toGroups(final Collection<Cell> cells, final Type groupType) {
+		return cells.stream().map(c -> c.getGroup(groupType)).collect(Collectors.toSet());
 	}
 
 	/**
