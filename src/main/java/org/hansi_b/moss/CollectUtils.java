@@ -1,6 +1,7 @@
 package org.hansi_b.moss;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class CollectUtils {
 
@@ -48,9 +50,11 @@ public class CollectUtils {
 		}
 	}
 
-	/*
-	 * inefficient & naively recursive combinations method - good enough for our
-	 * purposes here
+	/**
+	 * A not necessarily efficient method to get combinations from a SortedSet -
+	 * good enough for our purposes here.
+	 *
+	 * @return a List of all distinct combinations of count elements
 	 */
 	public static <T> List<SortedSet<T>> combinations(final SortedSet<T> elements, final int count) {
 		if (count > elements.size() || count < 1)
@@ -80,6 +84,27 @@ public class CollectUtils {
 	}
 
 	/**
+	 * Generate all distinct ascending pairs up the argument bound; returns them as
+	 * pair arrays in a list
+	 *
+	 * @param max the exclusive upper bound
+	 * @return a list of int arrays, each containing two elements
+	 */
+	public static List<int[]> pairCombinations(final int max) {
+		return IntStream.range(0, max - 1).mapToObj(i -> IntStream.range(i + 1, max).mapToObj(j -> new int[] { i, j }))
+				.flatMap(i -> i).collect(Collectors.toList());
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> List<T[]> pairCombinations(final List<T> elements) {
+
+		return IntStream.range(0, elements.size() - 1)
+				.mapToObj(i -> IntStream.range(i + 1, elements.size())
+						.mapToObj(j -> (T[]) new Object[] { elements.get(i), elements.get(j) }))
+				.flatMap(i -> i).collect(Collectors.toList());
+	}
+
+	/**
 	 * Provides the intersection set of the argument collections: Copies a Set from
 	 * the first argument, retains only elements which are present in all following
 	 * arguments.
@@ -98,6 +123,20 @@ public class CollectUtils {
 				return Collections.emptySet();
 		}
 		return result;
+	}
+
+	/**
+	 * Provides the union set of the argument collection, i.e., all elements which
+	 * are present in any argument collection.
+	 *
+	 * @return the union set of the argument collections
+	 */
+	@SafeVarargs
+	public static <T> Set<T> union(final Collection<T>... collections) {
+		if (collections.length == 0)
+			return Collections.emptySet();
+
+		return Arrays.stream(collections).flatMap(Collection::stream).collect(Collectors.toSet());
 	}
 
 	/**

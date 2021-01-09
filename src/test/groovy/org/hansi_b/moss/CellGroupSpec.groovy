@@ -1,27 +1,34 @@
 package org.hansi_b.moss;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.util.Lists.list;
-import static org.assertj.core.util.Sets.*;
-
 import org.hansi_b.moss.CellGroup.Type;
-import org.junit.jupiter.api.Test;
+import static org.hansi_b.moss.testSupport.Shortcuts.cellAt
 
 import spock.lang.Specification
 import spock.lang.Unroll
 
 public class CellGroupSpec extends Specification {
 
+	def "equality is defined by object identity"() {
+
+		when:
+		Sudoku s1 = Sudoku.empty()
+		Sudoku s2 = Sudoku.empty()
+
+		then:
+		cellAt(s1, 0, 1).getGroup(Type.Row) == cellAt(s1, 0, 2).getGroup(Type.Row)
+		cellAt(s2, 0, 1).getGroup(Type.Row) != cellAt(s1, 0, 2).getGroup(Type.Row)
+	}
+
 	@Unroll
 	def "values for row #groupIdx"() {
 
 		given:
-		final Integer[] values =
+		Integer[] values =
 				[1, 0, 4, 2]+
 				[2, 4, 0, 1]+
 				[3, 1, 2, 0]+
 				[0, 2, 1, 3]
-		final Sudoku su = Sudoku.filled(values)
+		Sudoku su = Sudoku.filled(values)
 
 		expect:
 		su.getGroup(Type.Row, groupIdx).values() == groupValues
@@ -38,12 +45,12 @@ public class CellGroupSpec extends Specification {
 	def "values for column #groupIdx"() {
 
 		given:
-		final Integer[] values =
+		Integer[] values =
 				[1, 0, 4, 2]+
 				[2, 4, 0, 1]+
 				[3, 1, 2, 0]+
 				[0, 2, 1, 3]
-		final Sudoku su = Sudoku.filled(values)
+		Sudoku su = Sudoku.filled(values)
 
 		expect:
 		su.getGroup(Type.Col, groupIdx).values() == groupValues
@@ -60,12 +67,12 @@ public class CellGroupSpec extends Specification {
 	def "values for block #groupIdx"() {
 
 		given:
-		final Integer[] values =
+		Integer[] values =
 				[1, 0, 4, 2]+
 				[2, 4, 0, 1]+
 				[3, 1, 2, 0]+
 				[0, 2, 1, 3]
-		final Sudoku su = Sudoku.filled(values)
+		Sudoku su = Sudoku.filled(values)
 
 		expect:
 		su.getGroup(Type.Block, groupIdx).values() == groupValues
@@ -82,12 +89,12 @@ public class CellGroupSpec extends Specification {
 	def "missing values for block #groupIdx"() {
 
 		given:
-		final Integer[] values =
+		Integer[] values =
 				[1, 0, 4, 2]+
 				[2, 4, 0, 0]+
 				[3, 0, 0, 0]+
 				[0, 0, 0, 0]
-		final Sudoku su = Sudoku.filled(values);
+		Sudoku su = Sudoku.filled(values);
 
 		expect:
 		su.getGroup(Type.Block, groupIdx).missing() == missingVals as Set
@@ -104,12 +111,12 @@ public class CellGroupSpec extends Specification {
 	def "special case for row #groupIdx"() {
 
 		given:
-		final Integer[] values =
+		Integer[] values =
 				[1, 1, 1, 1]+
 				[0, 0, 0, 0]+
 				[0, 0, 0, 0]+
 				[0, 0, 0, 0]
-		final Sudoku su = Sudoku.filled(values);
+		Sudoku su = Sudoku.filled(values);
 
 		expect:
 		su.getGroup(Type.Row, groupIdx).missing() == missingVals as Set
