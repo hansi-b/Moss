@@ -3,15 +3,16 @@ package org.hansi_b.moss.explain;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hansi_b.moss.Sudoku;
+import org.hansi_b.moss.draw.AsciiPainter;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class SolverTest {
+class SolverTest {
 
-	public final Solver solver = new Solver();
+	final Solver solver = new Solver();
 
 	@Test
-	public void testEasy() {
+	void testEasy() {
 
 		/*
 		 * from a city magazine (easy)
@@ -34,7 +35,7 @@ public class SolverTest {
 	}
 
 	@Test
-	public void testLittleDifficult() {
+	void testLittleDifficult() {
 
 		/*
 		 * from a city magazine (difficult)
@@ -57,7 +58,7 @@ public class SolverTest {
 	}
 
 	@Test
-	public void testSehrSchwer() {
+	void testSehrSchwer() {
 
 		/*
 		 * Die Zeit (sehr schwer, 8th June 2019)
@@ -80,9 +81,9 @@ public class SolverTest {
 		assertTrue(filled.isSolved());
 	}
 
-	@Disabled
+	@Disabled("Cannot be solved yet")
 	@Test
-	public void testSehrSchwer02() {
+	void testSehrSchwer02() {
 		/*
 		 * Die Zeit (sehr schwer, 16th October 2019)
 		 */
@@ -101,5 +102,27 @@ public class SolverTest {
 		};
 		final Sudoku su = Sudoku.filled(values);
 		assertTrue(solver.solve(su).isSolved());
+	}
+
+	@Disabled("Cannot be solved yet")
+	@Test
+	void test_Zeit_schwer_2020_10_19() {
+		final Integer[] values = { //
+				8, 0, 0, 0, 0, 0, 9, 1, 0, //
+				0, 0, 5, 6, 9, 0, 3, 2, 0, //
+				0, 4, 0, 0, 1, 0, 5, 7, 0, //
+				//
+				0, 9, 0, 0, 0, 0, 0, 6, 0, //
+				6, 0, 0, 1, 0, 0, 0, 8, 0, //
+				5, 0, 0, 0, 0, 2, 0, 0, 0, //
+				//
+				0, 0, 3, 4, 2, 0, 0, 0, 0, //
+				0, 8, 0, 0, 5, 1, 0, 0, 2, //
+				2, 0, 0, 0, 7, 0, 0, 4, 0, //
+		};
+		final Sudoku su = Sudoku.filled(values);
+		final Sudoku filled = solver.solve(su);
+		System.out.println(new AsciiPainter().draw(filled));
+		assertTrue(filled.isSolved());
 	}
 }
