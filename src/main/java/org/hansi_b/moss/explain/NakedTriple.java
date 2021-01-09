@@ -57,9 +57,8 @@ public class NakedTriple implements Technique {
 			final Elimination.Builder moveBuilder = new Elimination.Builder(strategyByGroup(group));
 			getCandidates(combi, candsByCell).forEach(cand -> CollectUtils.difference(cellsByCandidate.get(cand), combi)
 					.forEach(cell -> moveBuilder.with(cell, cand)));
-			final Elimination move = moveBuilder.build();
-			if (!move.isEmpty())
-				moves.add(move);
+			if (!moveBuilder.isEmpty())
+				moves.add(moveBuilder.build());
 		});
 	}
 

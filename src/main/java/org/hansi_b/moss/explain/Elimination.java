@@ -41,6 +41,10 @@ public class Elimination implements Move {
 			return candsBySingleCell.computeIfAbsent(cell, k -> new TreeSet<>());
 		}
 
+		public boolean isEmpty() {
+			return candsBySingleCell.isEmpty();
+		}
+
 		public Elimination build() {
 			// aggregate cells by candidates
 			final Map<SortedSet<Integer>, SortedSet<Cell>> cellsByCands = new HashMap<>();
@@ -65,10 +69,6 @@ public class Elimination implements Move {
 			final Map<SortedSet<Cell>, SortedSet<Integer>> cellsByCandidates) {
 		this.strategy = strategy;
 		this.candidatesCellsBy = cellsByCandidates;
-	}
-
-	boolean isEmpty() {
-		return candidatesCellsBy.isEmpty();
 	}
 
 	@Override

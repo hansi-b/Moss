@@ -52,13 +52,10 @@ public class NakedPair implements Technique {
 			final Set<Integer> nakedPair = candidatePairEntry.getKey();
 
 			final Elimination.Builder builder = new Elimination.Builder(strategyByGroup(group));
-			group.streamEmptyCells().filter(c -> !nakedPairCells.contains(c)).forEach(c -> {
-				final Set<Integer> candsToRemove = CollectUtils.intersection(marks.candidates(c), nakedPair);
-				candsToRemove.forEach(cand -> builder.with(c, cand));
-			});
-			final Elimination move = builder.build();
-			if (!move.isEmpty()) {
-				resultMoves.add(move);
+			group.streamEmptyCells().filter(c -> !nakedPairCells.contains(c)).forEach(c -> CollectUtils
+					.intersection(marks.candidates(c), nakedPair).forEach(cand -> builder.with(c, cand)));
+			if (!builder.isEmpty()) {
+				resultMoves.add(builder.build());
 			}
 		}
 	}
