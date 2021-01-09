@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
@@ -28,8 +27,7 @@ class XyWingFinder {
 
 	@VisibleForTesting
 	SortedSet<Cell> filterCandidates() {
-		return sudoku.streamEmptyCells().filter(c -> cached.candidates(c).size() == 2)
-				.collect(Collectors.toCollection(Cell::newPosSortedSet));
+		return Cell.collect(sudoku.streamEmptyCells().filter(c -> cached.candidates(c).size() == 2));
 	}
 
 	List<WingTriple> findAllWings() {
