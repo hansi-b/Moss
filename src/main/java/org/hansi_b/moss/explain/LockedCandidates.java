@@ -63,14 +63,12 @@ public class LockedCandidates implements Technique {
 					 * the locking group.
 					 */
 					final CellGroup target = groups.iterator().next();
-					final Set<Cell> targetCells = target.streamEmptyCells().filter(
-							c -> c.getGroup(lockingGroup.type()) != lockingGroup && marks.candidates(c).contains(cand))
-							.collect(Collectors.toSet());
+					final Set<Cell> targetCells = Cell.collect(
+							target.streamEmptyCells().filter(c -> c.getGroup(lockingGroup.type()) != lockingGroup
+									&& marks.candidates(c).contains(cand)));
 					if (!targetCells.isEmpty()) {
-						final Elimination.Builder builder = new Elimination.Builder(lockType.moveStrategy);
-						for (final Cell c : targetCells)
-							builder.with(c, cand);
-						moves.add(builder.build());
+						moves.add(
+								new Elimination.Builder(lockType.moveStrategy).with(targetCells, Set.of(cand)).build());
 					}
 				});
 			});
