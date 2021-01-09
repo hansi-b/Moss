@@ -22,6 +22,8 @@ public interface Move {
 		LockedCandidateBlockCol, //
 		LockedCandidateRowBlock, //
 		LockedCandidateColBlock, //
+		XWingFromRow, //
+		XWingFromCol, //
 		XyWing //
 		;
 

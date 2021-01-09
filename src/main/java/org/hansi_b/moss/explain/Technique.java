@@ -15,6 +15,7 @@ interface Technique {
 				new NakedPair(), //
 				new NakedTriple(), //
 				new LockedCandidates(), //
+				new XWing(), //
 				new XyWing(), //
 		};
 	}
