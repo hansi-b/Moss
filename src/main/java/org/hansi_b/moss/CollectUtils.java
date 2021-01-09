@@ -1,5 +1,6 @@
 package org.hansi_b.moss;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -97,11 +98,21 @@ public class CollectUtils {
 
 	@SuppressWarnings("unchecked")
 	public static <T> List<T[]> pairCombinations(final List<T> elements) {
-
 		return IntStream.range(0, elements.size() - 1)
 				.mapToObj(i -> IntStream.range(i + 1, elements.size())
-						.mapToObj(j -> (T[]) new Object[] { elements.get(i), elements.get(j) }))
+						.mapToObj(j -> genericArray(elements.get(i), elements.get(j))))
 				.flatMap(i -> i).collect(Collectors.toList());
+	}
+
+	/**
+	 * This seems to work, but it's black magic. See
+	 * https://stackoverflow.com/a/530289/1016514
+	 */
+	@SuppressWarnings("unchecked")
+	private static <T> T[] genericArray(final T... es) {
+		final T[] newInstance = (T[]) Array.newInstance(es[0].getClass(), es.length);
+		System.arraycopy(es, 0, newInstance, 0, es.length);
+		return newInstance;
 	}
 
 	/**
