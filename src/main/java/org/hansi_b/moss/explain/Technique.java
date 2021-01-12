@@ -14,6 +14,7 @@ interface Technique {
 				new HiddenSingle(), //
 				new NakedPair(), //
 				new NakedTriple(), //
+				new HiddenPair(), //
 				new LockedCandidates(), //
 				new XWing(), //
 				new XyWing(), //

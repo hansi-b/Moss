@@ -18,6 +18,9 @@ public interface Move {
 		HiddenSingleInBlock, //
 		NakedPairInRow, NakedPairInCol, NakedPairInBlock, //
 		NakedTripleInRow, NakedTripleInCol, NakedTripleInBlock, //
+		HiddenPairInRow, //
+		HiddenPairInCol, //
+		HiddenPairInBlock, //
 		LockedCandidateBlockRow, //
 		LockedCandidateBlockCol, //
 		LockedCandidateRowBlock, //

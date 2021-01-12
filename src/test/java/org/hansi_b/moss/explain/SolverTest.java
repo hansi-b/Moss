@@ -3,7 +3,7 @@ package org.hansi_b.moss.explain;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hansi_b.moss.Sudoku;
-import org.hansi_b.moss.draw.AsciiPainter;
+import org.hansi_b.moss.draw.JavaArrayPrinter;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -81,7 +81,7 @@ class SolverTest {
 		assertTrue(filled.isSolved());
 	}
 
-	@Disabled("Cannot be solved yet")
+	@Disabled("Needs a more advanced technique")
 	@Test
 	void testSehrSchwer02() {
 		/*
@@ -101,10 +101,11 @@ class SolverTest {
 				0, 0, 5, 0, 7, 3, 0, 4, 0 //
 		};
 		final Sudoku su = Sudoku.filled(values);
-		assertTrue(solver.solve(su).isSolved());
+		final Sudoku filled = solver.solve(su);
+		System.out.println(new JavaArrayPrinter().draw(filled));
+		assertTrue(filled.isSolved());
 	}
 
-	@Disabled("Cannot be solved yet")
 	@Test
 	void test_Zeit_schwer_2020_10_19() {
 		final Integer[] values = { //
@@ -121,8 +122,6 @@ class SolverTest {
 				2, 0, 0, 0, 7, 0, 0, 4, 0, //
 		};
 		final Sudoku su = Sudoku.filled(values);
-		final Sudoku filled = solver.solve(su);
-		System.out.println(new AsciiPainter().draw(filled));
-		assertTrue(filled.isSolved());
+		assertTrue(solver.solve(su).isSolved());
 	}
 }
