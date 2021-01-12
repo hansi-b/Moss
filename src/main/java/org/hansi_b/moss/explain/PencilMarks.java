@@ -3,10 +3,12 @@ package org.hansi_b.moss.explain;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
@@ -51,6 +53,20 @@ public class PencilMarks {
 	}
 
 	/**
+	 * Similar to {@link #getCellsByCandidate(CellGroup)}, but with an additional
+	 * filter argument that's applied on the result map.
+	 *
+	 * @param filterFunc a predicate on Map.Entry<Integer, SortedSet<Cell>>
+	 * @return a SortedMap containing those mappings from candidates to cells which
+	 *         match the argument predicate
+	 */
+	SortedMap<Integer, SortedSet<Cell>> getCellsByCandidateFiltered(final CellGroup group,
+			final Predicate<? super Entry<Integer, SortedSet<Cell>>> filterFunc) {
+		return getCellsByCandidate(group).entrySet().stream().filter(filterFunc)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, TreeMap::new));
+	}
+
+	/**
 	 * Aggregates a mapping from empty cells to missing numbers in the given group.
 	 * Really just an aggregation of {@link #candidates(Cell)}
 	 *
@@ -61,6 +77,20 @@ public class PencilMarks {
 	public SortedMap<Cell, SortedSet<Integer>> getCandidatesByCell(final CellGroup group) {
 		return group.streamEmptyCells()
 				.collect(Collectors.toMap(Function.identity(), this::candidates, (a, b) -> a, Cell::newPosSortedMap));
+	}
+
+	/**
+	 * Similar to {@link #getCandidatesByCell(CellGroup)}, but with an additional
+	 * filter argument that's applied on the result map.
+	 *
+	 * @param group the group for which to aggregate the result map
+	 * @return a SortedMap mapping empty cells in the argument group to the values
+	 *         missing the respective cell
+	 */
+	SortedMap<Cell, SortedSet<Integer>> getCandidatesByCellFiltered(final CellGroup group,
+			final Predicate<? super Entry<Cell, SortedSet<Integer>>> filterFunc) {
+		return getCandidatesByCell(group).entrySet().stream().filter(filterFunc)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, Cell::newPosSortedMap));
 	}
 
 	/**

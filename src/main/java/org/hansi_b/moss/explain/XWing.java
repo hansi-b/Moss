@@ -90,8 +90,7 @@ public class XWing implements Technique {
 	private static List<Map<Integer, SortedSet<Cell>>> eligibleCellSets(final Sudoku sudoku, final PencilMarks marks,
 			final Type pairsType) {
 		return sudoku.getGroups(pairsType).stream()
-				.map(g -> marks.getCellsByCandidate(g).entrySet().stream().filter(e -> e.getValue().size() == 2)
-						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
-				.filter(m -> !m.isEmpty()).collect(Collectors.toList());
+				.map(g -> marks.getCellsByCandidateFiltered(g, e -> e.getValue().size() == 2)).filter(m -> !m.isEmpty())
+				.collect(Collectors.toList());
 	}
 }

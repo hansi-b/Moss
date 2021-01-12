@@ -42,10 +42,8 @@ public class HiddenSingle implements Technique {
 	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
 
 		final List<Move> moves = new ArrayList<>();
-		sudoku.streamGroups().forEach(g -> marks.getCellsByCandidate(g).forEach((i, cells) -> {
-			if (cells.size() == 1)
-				moves.add(new Insertion(strategyByGroup(g.type()), cells.first(), i));
-		}));
+		sudoku.streamGroups().forEach(g -> marks.getCellsByCandidateFiltered(g, e -> e.getValue().size() == 1)
+				.forEach((cand, cells) -> moves.add(new Insertion(strategyByGroup(g.type()), cells.first(), cand))));
 		return moves;
 	}
 }

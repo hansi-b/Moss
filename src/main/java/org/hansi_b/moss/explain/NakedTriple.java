@@ -2,7 +2,6 @@ package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -39,9 +38,8 @@ public class NakedTriple implements Technique {
 
 	private static void findMovesInGroup(final CellGroup group, final PencilMarks marks, final List<Move> moves) {
 
-		final SortedMap<Cell, SortedSet<Integer>> candsByCell = marks.getCandidatesByCell(group).entrySet().stream()
-				.filter(e -> e.getValue().size() == 2 || e.getValue().size() == 3)
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, Cell::newPosSortedMap));
+		final SortedMap<Cell, SortedSet<Integer>> candsByCell = marks.getCandidatesByCellFiltered(group,
+				e -> e.getValue().size() == 2 || e.getValue().size() == 3);
 		if (candsByCell.isEmpty())
 			return;
 
