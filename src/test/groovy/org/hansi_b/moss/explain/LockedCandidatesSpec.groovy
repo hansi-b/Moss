@@ -30,7 +30,7 @@ public class LockedCandidatesSpec extends Specification {
 		def actual = new LockedCandidates().findMoves(su, new PencilMarks())
 
 		then:
-		assert actual == [
+		actual == [
 			eliminate(Strategy.LockedCandidateBlockCol, [3], cellsAt(su, [3, 0], [7, 0], [8, 0]))
 		]
 	}
@@ -56,7 +56,7 @@ public class LockedCandidatesSpec extends Specification {
 		def actual = new LockedCandidates().findMoves(su, new PencilMarks())
 
 		then:
-		assert actual == [
+		actual == [
 			eliminate(Strategy.LockedCandidateBlockRow, [3], cellsAt(su, [1, 3], [1, 5], [1, 6], [1, 7]))
 		]
 	}
@@ -84,7 +84,7 @@ public class LockedCandidatesSpec extends Specification {
 
 		then:
 		// seems to be correct, but double-check expectation if this ever fails
-		assert actual == [
+		actual == [
 			eliminate(Strategy.LockedCandidateBlockRow, [6], cellsAt(su, [5, 6], [5, 8])),
 			eliminate(Strategy.LockedCandidateRowBlock, [6], cellsAt(su, [5, 6], [5, 8])),
 			eliminate(Strategy.LockedCandidateBlockCol, [7], cellsAt(su, [1, 5])),
@@ -116,7 +116,7 @@ public class LockedCandidatesSpec extends Specification {
 		def actual = new LockedCandidates().findMoves(su, new PencilMarks()) as Set
 
 		then:
-		assert actual == [
+		actual == [
 			// col 0
 			eliminate(Strategy.LockedCandidateColBlock, [1], cellsAt(su, [3, 2], [4, 1], [4, 2], [5, 2])),
 			// col 1

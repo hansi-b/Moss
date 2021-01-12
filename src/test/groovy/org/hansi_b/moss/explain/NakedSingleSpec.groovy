@@ -1,6 +1,6 @@
 package org.hansi_b.moss.explain;
 
-import static org.hansi_b.moss.testSupport.Shortcuts.insert;
+import static org.hansi_b.moss.testSupport.Shortcuts.insert
 
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy
@@ -21,7 +21,7 @@ class NakedSingleSpec extends spock.lang.Specification {
 		Sudoku su = Sudoku.filled(values);
 
 		then:
-		assert technique.findMoves(su, new PencilMarks()) == [
+		technique.findMoves(su, new PencilMarks()) == [
 			insert(su, Strategy.NakedSingle, 0, 1, 3)
 		]
 	}

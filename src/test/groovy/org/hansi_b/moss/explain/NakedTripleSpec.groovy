@@ -1,6 +1,6 @@
 package org.hansi_b.moss.explain;
 
-import static org.hansi_b.moss.testSupport.Shortcuts.*;
+import static org.hansi_b.moss.testSupport.Shortcuts.*
 
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy
@@ -33,7 +33,7 @@ class NakedTripleSpec extends spock.lang.Specification {
 		def actual = technique.findMoves(su, pm) as Set
 
 		then:
-		assert actual == [
+		actual == [
 			eliminate(Strategy.NakedTripleInBlock, [1, 4, 6], cellsAt(su, [0, 1], [0, 2], [1, 0], [1, 1]))
 		] as Set
 	}

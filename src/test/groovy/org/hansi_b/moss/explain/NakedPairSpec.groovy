@@ -23,7 +23,7 @@ class NakedPairSpec extends spock.lang.Specification {
 		def actual = technique.findMoves(su, new PencilMarks()) as Set
 
 		then:
-		assert actual == [
+		actual == [
 			eliminate(Strategy.NakedPairInRow, [3, 4], cellsAt(su, [1, 2], [1, 3])),
 			eliminate(Strategy.NakedPairInBlock, [3, 4], cellsAt(su, [1, 2], [1, 3]))
 		] as Set
@@ -51,7 +51,7 @@ class NakedPairSpec extends spock.lang.Specification {
 
 		then:
 		// row 7 & block 3/0: some occurrences of 1 + 4 can go (tied to 7/0 and 7/2)
-		assert actual == [
+		actual == [
 			new Elimination.Builder(Strategy.NakedPairInRow)
 			.with(cellsAt(su, [7, 5], [7, 7]) as Set, [1]).with([cellAt(su,7,8)], [1, 4]).build(),
 			new Elimination.Builder(Strategy.NakedPairInBlock)
