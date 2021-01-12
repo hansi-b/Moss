@@ -3,7 +3,6 @@ package org.hansi_b.moss;
 import java.util.BitSet;
 import java.util.List;
 import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -114,15 +113,6 @@ public class CellGroup {
 	 */
 	public List<Integer> values() {
 		return streamAllCells().map(Cell::getValue).collect(Collectors.toList());
-	}
-
-	/**
-	 * The filled values in this group without duplicates or empty cells.
-	 *
-	 * @return a fresh sorted set of non-null values occurring in this group
-	 */
-	public SortedSet<Integer> filledValuesSet() {
-		return streamFilledCells().map(Cell::getValue).collect(Collectors.toCollection(TreeSet::new));
 	}
 
 	/**
