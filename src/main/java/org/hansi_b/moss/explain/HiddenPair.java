@@ -6,13 +6,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
-import java.util.function.Function;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
-import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.CollectUtils;
 import org.hansi_b.moss.explain.Elimination.Builder;
+import org.hansi_b.moss.explain.Move.Strategy;
 
 /**
  * As described in http://www.sudoku-space.de/sudoku-loesungstechniken/
@@ -23,17 +22,14 @@ import org.hansi_b.moss.explain.Elimination.Builder;
  */
 public class HiddenPair extends GroupBasedTechnique {
 
-	private static final Function<Type, Move.Strategy> strategyByGroup = Move.Strategy.groupTypeMapper(//
-			Move.Strategy.HiddenPairInRow, //
-			Move.Strategy.HiddenPairInCol, //
-			Move.Strategy.HiddenPairInBlock);
-
-	private static Move.Strategy strategyByGroup(final Type type) {
-		return strategyByGroup.apply(type);
+	public HiddenPair() {
+		super(Strategy.HiddenPairInRow, //
+				Strategy.HiddenPairInCol, //
+				Strategy.HiddenPairInBlock);
 	}
 
 	@Override
-	public List<Move> findMoves(final CellGroup g, final PencilMarks marks) {
+	public List<Move> findMoves(final CellGroup g, final Strategy strategy, final PencilMarks marks) {
 
 		final List<Move> moves = new ArrayList<>();
 
@@ -46,7 +42,7 @@ public class HiddenPair extends GroupBasedTechnique {
 						return;
 
 					final Set<Integer> pair = Set.of(upperCandidate, lowerCandiate);
-					final Builder builder = new Elimination.Builder(strategyByGroup(g.type()));
+					final Builder builder = new Elimination.Builder(strategy);
 					upperCells.forEach(cell -> {
 						final SortedSet<Integer> others = CollectUtils.difference(marks.candidates(cell), pair);
 						if (!others.isEmpty())

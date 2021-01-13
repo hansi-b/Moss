@@ -2,10 +2,9 @@ package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import org.hansi_b.moss.CellGroup;
-import org.hansi_b.moss.CellGroup.Type;
+import org.hansi_b.moss.explain.Move.Strategy;
 
 /**
  * As described in http://www.sudoku-space.de/sudoku-loesungstechniken/
@@ -29,21 +28,18 @@ import org.hansi_b.moss.CellGroup.Type;
  */
 public class HiddenSingle extends GroupBasedTechnique {
 
-	private static final Function<Type, Move.Strategy> strategyByGroup = Move.Strategy.groupTypeMapper(//
-			Move.Strategy.HiddenSingleInRow, //
-			Move.Strategy.HiddenSingleInCol, //
-			Move.Strategy.HiddenSingleInBlock);
-
-	private static Move.Strategy strategyByGroup(final Type type) {
-		return strategyByGroup.apply(type);
+	public HiddenSingle() {
+		super(Strategy.HiddenSingleInRow, //
+				Strategy.HiddenSingleInCol, //
+				Strategy.HiddenSingleInBlock);
 	}
 
 	@Override
-	public List<Move> findMoves(final CellGroup g, final PencilMarks marks) {
+	public List<Move> findMoves(final CellGroup g, final Strategy strategy, final PencilMarks marks) {
 
 		final List<Move> moves = new ArrayList<>();
 		marks.getCellsByCandidateFiltered(g, e -> e.getValue().size() == 1)
-				.forEach((cand, cells) -> moves.add(new Insertion(strategyByGroup(g.type()), cells.first(), cand)));
+				.forEach((cand, cells) -> moves.add(new Insertion(strategy, cells.first(), cand)));
 		return moves;
 	}
 }
