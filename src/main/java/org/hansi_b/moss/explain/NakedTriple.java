@@ -1,6 +1,7 @@
 package org.hansi_b.moss.explain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -12,13 +13,12 @@ import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.CollectUtils;
-import org.hansi_b.moss.Sudoku;
 
 /**
  * As explained, e.g., on https://sudoku9x9.com/naked_pair.html (along with
  * pairs)
  */
-public class NakedTriple implements Technique {
+public class NakedTriple extends GroupBasedTechnique {
 	private static final Function<Type, Move.Strategy> strategyByGroup = Move.Strategy.groupTypeMapper(//
 			Move.Strategy.NakedTripleInRow, //
 			Move.Strategy.NakedTripleInCol, //
@@ -29,27 +29,21 @@ public class NakedTriple implements Technique {
 	}
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
-
-		final List<Move> moves = new ArrayList<>();
-		sudoku.streamGroups().forEach(group -> findMovesInGroup(group, marks, moves));
-		return moves;
-	}
-
-	private static void findMovesInGroup(final CellGroup group, final PencilMarks marks, final List<Move> moves) {
+	public List<Move> findMoves(final CellGroup group, final PencilMarks marks) {
 
 		final SortedMap<Cell, SortedSet<Integer>> candsByCell = marks.getCandidatesByCellFiltered(group,
 				e -> e.getValue().size() == 2 || e.getValue().size() == 3);
 		if (candsByCell.isEmpty())
-			return;
+			return Collections.emptyList();
 
 		final SortedSet<Cell> sortedCells = Cell.newPosSortedSet(candsByCell.keySet());
 
 		final List<SortedSet<Cell>> possibleCombinations = CollectUtils.combinations(sortedCells, 3).stream()
 				.filter(combi -> getCandidates(combi, candsByCell).size() == 3).collect(Collectors.toList());
 		if (possibleCombinations.isEmpty())
-			return;
+			return Collections.emptyList();
 
+		final List<Move> moves = new ArrayList<>();
 		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidate(group);
 		possibleCombinations.forEach(combi -> {
 			final Elimination.Builder moveBuilder = new Elimination.Builder(strategyByGroup(group));
@@ -58,6 +52,7 @@ public class NakedTriple implements Technique {
 			if (!moveBuilder.isEmpty())
 				moves.add(moveBuilder.build());
 		});
+		return moves;
 	}
 
 	private static SortedSet<Integer> getCandidates(final SortedSet<Cell> cells,

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.CellGroup.Type;
-import org.hansi_b.moss.Sudoku;
 
 /**
  * As described in http://www.sudoku-space.de/sudoku-loesungstechniken/
@@ -27,7 +27,7 @@ import org.hansi_b.moss.Sudoku;
  * a move on C relative to G, you can find the same move for C with respect to
  * its other groups.
  */
-public class HiddenSingle implements Technique {
+public class HiddenSingle extends GroupBasedTechnique {
 
 	private static final Function<Type, Move.Strategy> strategyByGroup = Move.Strategy.groupTypeMapper(//
 			Move.Strategy.HiddenSingleInRow, //
@@ -39,11 +39,11 @@ public class HiddenSingle implements Technique {
 	}
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
+	public List<Move> findMoves(final CellGroup g, final PencilMarks marks) {
 
 		final List<Move> moves = new ArrayList<>();
-		sudoku.streamGroups().forEach(g -> marks.getCellsByCandidateFiltered(g, e -> e.getValue().size() == 1)
-				.forEach((cand, cells) -> moves.add(new Insertion(strategyByGroup(g.type()), cells.first(), cand))));
+		marks.getCellsByCandidateFiltered(g, e -> e.getValue().size() == 1)
+				.forEach((cand, cells) -> moves.add(new Insertion(strategyByGroup(g.type()), cells.first(), cand)));
 		return moves;
 	}
 }

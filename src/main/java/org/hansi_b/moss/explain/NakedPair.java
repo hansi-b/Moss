@@ -14,7 +14,6 @@ import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.CollectUtils;
-import org.hansi_b.moss.Sudoku;
 
 /**
  * As explained, e.g., on https://www.learn-sudoku.com/naked-pairs.html
@@ -23,7 +22,7 @@ import org.hansi_b.moss.Sudoku;
  * candidates, eliminate these from all other cell candidates. Then, if a cell
  * remains with only a single candidate, that is the move.
  */
-public class NakedPair implements Technique {
+public class NakedPair extends GroupBasedTechnique {
 	private static final Function<Type, Move.Strategy> strategyByGroup = Move.Strategy.groupTypeMapper(//
 			Move.Strategy.NakedPairInRow, //
 			Move.Strategy.NakedPairInCol, //
@@ -34,15 +33,9 @@ public class NakedPair implements Technique {
 	}
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
+	public List<Move> findMoves(final CellGroup group, final PencilMarks marks) {
 
-		final List<Move> moves = new ArrayList<>();
-		sudoku.streamGroups().forEach(group -> findMovesInGroup(marks, group, moves));
-		return moves;
-	}
-
-	private static void findMovesInGroup(final PencilMarks marks, final CellGroup group, final List<Move> resultMoves) {
-
+		final List<Move> resultMoves = new ArrayList<>();
 		final Map<Set<Integer>, Set<Cell>> cellsByPairs = findCellsByPairs(marks, group);
 
 		for (final Entry<Set<Integer>, Set<Cell>> candidatePairEntry : cellsByPairs.entrySet()) {
@@ -58,6 +51,7 @@ public class NakedPair implements Technique {
 				resultMoves.add(builder.build());
 			}
 		}
+		return resultMoves;
 	}
 
 	private static Map<Set<Integer>, Set<Cell>> findCellsByPairs(final PencilMarks marks, final CellGroup group) {
