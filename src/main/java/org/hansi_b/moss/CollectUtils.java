@@ -1,7 +1,6 @@
 package org.hansi_b.moss;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,6 +15,7 @@ import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class CollectUtils {
 
@@ -59,14 +59,14 @@ public class CollectUtils {
 	 *
 	 * @return a List of all distinct combinations of count elements
 	 */
-	public static <T> List<SortedSet<T>> combinations(final SortedSet<T> elements, final int count) {
+	public static <T> Stream<SortedSet<T>> combinations(final SortedSet<T> elements, final int count) {
 		if (count > elements.size() || count < 1)
-			return Collections.emptyList();
+			return Stream.empty();
 
 		if (count == elements.size()) {
 			final SortedSet<T> res = new TreeSet<>(elements.comparator());
 			res.addAll(elements);
-			return Collections.singletonList(new TreeSet<>(elements));
+			return Stream.of(new TreeSet<>(elements));
 		}
 
 		if (count == 1) {
@@ -74,16 +74,13 @@ public class CollectUtils {
 				final SortedSet<T> res = new TreeSet<>(elements.comparator());
 				res.add(e);
 				return res;
-			}).collect(Collectors.toList());
+			});
 		}
 
-		final List<SortedSet<T>> result = new ArrayList<>();
-		for (final T e : elements) {
-			final List<SortedSet<T>> subcombs = combinations(elements.headSet(e), count - 1);
-			subcombs.forEach(s -> s.add(e));
-			result.addAll(subcombs);
-		}
-		return result;
+		return elements.stream().flatMap(e -> combinations(elements.headSet(e), count - 1).map(s -> {
+			s.add(e);
+			return s;
+		}));
 	}
 
 	/**
@@ -99,11 +96,9 @@ public class CollectUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> List<T[]> pairCombinations(final List<T> elements) {
-		return IntStream.range(0, elements.size() - 1)
-				.mapToObj(i -> IntStream.range(i + 1, elements.size())
-						.mapToObj(j -> genericArray(elements.get(i), elements.get(j))))
-				.flatMap(i -> i).collect(Collectors.toList());
+	public static <T> Stream<T[]> pairCombinations(final List<T> elements) {
+		return IntStream.range(0, elements.size() - 1).mapToObj(i -> IntStream.range(i + 1, elements.size())
+				.mapToObj(j -> genericArray(elements.get(i), elements.get(j)))).flatMap(i -> i);
 	}
 
 	/**

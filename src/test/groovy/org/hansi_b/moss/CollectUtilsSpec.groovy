@@ -14,7 +14,7 @@ public class CollectUtilsSpec extends Specification {
 		def x = CollectUtils.combinations([1, 2, 3] as SortedSet, size)
 
 		expect:
-		x == []
+		x.toList() == []
 
 		where:
 		size << [-1, 0]
@@ -23,19 +23,19 @@ public class CollectUtilsSpec extends Specification {
 	def"get sole combination"() {
 
 		expect:
-		CollectUtils.combinations([1, 2, 3] as SortedSet, 3) == sortedTreeSets([[1, 2, 3]])
+		CollectUtils.combinations([1, 2, 3] as SortedSet, 3).toList() == sortedTreeSets([[1, 2, 3]])
 	}
 
 	def"get combinations 1 from 3"() {
 
 		expect:
-		CollectUtils.combinations([1, 2, 3] as SortedSet, 1) == sortedTreeSets([[1], [2], [3]])
+		CollectUtils.combinations([1, 2, 3] as SortedSet, 1).toList() == sortedTreeSets([[1], [2], [3]])
 	}
 
 	def"get more combinations"() {
 
 		expect:
-		CollectUtils.combinations([1, 2, 3, 4, 5] as SortedSet, 3) == sortedTreeSets([
+		CollectUtils.combinations([1, 2, 3, 4, 5] as SortedSet, 3).toList() == sortedTreeSets([
 			[1, 2, 3],
 			[1, 2, 4],
 			[1, 3, 4],
@@ -67,7 +67,7 @@ public class CollectUtilsSpec extends Specification {
 			return s
 		}
 
-		CollectUtils.combinations(cells, 2) == res
+		CollectUtils.combinations(cells, 2).toList() == res
 	}
 
 	def sortedTreeSets(final collOfColls) {
@@ -76,11 +76,11 @@ public class CollectUtilsSpec extends Specification {
 
 	def "pair combinations"() {
 		expect:
-		CollectUtils.pairCombinations(0) == []
-		CollectUtils.pairCombinations(1) == []
-		CollectUtils.pairCombinations(2) == [[0, 1]]
-		CollectUtils.pairCombinations(3) == [[0, 1], [0, 2], [1, 2]]
-		CollectUtils.pairCombinations(4) == [
+		CollectUtils.pairCombinations(0).toList() == []
+		CollectUtils.pairCombinations(1).toList() == []
+		CollectUtils.pairCombinations(2).toList() == [[0, 1]]
+		CollectUtils.pairCombinations(3).toList() == [[0, 1], [0, 2], [1, 2]]
+		CollectUtils.pairCombinations(4).toList() == [
 			[0, 1],
 			[0, 2],
 			[0, 3],
@@ -96,9 +96,9 @@ public class CollectUtilsSpec extends Specification {
 		def c1 = cellAt(su, 1, 0)
 		def c2 = cellAt(su, 1, 1)
 		def c3 = cellAt(su, 2, 1)
-		
+
 		expect:
-		CollectUtils.pairCombinations(List.of(c1, c2, c3)) == [[c1, c2],[c1, c3],[c2, c3]]
+		CollectUtils.pairCombinations(List.of(c1, c2, c3)).toList() == [[c1, c2], [c1, c3], [c2, c3]]
 	}
 
 	def "intersection for no sets"() {

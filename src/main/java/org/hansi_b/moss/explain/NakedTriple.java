@@ -35,7 +35,7 @@ public class NakedTriple extends GroupBasedTechnique {
 
 		final SortedSet<Cell> sortedCells = Cell.newPosSortedSet(candsByCell.keySet());
 
-		final List<SortedSet<Cell>> possibleCombinations = CollectUtils.combinations(sortedCells, 3).stream()
+		final List<SortedSet<Cell>> possibleCombinations = CollectUtils.combinations(sortedCells, 3)
 				.filter(combi -> getCandidates(combi, candsByCell).size() == 3).collect(Collectors.toList());
 		if (possibleCombinations.isEmpty())
 			return Collections.emptyList();
