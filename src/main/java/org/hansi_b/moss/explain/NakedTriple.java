@@ -1,6 +1,5 @@
 package org.hansi_b.moss.explain;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.SortedMap;
@@ -40,16 +39,13 @@ public class NakedTriple extends GroupBasedTechnique {
 		if (possibleCombinations.isEmpty())
 			return Collections.emptyList();
 
-		final List<Move> moves = new ArrayList<>();
 		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidate(group);
-		possibleCombinations.forEach(combi -> {
+		return Elimination.Builder.collectNonEmpty(possibleCombinations.stream().map(combi -> {
 			final Elimination.Builder moveBuilder = new Elimination.Builder(strategy);
 			getCandidates(combi, candsByCell).forEach(cand -> CollectUtils.difference(cellsByCandidate.get(cand), combi)
 					.forEach(cell -> moveBuilder.with(cell, cand)));
-			if (!moveBuilder.isEmpty())
-				moves.add(moveBuilder.build());
-		});
-		return moves;
+			return moveBuilder;
+		}));
 	}
 
 	private static SortedSet<Integer> getCandidates(final SortedSet<Cell> cells,
