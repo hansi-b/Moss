@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CollectUtils;
@@ -54,7 +54,7 @@ public class Elimination implements Move {
 			 * NB: by construction, there can be no duplicate values in cellsByCands, so we
 			 * can just turn it around
 			 */
-			final Map<SortedSet<Cell>, SortedSet<Integer>> candsByCells = new TreeMap<>(
+			final SortedMap<SortedSet<Cell>, SortedSet<Integer>> candsByCells = new TreeMap<>(
 					CollectUtils.sortedSetComparator(Cell.positionComparator));
 			cellsByCands.forEach((k, v) -> candsByCells.put(v, k));
 
@@ -63,10 +63,10 @@ public class Elimination implements Move {
 	}
 
 	final Strategy strategy;
-	private final Map<SortedSet<Cell>, SortedSet<Integer>> candidatesCellsBy;
+	private final SortedMap<SortedSet<Cell>, SortedSet<Integer>> candidatesCellsBy;
 
 	private Elimination(final Move.Strategy strategy,
-			final Map<SortedSet<Cell>, SortedSet<Integer>> cellsByCandidates) {
+			final SortedMap<SortedSet<Cell>, SortedSet<Integer>> cellsByCandidates) {
 		this.strategy = strategy;
 		this.candidatesCellsBy = cellsByCandidates;
 	}
@@ -93,8 +93,8 @@ public class Elimination implements Move {
 
 	@Override
 	public String toString() {
-		final String joined = String.join(", ", candidatesCellsBy.entrySet().stream()
-				.map(e -> String.format("%s - %s", e.getKey(), e.getValue())).collect(Collectors.toList()));
+		final String joined = String.join(", ",
+				CollectUtils.mapSortedMapToList(candidatesCellsBy, (k, v) -> String.format("%s - %s", k, v)));
 		return String.format("Eliminate: %s (%s)", joined, strategy);
 	}
 }

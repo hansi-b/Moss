@@ -29,12 +29,12 @@ public class HiddenPair extends GroupBasedTechnique {
 	}
 
 	@Override
-	public List<Move> findMoves(final CellGroup g, final Strategy strategy, final PencilMarks marks) {
+	public List<Move> findMoves(final CellGroup group, final Strategy strategy, final PencilMarks marks) {
 
 		final List<Move> moves = new ArrayList<>();
 
-		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidateFiltered(g,
-				e -> e.getValue().size() == 2);
+		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidateFiltered(group,
+				(cand, cells) -> cells.size() == 2);
 
 		cellsByCandidate.forEach((upperCandidate, upperCells) -> cellsByCandidate.headMap(upperCandidate)
 				.forEach((lowerCandiate, lowerCells) -> {

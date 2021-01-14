@@ -29,7 +29,7 @@ public class NakedTriple extends GroupBasedTechnique {
 	public List<Move> findMoves(final CellGroup group, final Strategy strategy, final PencilMarks marks) {
 
 		final SortedMap<Cell, SortedSet<Integer>> candsByCell = marks.getCandidatesByCellFiltered(group,
-				e -> e.getValue().size() == 2 || e.getValue().size() == 3);
+				(c, cands) -> cands.size() == 2 || cands.size() == 3);
 		if (candsByCell.isEmpty())
 			return Collections.emptyList();
 

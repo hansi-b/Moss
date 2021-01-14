@@ -2,6 +2,8 @@ package org.hansi_b.moss;
 
 import static org.hansi_b.moss.testSupport.Shortcuts.cellAt
 
+import java.util.function.BiFunction
+
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -137,5 +139,11 @@ public class CollectUtilsSpec extends Specification {
 
 		expect:
 		CollectUtils.union(a, b, c) == [1, 2, 3, 4, 22] as Set
+	}
+
+	def "map sorted map to list"() {
+		expect:
+		def addit = { Integer a, Integer b -> a + b } as BiFunction
+		CollectUtils.mapSortedMapToList([7: 2, 1: 2, 3 : 4] as TreeMap, addit) == [3, 7, 9]
 	}
 }

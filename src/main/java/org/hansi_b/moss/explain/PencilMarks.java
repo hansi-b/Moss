@@ -3,12 +3,11 @@ package org.hansi_b.moss.explain;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
@@ -56,13 +55,13 @@ public class PencilMarks {
 	 * Similar to {@link #getCellsByCandidate(CellGroup)}, but with an additional
 	 * filter argument that's applied on the result map.
 	 *
-	 * @param filterFunc a predicate on Map.Entry<Integer, SortedSet<Cell>>
+	 * @param filterFunc a bi-predicate on the maps keys and values
 	 * @return a SortedMap containing those mappings from candidates to cells which
 	 *         match the argument predicate
 	 */
 	SortedMap<Integer, SortedSet<Cell>> getCellsByCandidateFiltered(final CellGroup group,
-			final Predicate<? super Entry<Integer, SortedSet<Cell>>> filterFunc) {
-		return getCellsByCandidate(group).entrySet().stream().filter(filterFunc)
+			final BiPredicate<Integer, SortedSet<Cell>> filterFunc) {
+		return getCellsByCandidate(group).entrySet().stream().filter(e -> filterFunc.test(e.getKey(), e.getValue()))
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, TreeMap::new));
 	}
 
@@ -88,8 +87,8 @@ public class PencilMarks {
 	 *         missing the respective cell
 	 */
 	SortedMap<Cell, SortedSet<Integer>> getCandidatesByCellFiltered(final CellGroup group,
-			final Predicate<? super Entry<Cell, SortedSet<Integer>>> filterFunc) {
-		return getCandidatesByCell(group).entrySet().stream().filter(filterFunc)
+			final BiPredicate<Cell, SortedSet<Integer>> filterFunc) {
+		return getCandidatesByCell(group).entrySet().stream().filter(e -> filterFunc.test(e.getKey(), e.getValue()))
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, Cell::newPosSortedMap));
 	}
 
