@@ -64,8 +64,16 @@ public class Elimination implements Move {
 			return new Elimination(strategy, candsByCells);
 		}
 
+		/**
+		 * A null-tolerant filter on non-empty builders.
+		 *
+		 * @param builders a stream of builders, possibly empty, possibly containing
+		 *                 nulls
+		 * @return a list of Moves from the non-null, non-empty builders
+		 */
 		public static List<Move> collectNonEmpty(final Stream<Builder> builders) {
-			return builders.filter(b -> !b.isEmpty()).map(Elimination.Builder::build).collect(Collectors.toList());
+			return builders.filter(b -> b != null && !b.isEmpty()).map(Elimination.Builder::build)
+					.collect(Collectors.toList());
 		}
 	}
 

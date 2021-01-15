@@ -53,35 +53,35 @@ public class XWing implements Technique {
 		final List<Move> moves = new ArrayList<>();
 
 		for (final WingType wingType : WingType.values())
-			pairCombinations(eligibleCellSets(sudoku, marks, wingType.pairsType))
-					.forEach(eligiblePair -> findMoves(wingType, eligiblePair[0], eligiblePair[1], marks, moves));
+			pairCombinations(eligibleCellSets(sudoku, marks, wingType.pairsType)).forEach(eligiblePair -> {
+				final Map<Integer, SortedSet<Cell>> one = eligiblePair[0];
+				final Map<Integer, SortedSet<Cell>> other = eligiblePair[1];
+				moves.addAll(Elimination.Builder.collectNonEmpty(intersection(one.keySet(), other.keySet()).stream()
+						.map(cand -> findBuilder(wingType, one, other, marks, cand))));
+			});
 		return moves;
 	}
 
-	private static void findMoves(final WingType wingType, final Map<Integer, SortedSet<Cell>> one,
-			final Map<Integer, SortedSet<Cell>> other, final PencilMarks marks, final List<Move> moves) {
+	private static Builder findBuilder(final WingType wingType, final Map<Integer, SortedSet<Cell>> one,
+			final Map<Integer, SortedSet<Cell>> other, final PencilMarks marks, final Integer cand) {
+		final SortedSet<Cell> oneCells = one.get(cand);
+		final SortedSet<Cell> otherCells = other.get(cand);
 
-		intersection(one.keySet(), other.keySet()).forEach(cand -> {
-			final SortedSet<Cell> oneCells = one.get(cand);
-			final SortedSet<Cell> otherCells = other.get(cand);
+		// should not all be in the same block
+		if (union(Cell.toGroups(oneCells, Type.Block), Cell.toGroups(otherCells, Type.Block)).size() < 2)
+			return null;
 
-			// should not all be in the same block
-			if (union(Cell.toGroups(oneCells, Type.Block), Cell.toGroups(otherCells, Type.Block)).size() < 2)
-				return;
+		final Set<CellGroup> crossingGroups = Cell.toGroups(oneCells, wingType.crossingType);
+		if (!crossingGroups.equals(Cell.toGroups(otherCells, wingType.crossingType)))
+			return null;
 
-			final Set<CellGroup> crossingGroups = Cell.toGroups(oneCells, wingType.crossingType);
-			if (!crossingGroups.equals(Cell.toGroups(otherCells, wingType.crossingType)))
-				return;
-
-			final Builder builder = new Elimination.Builder(wingType.moveStrategy);
-			crossingGroups
-					.forEach(group -> builder.with(
-							Cell.collect(group.streamEmptyCells().filter(cell -> !oneCells.contains(cell)
-									&& !otherCells.contains(cell) && marks.candidates(cell).contains(cand))),
-							Set.of(cand)));
-			if (!builder.isEmpty())
-				moves.add(builder.build());
-		});
+		final Builder builder = new Elimination.Builder(wingType.moveStrategy);
+		crossingGroups
+				.forEach(group -> builder.with(
+						Cell.collect(group.streamEmptyCells().filter(cell -> !oneCells.contains(cell)
+								&& !otherCells.contains(cell) && marks.candidates(cell).contains(cand))),
+						Set.of(cand)));
+		return builder;
 	}
 
 	/*

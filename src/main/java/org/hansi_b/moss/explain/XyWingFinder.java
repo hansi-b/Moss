@@ -16,27 +16,24 @@ import org.hansi_b.moss.testSupport.VisibleForTesting;
 
 class XyWingFinder {
 	private final Sudoku sudoku;
-	private final PencilMarks cached;
+	private final PencilMarks marks;
 	private final SortedSet<Cell> emptyCellsW2Cands;
 
-	XyWingFinder(final Sudoku sudoku, final PencilMarks cachedCandidates) {
+	XyWingFinder(final Sudoku sudoku, final PencilMarks marks) {
 		this.sudoku = sudoku;
-		this.cached = cachedCandidates;
+		this.marks = marks;
 		this.emptyCellsW2Cands = filterCandidates();
 	}
 
 	@VisibleForTesting
 	SortedSet<Cell> filterCandidates() {
-		return Cell.collect(sudoku.streamEmptyCells().filter(c -> cached.candidates(c).size() == 2));
+		return Cell.collect(sudoku.streamEmptyCells().filter(c -> marks.candidates(c).size() == 2));
 	}
 
 	List<WingTriple> findAllWings() {
 
-		if (emptyCellsW2Cands.isEmpty())
-			return Collections.emptyList();
-
-		final SortedMap<Integer, SortedMap<Integer, SortedSet<Cell>>> candidatesMapping = filterAndMapCellsByCandidates();
-		return collectWingsFromMapping(candidatesMapping);
+		return emptyCellsW2Cands.isEmpty() ? Collections.emptyList()
+				: collectWingsFromMapping(filterAndMapCellsByCandidates());
 	}
 
 	/**
@@ -60,7 +57,7 @@ class XyWingFinder {
 		final SortedMap<Integer, SortedMap<Integer, SortedSet<Cell>>> result = new TreeMap<>();
 
 		emptyCellsW2Cands.forEach(c -> {
-			final SortedSet<Integer> cands = cached.candidates(c);
+			final SortedSet<Integer> cands = marks.candidates(c);
 			putCell(c, cands.first(), cands.last(), result);
 			putCell(c, cands.last(), cands.first(), result);
 		});
@@ -118,10 +115,14 @@ class XyWingFinder {
 					final Integer nextCand = entry.getKey();
 					final Set<Integer> requiredCands = Set.of(currentCand, nextCand);
 
-					emptyCellsW2Cands.stream().filter(x -> x != currCell && x != nextCell //
-							&& requiredCands.equals(cached.candidates(x)) //
-							&& x.sharesAnyGroup(currCell) && x.sharesAnyGroup(nextCell))
+					emptyCellsW2Cands.stream().filter(x -> isWing(currCell, nextCell, x, requiredCands))
 							.forEach(x -> wings.add(new WingTriple(x, commonCand, currCell, nextCell)));
 				}
+	}
+
+	private boolean isWing(final Cell currCell, final Cell nextCell, final Cell x, final Set<Integer> requiredCands) {
+		return x != currCell && x != nextCell //
+				&& requiredCands.equals(marks.candidates(x)) //
+				&& x.sharesAnyGroup(currCell) && x.sharesAnyGroup(nextCell);
 	}
 }
