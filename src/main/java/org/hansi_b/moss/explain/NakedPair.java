@@ -1,5 +1,8 @@
 package org.hansi_b.moss.explain;
 
+import static org.hansi_b.moss.CollectUtils.filterMap;
+import static org.hansi_b.moss.CollectUtils.intersection;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,11 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.SortedSet;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
-import org.hansi_b.moss.CollectUtils;
 import org.hansi_b.moss.explain.Move.Strategy;
 
 /**
@@ -41,8 +42,8 @@ public class NakedPair extends GroupBasedTechnique {
 			final Set<Integer> nakedPair = candidatePairEntry.getKey();
 
 			final Elimination.Builder builder = new Elimination.Builder(strategy);
-			group.streamEmptyCells().filter(c -> !nakedPairCells.contains(c)).forEach(c -> CollectUtils
-					.intersection(marks.candidates(c), nakedPair).forEach(cand -> builder.with(c, cand)));
+			group.streamEmptyCells().filter(c -> !nakedPairCells.contains(c))
+					.forEach(c -> intersection(marks.candidates(c), nakedPair).forEach(cand -> builder.with(c, cand)));
 			if (!builder.isEmpty()) {
 				resultMoves.add(builder.build());
 			}
@@ -52,12 +53,8 @@ public class NakedPair extends GroupBasedTechnique {
 
 	private static Map<Set<Integer>, Set<Cell>> findCellsByPairs(final PencilMarks marks, final CellGroup group) {
 		final Map<Set<Integer>, Set<Cell>> cellsByPairs = new HashMap<>();
-
-		group.streamEmptyCells().forEach(cell -> {
-			final SortedSet<Integer> cands = marks.candidates(cell);
-			if (cands.size() == 2)
-				cellsByPairs.computeIfAbsent(cands, k -> new HashSet<>()).add(cell);
-		});
+		filterMap(marks.getCandidatesByCell(group), (cell, cands) -> cands.size() == 2, Cell::newPosSortedMap)
+				.forEach((cell, cands) -> cellsByPairs.computeIfAbsent(cands, k -> new HashSet<>()).add(cell));
 		return cellsByPairs;
 	}
 }
