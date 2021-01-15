@@ -8,11 +8,14 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -178,5 +181,23 @@ public class CollectUtils {
 			final BiFunction<? super K, ? super V, ? extends R> keyValueFunc) {
 		return map.entrySet().stream().map(e -> keyValueFunc.apply(e.getKey(), e.getValue()))
 				.collect(Collectors.toList());
+	}
+
+	/**
+	 * A convenience method for filtering a map by key/value criteria.
+	 *
+	 * @param <M>        the type of the input and result map
+	 * @param <K>        the type of the keys in the map
+	 * @param <V>        the type of the values in the map
+	 * @param map        the map to be filtered
+	 * @param filter     the BiPredicate applied on keys and values
+	 * @param mapFactory the initializer for the result map
+	 * @return a map created by the mapfactory filled with those values from the
+	 *         input that match the filter
+	 */
+	public static <M extends Map<K, V>, K, V> M filterMap(final M map, final BiPredicate<? super K, ? super V> filter,
+			final Supplier<M> mapFactory) {
+		return map.entrySet().stream().filter(e -> filter.test(e.getKey(), e.getValue()))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, mapFactory));
 	}
 }

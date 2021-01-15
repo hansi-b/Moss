@@ -33,8 +33,7 @@ public class HiddenPair extends GroupBasedTechnique {
 
 		final List<Move> moves = new ArrayList<>();
 
-		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidateFiltered(group,
-				(cand, cells) -> cells.size() == 2);
+		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidateFiltered(group, 2);
 
 		cellsByCandidate.forEach((upperCandidate, upperCells) -> cellsByCandidate.headMap(upperCandidate)
 				.forEach((lowerCandiate, lowerCells) -> {

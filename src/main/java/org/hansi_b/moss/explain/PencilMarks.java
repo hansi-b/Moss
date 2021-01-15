@@ -6,12 +6,12 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
-import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
+import org.hansi_b.moss.CollectUtils;
 import org.hansi_b.moss.Errors;
 
 /**
@@ -52,17 +52,16 @@ public class PencilMarks {
 	}
 
 	/**
-	 * Similar to {@link #getCellsByCandidate(CellGroup)}, but with an additional
-	 * filter argument that's applied on the result map.
+	 * Similar to {@link #getCellsByCandidate(CellGroup)}, but filters for the
+	 * number of cells the candidates are possible in.
 	 *
-	 * @param filterFunc a bi-predicate on the maps keys and values
-	 * @return a SortedMap containing those mappings from candidates to cells which
-	 *         match the argument predicate
+	 * @param cellCount the number of cells the candidate should be possible in
+	 * @return a SortedMap containing the mappings from candidates to
+	 *         <code>cellCount</code> cells
 	 */
-	SortedMap<Integer, SortedSet<Cell>> getCellsByCandidateFiltered(final CellGroup group,
-			final BiPredicate<Integer, SortedSet<Cell>> filterFunc) {
-		return getCellsByCandidate(group).entrySet().stream().filter(e -> filterFunc.test(e.getKey(), e.getValue()))
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, TreeMap::new));
+	SortedMap<Integer, SortedSet<Cell>> getCellsByCandidateFiltered(final CellGroup group, final int cellCount) {
+		return CollectUtils.filterMap(getCellsByCandidate(group), (cand, cells) -> cells.size() == cellCount,
+				TreeMap::new);
 	}
 
 	/**
@@ -76,20 +75,6 @@ public class PencilMarks {
 	public SortedMap<Cell, SortedSet<Integer>> getCandidatesByCell(final CellGroup group) {
 		return group.streamEmptyCells()
 				.collect(Collectors.toMap(Function.identity(), this::candidates, (a, b) -> a, Cell::newPosSortedMap));
-	}
-
-	/**
-	 * Similar to {@link #getCandidatesByCell(CellGroup)}, but with an additional
-	 * filter argument that's applied on the result map.
-	 *
-	 * @param group the group for which to aggregate the result map
-	 * @return a SortedMap mapping empty cells in the argument group to the values
-	 *         missing the respective cell
-	 */
-	SortedMap<Cell, SortedSet<Integer>> getCandidatesByCellFiltered(final CellGroup group,
-			final BiPredicate<Cell, SortedSet<Integer>> filterFunc) {
-		return getCandidatesByCell(group).entrySet().stream().filter(e -> filterFunc.test(e.getKey(), e.getValue()))
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, Cell::newPosSortedMap));
 	}
 
 	/**
