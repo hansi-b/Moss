@@ -109,7 +109,7 @@ public class Elimination implements Move {
 	@Override
 	public String toString() {
 		final String joined = String.join(", ",
-				CollectUtils.mapSortedMapToList(candidatesCellsBy, (k, v) -> String.format("%s - %s", k, v)));
+				CollectUtils.mapMapToList(candidatesCellsBy, (k, v) -> String.format("%s - %s", k, v)));
 		return String.format("Eliminate: %s (%s)", joined, strategy);
 	}
 }

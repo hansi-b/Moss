@@ -37,7 +37,7 @@ public class HiddenSingle extends GroupBasedTechnique {
 	@Override
 	public List<Move> findMoves(final CellGroup group, final Strategy strategy, final PencilMarks marks) {
 
-		return CollectUtils.mapSortedMapToList(marks.getCellsByCandidateFiltered(group, 1),
+		return CollectUtils.mapMapToList(marks.getCellsByCandidateFiltered(group, 1),
 				(cand, cells) -> new Insertion(strategy, cells.first(), cand));
 	}
 }

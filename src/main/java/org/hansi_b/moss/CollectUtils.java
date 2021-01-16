@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
@@ -170,18 +169,36 @@ public class CollectUtils {
 
 	/**
 	 * A convenience method for streaming a sorted map & collecting it into a list.
+	 * Relies on the iteration order of the entrySet.
 	 *
 	 * @param <K>          the type of the keys in the map
 	 * @param <V>          the type of the values in the map
+	 * @param <M>          the type of the input map
 	 * @param <R>          the type of elements in the resulting list
 	 * @param map          the map to map to a list - sorted so that
 	 * @param keyValueFunc the transformation to call on the map
 	 * @return a list resulting from mapping the function on the argument map
 	 */
-	public static <K, V, R> List<R> mapSortedMapToList(final SortedMap<K, V> map,
+	public static <K, V, M extends Map<K, V>, R> List<R> mapMapToList(final M map,
 			final BiFunction<? super K, ? super V, ? extends R> keyValueFunc) {
-		return map.entrySet().stream().map(e -> keyValueFunc.apply(e.getKey(), e.getValue()))
-				.collect(Collectors.toList());
+		return mapMap(map, keyValueFunc).collect(Collectors.toList());
+	}
+
+	/**
+	 * A convenience method for mapping a map and getting a stream back. Relies on
+	 * the iteration order of the entrySet.
+	 *
+	 * @param <K>          the type of the keys in the map
+	 * @param <V>          the type of the values in the map
+	 * @param <M>          the type of the input map
+	 * @param <R>          the type of elements in the resulting stream
+	 * @param map          the map to map to a list - sorted so that
+	 * @param keyValueFunc the transformation to call on the map
+	 * @return a stream resulting from mapping the function on the argument map
+	 */
+	public static <K, V, M extends Map<K, V>, R> Stream<R> mapMap(final M map,
+			final BiFunction<? super K, ? super V, ? extends R> keyValueFunc) {
+		return map.entrySet().stream().map(e -> keyValueFunc.apply(e.getKey(), e.getValue()));
 	}
 
 	/**

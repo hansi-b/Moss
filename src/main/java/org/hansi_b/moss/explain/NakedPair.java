@@ -3,13 +3,12 @@ package org.hansi_b.moss.explain;
 import static org.hansi_b.moss.CollectUtils.filterMap;
 import static org.hansi_b.moss.CollectUtils.intersection;
 import static org.hansi_b.moss.CollectUtils.invertMap;
+import static org.hansi_b.moss.CollectUtils.mapMap;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -37,21 +36,14 @@ public class NakedPair extends GroupBasedTechnique {
 		final Map<SortedSet<Integer>, Set<Cell>> cellsByPairs = invertMap(
 				filterMap(marks.getCandidatesByCell(group), (cell, cands) -> cands.size() == 2, Cell::newPosSortedMap),
 				v -> new HashSet<>(), new HashMap<>());
+		final Map<SortedSet<Integer>, Set<Cell>> pairsByPairs = filterMap(cellsByPairs,
+				(cands, cells) -> cells.size() == 2, HashMap::new);
 
-		final List<Move> resultMoves = new ArrayList<>();
-		for (final Entry<SortedSet<Integer>, Set<Cell>> candidatePairEntry : cellsByPairs.entrySet()) {
-			final Set<Cell> nakedPairCells = candidatePairEntry.getValue();
-			if (nakedPairCells.size() != 2)
-				continue;
-			final Set<Integer> nakedPair = candidatePairEntry.getKey();
-
+		return Elimination.Builder.collectNonEmpty(mapMap(pairsByPairs, (nakedPair, nakedPairCells) -> {
 			final Elimination.Builder builder = new Elimination.Builder(strategy);
 			group.streamEmptyCells().filter(c -> !nakedPairCells.contains(c))
 					.forEach(c -> intersection(marks.candidates(c), nakedPair).forEach(cand -> builder.with(c, cand)));
-			if (!builder.isEmpty()) {
-				resultMoves.add(builder.build());
-			}
-		}
-		return resultMoves;
+			return builder;
+		}));
 	}
 }

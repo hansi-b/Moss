@@ -146,7 +146,7 @@ public class CollectUtilsSpec extends Specification {
 		given:
 		def addit = { Integer a, Integer b -> a + b } as BiFunction
 		expect:
-		CollectUtils.mapSortedMapToList([7: 2, 1: 2, 3 : 4] as TreeMap, addit) == [3, 7, 9]
+		CollectUtils.mapMapToList([7: 2, 1: 2, 3 : 4] as TreeMap, addit) == [3, 7, 9]
 	}
 
 	def "invert simple numbers map"() {
