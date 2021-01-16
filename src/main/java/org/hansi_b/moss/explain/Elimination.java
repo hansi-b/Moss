@@ -50,9 +50,9 @@ public class Elimination implements Move {
 
 		public Elimination build() {
 			// aggregate cells by candidates
-			final Map<SortedSet<Integer>, SortedSet<Cell>> cellsByCands = new HashMap<>();
-			candsBySingleCell.entrySet().forEach(
-					e -> cellsByCands.computeIfAbsent(e.getValue(), k -> Cell.newPosSortedSet()).add(e.getKey()));
+			final Map<SortedSet<Integer>, SortedSet<Cell>> cellsByCands = CollectUtils.invertMap(candsBySingleCell,
+					v -> Cell.newPosSortedSet(), new HashMap<>());
+
 			/*
 			 * NB: by construction, there can be no duplicate values in cellsByCands, so we
 			 * can just turn it around

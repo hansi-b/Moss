@@ -15,6 +15,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -199,5 +200,30 @@ public class CollectUtils {
 			final Supplier<M> mapFactory) {
 		return map.entrySet().stream().filter(e -> filter.test(e.getKey(), e.getValue()))
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, mapFactory));
+	}
+
+	/**
+	 *
+	 * Fills the argument <code>result</code> map with an aggregated inverse mapping
+	 * of the argument <code>map</code>, where each value in <code>map</code> is
+	 * mapped to a collection of the keys that mapped to it.
+	 *
+	 * @param <K>                    the keys in the argument map
+	 * @param <V>                    the values in the argument map (= keys in the
+	 *                               result)
+	 * @param <M>                    the incoming map type
+	 * @param <C>                    the type of collection in which the new values
+	 *                               (former keys) are aggregated
+	 * @param <O>                    the type of the result map
+	 * @param map                    the incoming mappings to invert
+	 * @param valueCollectionFactory the factory for the new value (former key)
+	 *                               collections
+	 * @param result                 the mapping to be filled; is returned again
+	 * @return the filled <code>result</code> argument map
+	 */
+	public static <K, V, M extends Map<K, V>, C extends Collection<K>, O extends Map<V, C>> O invertMap(final M map,
+			final Function<? super V, C> valueCollectionFactory, final O result) {
+		map.forEach((k, v) -> result.computeIfAbsent(v, valueCollectionFactory).add(k));
+		return result;
 	}
 }

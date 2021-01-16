@@ -3,6 +3,7 @@ package org.hansi_b.moss;
 import static org.hansi_b.moss.testSupport.Shortcuts.cellAt
 
 import java.util.function.BiFunction
+import java.util.function.Function
 
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -142,8 +143,16 @@ public class CollectUtilsSpec extends Specification {
 	}
 
 	def "map sorted map to list"() {
-		expect:
+		given:
 		def addit = { Integer a, Integer b -> a + b } as BiFunction
+		expect:
 		CollectUtils.mapSortedMapToList([7: 2, 1: 2, 3 : 4] as TreeMap, addit) == [3, 7, 9]
+	}
+
+	def "invert simple numbers map"() {
+		given:
+		def newSet = { k -> new HashSet() } as Function
+		expect:
+		CollectUtils.invertMap([7: 2, 1: 2, 3 : 4], newSet, new HashMap()) == [2:[1, 7] as Set, 4:[3] as Set]
 	}
 }
