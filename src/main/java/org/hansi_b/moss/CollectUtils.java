@@ -186,7 +186,8 @@ public class CollectUtils {
 
 	/**
 	 * A convenience method for mapping a map and getting a stream back. Relies on
-	 * the iteration order of the entrySet.
+	 * the iteration order of the entrySet. Somewhat similar to
+	 * <code>...forEach</code>, but with a return value.
 	 *
 	 * @param <K>          the type of the keys in the map
 	 * @param <V>          the type of the values in the map

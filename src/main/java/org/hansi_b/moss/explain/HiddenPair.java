@@ -1,15 +1,17 @@
 package org.hansi_b.moss.explain;
 
-import java.util.ArrayList;
+import static org.hansi_b.moss.CollectUtils.difference;
+import static org.hansi_b.moss.CollectUtils.mapMap;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.function.Function;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
-import org.hansi_b.moss.CollectUtils;
 import org.hansi_b.moss.explain.Elimination.Builder;
 import org.hansi_b.moss.explain.Move.Strategy;
 
@@ -31,25 +33,21 @@ public class HiddenPair extends GroupBasedTechnique {
 	@Override
 	public List<Move> findMoves(final CellGroup group, final Strategy strategy, final PencilMarks marks) {
 
-		final List<Move> moves = new ArrayList<>();
-
 		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidateFiltered(group, 2);
 
-		cellsByCandidate.forEach((upperCandidate, upperCells) -> cellsByCandidate.headMap(upperCandidate)
-				.forEach((lowerCandiate, lowerCells) -> {
+		return Elimination.Builder.collectNonEmpty(mapMap(cellsByCandidate, (upperCandidate,
+				upperCells) -> mapMap(cellsByCandidate.headMap(upperCandidate), (lowerCandiate, lowerCells) -> {
 					if (!upperCells.equals(lowerCells))
-						return;
+						return null;
 
 					final Set<Integer> pair = Set.of(upperCandidate, lowerCandiate);
 					final Builder builder = new Elimination.Builder(strategy);
 					upperCells.forEach(cell -> {
-						final SortedSet<Integer> others = CollectUtils.difference(marks.candidates(cell), pair);
+						final SortedSet<Integer> others = difference(marks.candidates(cell), pair);
 						if (!others.isEmpty())
 							builder.with(Collections.singleton(cell), others);
 					});
-					if (!builder.isEmpty())
-						moves.add(builder.build());
-				}));
-		return moves;
+					return builder;
+				})).flatMap(Function.identity()));
 	}
 }
