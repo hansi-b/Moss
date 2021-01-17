@@ -3,13 +3,14 @@ package org.hansi_b.moss.explain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.CellGroup.Type;
+import org.hansi_b.moss.CollectUtils;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 
@@ -51,28 +52,29 @@ public class LockedCandidates implements Technique {
 
 		final List<Move> moves = new ArrayList<>();
 		for (final LockType lockType : LockType.values()) {
-			sudoku.getGroups(lockType.lockingType).forEach(lockingGroup -> {
-				final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidate(lockingGroup);
-				cellsByCandidate.forEach((cand, cells) -> {
-					final Set<CellGroup> groups = cells.stream().map(c -> c.getGroup(lockType.targetType))
-							.collect(Collectors.toSet());
-					if (groups.size() != 1)
-						return;
-					/*
-					 * All cells are in the same target group: check all cells in that group outside
-					 * the locking group.
-					 */
-					final CellGroup target = groups.iterator().next();
-					final Set<Cell> targetCells = Cell.collect(
-							target.streamEmptyCells().filter(c -> c.getGroup(lockingGroup.type()) != lockingGroup
-									&& marks.candidates(c).contains(cand)));
-					if (!targetCells.isEmpty()) {
-						moves.add(
-								new Elimination.Builder(lockType.moveStrategy).with(targetCells, Set.of(cand)).build());
-					}
-				});
-			});
+			moves.addAll(Elimination.Builder.collectNonEmpty(sudoku.getGroups(lockType.lockingType).stream()
+					.map(lockingGroup -> findMovesinGroup(lockingGroup, lockType, marks))
+					.flatMap(Function.identity())));
 		}
 		return moves;
+	}
+
+	private static Stream<Elimination.Builder> findMovesinGroup(final CellGroup lockingGroup, final LockType lockType,
+			final PencilMarks marks) {
+		return CollectUtils.mapMap(marks.getCellsByCandidate(lockingGroup), (cand, cells) -> {
+			final Set<CellGroup> groups = cells.stream().map(c -> c.getGroup(lockType.targetType))
+					.collect(Collectors.toSet());
+			if (groups.size() != 1)
+				return null;
+			/*
+			 * All cells are in the same target group: check all cells in that group outside
+			 * the locking group.
+			 */
+			final CellGroup target = groups.iterator().next();
+			final Set<Cell> targetCells = Cell.collect(target.streamEmptyCells().filter(
+					c -> c.getGroup(lockingGroup.type()) != lockingGroup && marks.candidates(c).contains(cand)));
+			return targetCells.isEmpty() ? null
+					: new Elimination.Builder(lockType.moveStrategy).with(targetCells, Set.of(cand));
+		});
 	}
 }
