@@ -52,7 +52,7 @@ public class LockedCandidates implements Technique {
 
 		final List<Move> moves = new ArrayList<>();
 		for (final LockType lockType : LockType.values()) {
-			moves.addAll(Elimination.Builder.collectNonEmpty(sudoku.getGroups(lockType.lockingType).stream()
+			moves.addAll(Elimination.Builder.collectNonEmpty(sudoku.streamGroups(lockType.lockingType)
 					.map(lockingGroup -> findMovesinGroup(lockingGroup, lockType, marks))
 					.flatMap(Function.identity())));
 		}

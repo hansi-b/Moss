@@ -217,9 +217,8 @@ public class Sudoku implements Iterable<Cell> {
 
 	public boolean isSolved() {
 		for (final Type groupType : Type.values())
-			for (final CellGroup g : getGroups(groupType))
-				if (!g.isSolved())
-					return false;
+			if (streamGroups(groupType).anyMatch(g -> !g.isSolved()))
+				return false;
 		return true;
 	}
 
@@ -244,6 +243,10 @@ public class Sudoku implements Iterable<Cell> {
 
 	public Stream<CellGroup> streamGroups() {
 		return Arrays.stream(Type.values()).map(groupsByType::get).flatMap(List::stream);
+	}
+
+	public Stream<CellGroup> streamGroups(final Type groupType) {
+		return getGroups(groupType).stream();
 	}
 
 	public List<CellGroup> getGroups(final Type groupType) {
