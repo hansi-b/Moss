@@ -1,23 +1,30 @@
 package org.hansi_b.moss;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.util.Sets.newTreeSet;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.assertj.core.util.Sets;
 import org.hansi_b.moss.CellGroup.Type;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.util.Sets.newTreeSet;
-import static org.junit.jupiter.api.Assertions.*;
-
-public class SudokuTest {
+class SudokuTest {
 
 	@Test
-	public void testSimpleConstructor() {
+	void testSimpleConstructor() {
 		assertNotNull(Sudoku.empty());
 		assertNotNull(Sudoku.empty(4));
 	}
 
 	@Test
-	public void testCopyOf() {
+	void testCopyOf() {
 
 		final Sudoku su1 = Sudoku.empty();
 		su1.set(4, 5, 1);
@@ -31,14 +38,14 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testConstructorWithInvalidSize() {
+	void testConstructorWithInvalidSize() {
 		assertThatThrownBy(() -> Sudoku.empty(5)) //
 				.isExactlyInstanceOf(IllegalArgumentException.class) //
 				.hasMessage("Sudoku cannot be initialised with a non-square size (got 5)");
 	}
 
 	@Test
-	public void testGetOnEmptyNew() {
+	void testGetOnEmptyNew() {
 		final Sudoku su = Sudoku.empty();
 		assertEquals(null, su.getValue(1, 1));
 		assertEquals(null, su.getValue(5, 5));
@@ -46,7 +53,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testGetWithIllegalArgs() {
+	void testGetWithIllegalArgs() {
 		final Sudoku su = Sudoku.empty();
 		assertThatThrownBy(() -> su.getValue(-1, 0)) //
 				.isExactlyInstanceOf(IllegalArgumentException.class) //
@@ -63,7 +70,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testSetAndGet() {
+	void testSetAndGet() {
 		final Sudoku su = Sudoku.empty();
 		su.set(1, 1, 3);
 		assertThat(su.getValue(1, 1)).isEqualTo(3);
@@ -74,7 +81,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testEmptyBigEmpty() {
+	void testEmptyBigEmpty() {
 
 		/*
 		 * mainly to have the empty template lying around
@@ -97,7 +104,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testEmpty() {
+	void testEmpty() {
 		final Integer[] values = { //
 				1, 3, 4, 2, //
 				2, 4, 3, 1, //
@@ -108,7 +115,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testEmptyIncomplete() {
+	void testEmptyIncomplete() {
 		final Integer[] values = { //
 				1, 3, 4, 2, //
 				2, 4, null, 1, //
@@ -119,7 +126,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testGetWithIllegalValueArgs() {
+	void testGetWithIllegalValueArgs() {
 		final Sudoku su = Sudoku.empty();
 		assertThatThrownBy(() -> su.set(1, 1, 0)).isExactlyInstanceOf(IllegalArgumentException.class) //
 				.hasMessage("Cell value must be null or between one and at most 9 (is 0)");
@@ -128,7 +135,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testUnset() {
+	void testUnset() {
 		final Sudoku su = Sudoku.empty();
 		su.set(0, 1, 3);
 		assertThat(su.getValue(0, 1)).isEqualTo(3);
@@ -137,7 +144,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testUnsetIsAllowedOnEmptyCell() {
+	void testUnsetIsAllowedOnEmptyCell() {
 		final Sudoku su = Sudoku.empty();
 		assertNull(su.getValue(0, 1));
 		su.set(0, 1, null);
@@ -145,13 +152,13 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testNewIsNotSolved() {
+	void testNewIsNotSolved() {
 		final Sudoku su = Sudoku.empty();
 		assertFalse(su.isSolved());
 	}
 
 	@Test
-	public void testPossibleValues() {
+	void testPossibleValues() {
 		final Sudoku su = Sudoku.empty();
 		assertThat(su.possibleValues()).isEqualTo(newTreeSet(1, 2, 3, 4, 5, 6, 7, 8, 9));
 		final Sudoku su4 = Sudoku.empty(4);
@@ -159,7 +166,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testIsSolved() {
+	void testIsSolved() {
 		final Integer[] values = { //
 				1, 3, 4, 2, //
 				2, 4, null, 1, //
@@ -172,7 +179,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testGetBlockAtPos() {
+	void testGetBlockAtPos() {
 		final Sudoku su = Sudoku.empty(4);
 
 		final CellGroup block0 = su.getGroup(Type.Block, Pos.at(0, 0));
@@ -185,7 +192,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testGetGroupAtPos() {
+	void testGetGroupAtPos() {
 		final Sudoku su = Sudoku.empty(4);
 
 		final CellGroup block0 = su.getGroup(Type.Block, Pos.at(0, 0));
@@ -195,7 +202,7 @@ public class SudokuTest {
 	}
 
 	@Test
-	public void testToString() throws Exception {
+	void testToString() throws Exception {
 		final Integer[] values = { //
 				null, 3, 4, 2, //
 				2, 4, null, 1, //

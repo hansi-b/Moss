@@ -44,13 +44,13 @@ abstract class AbstractLineBasedPrinter {
 		}
 	}
 
-	abstract protected String topBorder(final int blockSize);
+	protected abstract String topBorder(final int blockSize);
 
-	abstract protected String valuesLine(final CellGroup row, final int blockSize, boolean isLastRow);
+	protected abstract String valuesLine(final CellGroup row, final int blockSize, boolean isLastRow);
 
-	abstract protected String borderInBlock(final int blockSize);
+	protected abstract String borderInBlock(final int blockSize);
 
-	abstract protected String borderBetweenBlocks(final int blockSize);
+	protected abstract String borderBetweenBlocks(final int blockSize);
 
-	abstract protected String bottomBorder(final int blockSize);
+	protected abstract String bottomBorder(final int blockSize);
 }
