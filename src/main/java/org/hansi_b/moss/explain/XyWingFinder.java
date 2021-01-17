@@ -1,7 +1,9 @@
 package org.hansi_b.moss.explain;
 
+import static org.hansi_b.moss.CollectUtils.flatten;
+import static org.hansi_b.moss.CollectUtils.mapMap;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -9,6 +11,9 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
@@ -30,10 +35,8 @@ class XyWingFinder {
 		return Cell.collect(sudoku.streamEmptyCells().filter(c -> marks.candidates(c).size() == 2));
 	}
 
-	List<WingTriple> findAllWings() {
-
-		return emptyCellsW2Cands.isEmpty() ? Collections.emptyList()
-				: collectWingsFromMapping(filterAndMapCellsByCandidates());
+	Stream<WingTriple> streamWings() {
+		return emptyCellsW2Cands.isEmpty() ? Stream.empty() : collectWingsFromMapping(filterAndMapCellsByCandidates());
 	}
 
 	/**
@@ -84,40 +87,34 @@ class XyWingFinder {
 	 * </ol>
 	 * </ol>
 	 */
-	private List<WingTriple> collectWingsFromMapping(
+	private Stream<WingTriple> collectWingsFromMapping(
 			final SortedMap<Integer, SortedMap<Integer, SortedSet<Cell>>> cellsByCandidates) {
 
-		final List<WingTriple> wings = new ArrayList<>();
-		cellsByCandidates.forEach((commonCand, innerMappings) -> {
-			final Set<Integer> innerKeys = innerMappings.keySet();
-			final Iterator<Integer> iter = innerKeys.iterator();
-			Integer next = iter.next(); // we know we have at least one
-			while (iter.hasNext()) {
+		return mapMap(cellsByCandidates, (commonCand, innerMappings) -> {
+			final List<WingTriple> wings = new ArrayList<>();
+			final Iterator<Integer> innerKeys = innerMappings.keySet().iterator();
+			Integer next = innerKeys.next(); // we know we have at least one
+			while (innerKeys.hasNext()) {
 				final Integer currentCand = next;
-				next = iter.next();
-				collectWingsFromTail(innerMappings.get(currentCand), innerMappings.tailMap(next).entrySet(),
-						currentCand, commonCand, wings);
+				next = innerKeys.next();
+				final Stream<WingTriple> wingStream = collectWingsFromTail(innerMappings.get(currentCand),
+						innerMappings.tailMap(next).entrySet(), currentCand, commonCand);
+				wings.addAll(wingStream.collect(Collectors.toList()));
 			}
-		});
-		return wings;
+			return wings.stream();
+		}).flatMap(Function.identity());
 	}
 
-	private void collectWingsFromTail(final SortedSet<Cell> currentCells,
-			final Set<Entry<Integer, SortedSet<Cell>>> nextCells, final Integer currentCand, final Integer commonCand,
-			final List<WingTriple> wings) {
-		for (final Entry<Integer, SortedSet<Cell>> entry : nextCells)
-			for (final Cell currCell : currentCells)
-				for (final Cell nextCell : entry.getValue()) {
-
-					if (currCell.sharesAnyGroup(nextCell))
-						continue;
-
+	private Stream<WingTriple> collectWingsFromTail(final SortedSet<Cell> currentCells,
+			final Set<Entry<Integer, SortedSet<Cell>>> nextCells, final Integer currentCand, final Integer commonCand) {
+		return flatten(currentCells, currCell -> flatten(nextCells,
+				entry -> flatten(entry.getValue().stream().filter(c -> !currCell.sharesAnyGroup(c)), nextCell -> {
 					final Integer nextCand = entry.getKey();
 					final Set<Integer> requiredCands = Set.of(currentCand, nextCand);
 
-					emptyCellsW2Cands.stream().filter(x -> isWing(currCell, nextCell, x, requiredCands))
-							.forEach(x -> wings.add(new WingTriple(x, commonCand, currCell, nextCell)));
-				}
+					return emptyCellsW2Cands.stream().filter(x -> isWing(currCell, nextCell, x, requiredCands))
+							.map(x -> new WingTriple(x, commonCand, currCell, nextCell));
+				})));
 	}
 
 	private boolean isWing(final Cell currCell, final Cell nextCell, final Cell x, final Set<Integer> requiredCands) {

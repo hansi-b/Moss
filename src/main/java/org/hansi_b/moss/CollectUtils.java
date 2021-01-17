@@ -168,6 +168,34 @@ public class CollectUtils {
 	}
 
 	/**
+	 * Convenience method for nested streaming: Streams, maps, and flatMaps back.
+	 * Uses {@link #flatten(Stream, Function)}
+	 *
+	 * @param <I>     the type of elements in the streamed collection
+	 * @param <O>     the type of the resulting elements
+	 * @param in      the collection to stream, map and flatMap
+	 * @param mapFunc
+	 * @return a Stream of the flatMapped elements
+	 */
+	public static <I, O> Stream<O> flatten(final Collection<I> in,
+			final Function<? super I, ? extends Stream<O>> mapFunc) {
+		return flatten(in.stream(), mapFunc);
+	}
+
+	/**
+	 * Convenience method for nested streaming: Maps, and flatMaps back.
+	 *
+	 * @param <I>     the type of elements in the incoming stream
+	 * @param <O>     the type of the resulting elements
+	 * @param in      the stream to map and flatMap
+	 * @param mapFunc
+	 * @return a Stream of the flatMapped elements
+	 */
+	public static <I, O> Stream<O> flatten(final Stream<I> in, final Function<? super I, ? extends Stream<O>> mapFunc) {
+		return in.map(mapFunc).flatMap(Function.identity());
+	}
+
+	/**
 	 * A convenience method for streaming a sorted map & collecting it into a list.
 	 * Relies on the iteration order of the entrySet.
 	 *

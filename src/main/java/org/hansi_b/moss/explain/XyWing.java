@@ -1,11 +1,8 @@
 package org.hansi_b.moss.explain;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
 
 /**
@@ -29,26 +26,15 @@ public class XyWing implements Technique {
 	@Override
 	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
 
-		final List<Move> moves = new ArrayList<>();
-
-		final XyWingFinder xyWingFinder = new XyWingFinder(sudoku, marks);
-
-		final List<WingTriple> wings = xyWingFinder.findAllWings();
-
 		/*
 		 * now find all empty cells in the intersection of the two wing cells (other
 		 * than the middle wing cell), and remove the wings's common candidate
 		 */
-		wings.forEach(wing -> {
-			final Set<Cell> targetCells = wing.targetCells().stream()
-					.filter(c -> marks.candidates(c).contains(wing.commonCandidate)).collect(Collectors.toSet());
-			if (!targetCells.isEmpty()) {
-				final Elimination.Builder builder = new Elimination.Builder(Move.Strategy.XyWing);
-				targetCells.forEach(cell -> builder.with(cell, wing.commonCandidate));
-				moves.add(builder.build());
-			}
-		});
-
-		return moves;
+		return Elimination.Builder.collectNonEmpty(new XyWingFinder(sudoku, marks).streamWings().map(wing -> {
+			final Elimination.Builder builder = new Elimination.Builder(Move.Strategy.XyWing);
+			wing.targetCells().stream().filter(c -> marks.candidates(c).contains(wing.commonCandidate))
+					.collect(Collectors.toSet()).forEach(cell -> builder.with(cell, wing.commonCandidate));
+			return builder;
+		}));
 	}
 }

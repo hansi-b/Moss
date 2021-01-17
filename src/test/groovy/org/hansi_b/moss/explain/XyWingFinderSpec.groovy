@@ -2,6 +2,8 @@ package org.hansi_b.moss.explain;
 
 import static org.hansi_b.moss.testSupport.Shortcuts.*;
 
+import java.util.stream.Collectors
+
 import org.hansi_b.moss.Sudoku
 
 class XyWingFinderSpec extends spock.lang.Specification {
@@ -21,7 +23,7 @@ class XyWingFinderSpec extends spock.lang.Specification {
 				[1, 7, 5, 9, 8, 6, 3, 2, 4]
 		Sudoku su = Sudoku.filled(values);
 
-		def wings = new XyWingFinder(su, new PencilMarks()).findAllWings() as Set
+		def wings = new XyWingFinder(su, new PencilMarks()).streamWings().collect(Collectors.toSet())
 
 		then:
 		wings.size() == 1
@@ -43,7 +45,7 @@ class XyWingFinderSpec extends spock.lang.Specification {
 		Sudoku su = Sudoku.filled(values)
 		when:
 		XyWingFinder finder = new XyWingFinder(su, new PencilMarks())
-		def wings = finder.findAllWings() as Set
+		def wings = finder.streamWings() as Set
 
 		def mapping = finder.filterAndMapCellsByCandidates()
 
