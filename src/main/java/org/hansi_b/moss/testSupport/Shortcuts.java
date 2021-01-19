@@ -23,7 +23,7 @@ public class Shortcuts {
 
 	@SafeVarargs
 	public static Cell[] cellsAt(final Sudoku su, final ArrayList<Integer>... cellPosses) {
-		return Arrays.stream(cellPosses).map(l -> su.getCell(Pos.at(l.get(0), l.get(1)))).collect(Collectors.toSet())
+		return Arrays.stream(cellPosses).map(l -> su.getCell(Pos.at(l.get(0), l.get(1)))).collect(Collectors.toList())
 				.toArray(new Cell[] {});
 	}
 

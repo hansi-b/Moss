@@ -72,8 +72,12 @@ public class Cell {
 		return sudoku.streamGroups(pos);
 	}
 
+	/**
+	 * @return a stream of all empty cells from all groups of this cell, including
+	 *         this cell, without duplicates, in the order row/column/block
+	 */
 	public Stream<Cell> streamEmptyCellsFromGroups() {
-		return streamGroups().flatMap(CellGroup::streamEmptyCells);
+		return streamGroups().flatMap(CellGroup::streamEmptyCells).distinct();
 	}
 
 	public void setValue(final Integer newValue) {
@@ -94,8 +98,8 @@ public class Cell {
 	/**
 	 * @return a set with the argument Cells sorted by their position
 	 */
-	public static SortedSet<Cell> newPosSortedSet(Collection<Cell> cells) {
-		TreeSet<Cell> res = new TreeSet<>(positionComparator);
+	public static SortedSet<Cell> newPosSortedSet(final Collection<Cell> cells) {
+		final TreeSet<Cell> res = new TreeSet<>(positionComparator);
 		res.addAll(cells);
 		return res;
 	}

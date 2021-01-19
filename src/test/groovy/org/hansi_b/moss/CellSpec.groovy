@@ -18,6 +18,19 @@ public class CellSpec extends Specification {
 		su1.iterator().next() == cellAt(su1, 0, 0)
 		su1.iterator().next() != su2.iterator().next()
 	}
+	
+	def "stream empty cells contains cell itself, no duplicates, in order row/col/block"() {
+		given:
+		Integer[] values =
+				[1, 0, 0, 4]+
+				[0, 0, 0, 0]+
+				[0, 1, 0, 0]+
+				[0, 3, 0, 0]
+		Sudoku su = Sudoku.filled(values)
+
+		expect:
+		cellAt(su, 0, 1).streamEmptyCellsFromGroups().toList() == cellsAt(su, [0,1], [0,2], [1,1], [1,0]) as List
+	}
 
 	def "test getCandidates at #x / #y"() {
 
