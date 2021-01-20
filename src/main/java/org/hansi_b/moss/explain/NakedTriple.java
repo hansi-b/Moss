@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
@@ -30,29 +29,26 @@ public class NakedTriple extends GroupBasedTechnique {
 	@Override
 	public List<Move> findMoves(final CellGroup group, final Strategy strategy, final PencilMarks marks) {
 
-		final SortedMap<Cell, SortedSet<Integer>> candsByCell = filterMap(marks.getCandidatesByCell(group),
+		final SortedMap<Cell, SortedSet<Integer>> candsByCellFiltered = filterMap(marks.getCandidatesByCell(group),
 				(c, cands) -> cands.size() == 2 || cands.size() == 3, Cell::newPosSortedMap);
-		if (candsByCell.isEmpty())
-			return Collections.emptyList();
-
-		final SortedSet<Cell> sortedCells = Cell.newPosSortedSet(candsByCell.keySet());
-
-		final List<SortedSet<Cell>> possibleCombinations = combinations(sortedCells, 3)
-				.filter(combi -> getCandidates(combi, candsByCell).size() == 3).collect(Collectors.toList());
-		if (possibleCombinations.isEmpty())
+		if (candsByCellFiltered.isEmpty())
 			return Collections.emptyList();
 
 		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidate(group);
-		return Elimination.Builder.collectNonEmpty(possibleCombinations.stream().map(combi -> {
-			final Elimination.Builder moveBuilder = new Elimination.Builder(strategy);
-			getCandidates(combi, candsByCell).forEach(cand -> difference(cellsByCandidate.get(cand), combi)
-					.forEach(cell -> moveBuilder.with(cell, cand)));
-			return moveBuilder;
-		}));
+		return Elimination.Builder.collectNonEmpty(combinations(Cell.newPosSortedSet(candsByCellFiltered.keySet()), 3)
+				.map(combi -> builderFromCombi(combi, strategy, candsByCellFiltered, cellsByCandidate)));
 	}
 
-	private static SortedSet<Integer> getCandidates(final SortedSet<Cell> cells,
-			final SortedMap<Cell, SortedSet<Integer>> candsByCell) {
-		return cells.stream().flatMap(c -> candsByCell.get(c).stream()).collect(Collectors.toCollection(TreeSet::new));
+	private static Elimination.Builder builderFromCombi(final SortedSet<Cell> combi, final Strategy strategy,
+			final SortedMap<Cell, SortedSet<Integer>> candsByCellFiltered,
+			final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate) {
+		final SortedSet<Integer> candidates = new TreeSet<>();
+		combi.forEach(c -> candidates.addAll(candsByCellFiltered.get(c)));
+		if (candidates.size() != 3)
+			return null;
+		final Elimination.Builder moveBuilder = new Elimination.Builder(strategy);
+		candidates.forEach(
+				cand -> difference(cellsByCandidate.get(cand), combi).forEach(cell -> moveBuilder.with(cell, cand)));
+		return moveBuilder;
 	}
 }
