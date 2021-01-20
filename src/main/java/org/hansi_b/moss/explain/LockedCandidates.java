@@ -1,16 +1,17 @@
 package org.hansi_b.moss.explain;
 
+import static org.hansi_b.moss.CollectUtils.flatten;
+import static org.hansi_b.moss.CollectUtils.mapMap;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.CellGroup.Type;
-import org.hansi_b.moss.CollectUtils;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 
@@ -52,16 +53,15 @@ public class LockedCandidates implements Technique {
 
 		final List<Move> moves = new ArrayList<>();
 		for (final LockType lockType : LockType.values()) {
-			moves.addAll(Elimination.Builder.collectNonEmpty(sudoku.streamGroups(lockType.lockingType)
-					.map(lockingGroup -> findMovesinGroup(lockingGroup, lockType, marks))
-					.flatMap(Function.identity())));
+			moves.addAll(Elimination.Builder.collectNonEmpty(flatten(sudoku.streamGroups(lockType.lockingType),
+					lockingGroup -> findMovesInGroup(lockingGroup, lockType, marks))));
 		}
 		return moves;
 	}
 
-	private static Stream<Elimination.Builder> findMovesinGroup(final CellGroup lockingGroup, final LockType lockType,
+	private static Stream<Elimination.Builder> findMovesInGroup(final CellGroup lockingGroup, final LockType lockType,
 			final PencilMarks marks) {
-		return CollectUtils.mapMap(marks.getCellsByCandidate(lockingGroup), (cand, cells) -> {
+		return mapMap(marks.getCellsByCandidate(lockingGroup), (cand, cells) -> {
 			final Set<CellGroup> groups = cells.stream().map(c -> c.getGroup(lockType.targetType))
 					.collect(Collectors.toSet());
 			if (groups.size() != 1)
