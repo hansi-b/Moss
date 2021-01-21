@@ -20,8 +20,7 @@ import org.hansi_b.moss.explain.Move.Strategy;
  * As explained, e.g., on https://www.learn-sudoku.com/naked-pairs.html
  *
  * For each group, determine the candidates. If a pair of cells has the same two
- * candidates, eliminate these from all other cell candidates. Then, if a cell
- * remains with only a single candidate, that is the move.
+ * candidates, eliminate these from all other cell candidates.
  */
 public class NakedPair extends GroupBasedTechnique {
 	NakedPair() {
