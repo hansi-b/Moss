@@ -1,7 +1,7 @@
 package org.hansi_b.moss.explain;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.Sudoku;
 
@@ -13,7 +13,7 @@ public class Solver {
 		this(Technique.allTechniques());
 	}
 
-	public Solver(Technique... techniques) {
+	public Solver(final Technique... techniques) {
 		this.techniques = techniques;
 	}
 
@@ -26,22 +26,22 @@ public class Solver {
 		final Sudoku suCopy = Sudoku.copyOf(su);
 		final PencilMarks pencilMarks = new PencilMarks();
 
-		List<Move> moves = findMoves(suCopy, pencilMarks);
-		while (!moves.isEmpty()) {
-			final Move move = moves.get(0);
+		Move move = findMoves(suCopy, pencilMarks);
+		while (move != null) {
 			move.apply(pencilMarks);
-			moves = findMoves(suCopy, pencilMarks);
+			move = findMoves(suCopy, pencilMarks);
 		}
 		return suCopy;
 	}
 
-	private List<Move> findMoves(final Sudoku sudoku, final PencilMarks pencilMarks) {
+	private Move findMoves(final Sudoku sudoku, final PencilMarks pencilMarks) {
 		for (final Technique t : techniques) {
-			final List<Move> moves = t.findMoves(sudoku, pencilMarks);
-			if (!moves.isEmpty())
-				return moves;
+			final Stream<Move> moves = t.findMoves(sudoku, pencilMarks);
+			final Optional<Move> nextMove = moves.findFirst();
+			if (nextMove.isPresent())
+				return nextMove.get();
 		}
 
-		return Collections.emptyList();
+		return null;
 	}
 }

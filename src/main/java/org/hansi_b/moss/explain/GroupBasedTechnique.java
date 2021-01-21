@@ -1,8 +1,7 @@
 package org.hansi_b.moss.explain;
 
-import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.CellGroup.Type;
@@ -25,11 +24,9 @@ abstract class GroupBasedTechnique implements Technique {
 	}
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks cached) {
-		return sudoku.streamGroups()
-				.flatMap(group -> findMoves(group, groupTypeMapper.apply(group.type()), cached).stream())
-				.collect(Collectors.toList());
+	public Stream<Move> findMoves(final Sudoku sudoku, final PencilMarks cached) {
+		return sudoku.streamGroups().flatMap(group -> findMoves(group, groupTypeMapper.apply(group.type()), cached));
 	}
 
-	public abstract List<Move> findMoves(CellGroup group, Strategy strategy, PencilMarks cached);
+	public abstract Stream<Move> findMoves(CellGroup group, Strategy strategy, PencilMarks cached);
 }

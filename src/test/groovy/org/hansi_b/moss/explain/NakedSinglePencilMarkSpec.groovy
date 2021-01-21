@@ -21,7 +21,7 @@ class NakedSinglePencilMarkSpec extends spock.lang.Specification {
 		Sudoku su = Sudoku.filled(values);
 
 		then:
-		technique.findMoves(su, new PencilMarks()) == [
+		technique.findMoves(su, new PencilMarks()).toList() == [
 			insert(su, Strategy.NakedSinglePencilMark, 1, 1, 4)
 		]
 	}
@@ -40,12 +40,12 @@ class NakedSinglePencilMarkSpec extends spock.lang.Specification {
 		when:
 		def pm = new PencilMarks()
 		then:
-		technique.findMoves(su, pm) == [] as List
+		technique.findMoves(su, pm).toList() == []
 
 		when:
 		pm.remove(cellAt(su, 1, 1), 3)
 		then:
-		technique.findMoves(su, pm) == [
+		technique.findMoves(su, pm).toList() == [
 			insert(su, Strategy.NakedSinglePencilMark, 1, 1, 4)
 		]
 	}

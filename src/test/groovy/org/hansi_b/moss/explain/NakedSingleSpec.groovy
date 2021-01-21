@@ -21,7 +21,7 @@ class NakedSingleSpec extends spock.lang.Specification {
 		Sudoku su = Sudoku.filled(values);
 
 		then:
-		technique.findMoves(su, new PencilMarks()) == [
+		technique.findMoves(su, new PencilMarks()).toList() == [
 			insert(su, Strategy.NakedSingle, 0, 1, 3)
 		]
 	}
@@ -38,7 +38,7 @@ class NakedSingleSpec extends spock.lang.Specification {
 		Sudoku su = Sudoku.filled(values);
 
 		then:
-		technique.findMoves(su, new PencilMarks()) == [
+		technique.findMoves(su, new PencilMarks()).toList() == [
 			insert(su, Strategy.NakedSingle, 1, 1, 4)
 		]
 	}
@@ -55,7 +55,7 @@ class NakedSingleSpec extends spock.lang.Specification {
 
 		then:
 
-		technique.findMoves(su, new PencilMarks()) as Set == [
+		technique.findMoves(su, new PencilMarks()).toSet() == [
 			insert(su, Strategy.NakedSingle, 1, 0, 2),
 			insert(su, Strategy.NakedSingle, 1, 1, 4),
 			insert(su, Strategy.NakedSingle, 2, 2, 1),
@@ -84,7 +84,7 @@ class NakedSingleSpec extends spock.lang.Specification {
 		Sudoku su = Sudoku.filled(values);
 
 		then:
-		technique.findMoves(su, new PencilMarks()) == [
+		technique.findMoves(su, new PencilMarks()).toList() == [
 			insert(su, Strategy.NakedSingle, 5, 5, 3)
 		]
 	}

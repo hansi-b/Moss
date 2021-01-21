@@ -7,10 +7,10 @@ import static org.hansi_b.moss.CollectUtils.mapMap;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
@@ -30,7 +30,7 @@ public class NakedPair extends GroupBasedTechnique {
 	}
 
 	@Override
-	public List<Move> findMoves(final CellGroup group, final Strategy strategy, final PencilMarks marks) {
+	public Stream<Move> findMoves(final CellGroup group, final Strategy strategy, final PencilMarks marks) {
 
 		final Map<SortedSet<Integer>, Set<Cell>> cellsByPairs = invertMap(
 				filterMap(marks.getCandidatesByCell(group), (cell, cands) -> cands.size() == 2, Cell::newPosSortedMap),

@@ -1,21 +1,22 @@
 package org.hansi_b.moss.explain;
 
+import static org.hansi_b.moss.CollectUtils.flatten;
 import static org.hansi_b.moss.CollectUtils.intersection;
 import static org.hansi_b.moss.CollectUtils.pairCombinations;
 import static org.hansi_b.moss.CollectUtils.union;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.CellGroup.Type;
 import org.hansi_b.moss.Sudoku;
-import org.hansi_b.moss.explain.Elimination.Builder;
 import org.hansi_b.moss.explain.Move.Strategy;
 
 /**
@@ -48,21 +49,19 @@ public class XWing implements Technique {
 	}
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
+	public Stream<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
 
-		final List<Move> moves = new ArrayList<>();
-
-		for (final WingType wingType : WingType.values())
-			pairCombinations(eligibleCellSets(sudoku, marks, wingType.pairsType)).forEach(eligiblePair -> {
-				final Map<Integer, SortedSet<Cell>> one = eligiblePair[0];
-				final Map<Integer, SortedSet<Cell>> other = eligiblePair[1];
-				moves.addAll(Elimination.Builder.collectNonEmpty(intersection(one.keySet(), other.keySet()).stream()
-						.map(cand -> findBuilder(wingType, one, other, marks, cand))));
-			});
-		return moves;
+		return Elimination.Builder.collectNonEmpty(flatten(Arrays.stream(WingType.values()),
+				wingType -> flatten(pairCombinations(eligibleCellSets(sudoku, marks, wingType.pairsType)),
+						eligiblePair -> {
+							final Map<Integer, SortedSet<Cell>> one = eligiblePair[0];
+							final Map<Integer, SortedSet<Cell>> other = eligiblePair[1];
+							return intersection(one.keySet(), other.keySet()).stream()
+									.map(cand -> findBuilder(wingType, one, other, marks, cand));
+						})));
 	}
 
-	private static Builder findBuilder(final WingType wingType, final Map<Integer, SortedSet<Cell>> one,
+	private static Elimination.Builder findBuilder(final WingType wingType, final Map<Integer, SortedSet<Cell>> one,
 			final Map<Integer, SortedSet<Cell>> other, final PencilMarks marks, final Integer cand) {
 		final SortedSet<Cell> oneCells = one.get(cand);
 		final SortedSet<Cell> otherCells = other.get(cand);
@@ -75,7 +74,7 @@ public class XWing implements Technique {
 		if (!crossingGroups.equals(Cell.toGroups(otherCells, wingType.crossingType)))
 			return null;
 
-		final Builder builder = new Elimination.Builder(wingType.moveStrategy);
+		final Elimination.Builder builder = new Elimination.Builder(wingType.moveStrategy);
 		crossingGroups
 				.forEach(group -> builder.with(
 						Cell.collect(group.streamEmptyCells().filter(cell -> !oneCells.contains(cell)

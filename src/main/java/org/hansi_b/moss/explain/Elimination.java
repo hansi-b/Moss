@@ -2,14 +2,12 @@ package org.hansi_b.moss.explain;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
@@ -71,9 +69,8 @@ public class Elimination implements Move {
 		 *                 nulls
 		 * @return a list of Moves from the non-null, non-empty builders
 		 */
-		public static List<Move> collectNonEmpty(final Stream<Builder> builders) {
-			return builders.filter(b -> b != null && !b.isEmpty()).map(Elimination.Builder::build)
-					.collect(Collectors.toList());
+		public static Stream<Move> collectNonEmpty(final Stream<Builder> builders) {
+			return builders.filter(b -> b != null && !b.isEmpty()).map(Elimination.Builder::build);
 		}
 	}
 

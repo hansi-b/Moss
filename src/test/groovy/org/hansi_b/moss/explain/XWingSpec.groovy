@@ -30,7 +30,7 @@ public class XWingSpec extends Specification {
 		Sudoku su = Sudoku.filled(values)
 
 		expect:
-		technique.findMoves(su, new PencilMarks()) == [
+		technique.findMoves(su, new PencilMarks()).toList() == [
 			new Elimination.Builder(Move.Strategy.XWingFromRow).with(cellsAt(su,
 			[0, 1], [0, 4], [1, 1], [1, 4], [5, 1], [5, 4]) as List, [4]).build()
 		]

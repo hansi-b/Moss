@@ -8,12 +8,12 @@ import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 import org.junit.jupiter.api.Test;
 
-public class TrivialNakedSingleTest {
+class TrivialNakedSingleTest {
 
 	final TrivialNakedSingle technique = new TrivialNakedSingle();
 
 	@Test
-	public void testFindsSingleMissingInRow() {
+	void testFindsSingleMissingInRow() {
 
 		final Integer[] values = { //
 				1, 0, 2, 4, //
@@ -27,7 +27,7 @@ public class TrivialNakedSingleTest {
 	}
 
 	@Test
-	public void testFindsNoSingleOnDuplicates() {
+	void testFindsNoSingleOnDuplicates() {
 
 		final Integer[] values = { //
 				1, 0, 2, 2, //
@@ -36,11 +36,11 @@ public class TrivialNakedSingleTest {
 				0, 0, 0, 0 };
 		final Sudoku su = Sudoku.filled(values);
 
-		assertTrue(technique.findMoves(su, new PencilMarks()).isEmpty());
+		assertTrue(technique.findMoves(su, new PencilMarks()).findAny().isEmpty());
 	}
 
 	@Test
-	public void testFindsSingleMissingInCol() {
+	void testFindsSingleMissingInCol() {
 
 		final Integer[] values = { //
 				1, 0, 0, 0, //
@@ -54,7 +54,7 @@ public class TrivialNakedSingleTest {
 	}
 
 	@Test
-	public void testFindsSingleMissingInBlock() {
+	void testFindsSingleMissingInBlock() {
 
 		final Integer[] values = { //
 				0, 0, 2, 3, //
@@ -69,7 +69,7 @@ public class TrivialNakedSingleTest {
 	}
 
 	@Test
-	public void testFindsAllThreeOnSameCell() {
+	void testFindsAllThreeOnSameCell() {
 
 		final Integer[] values = { //
 				1, 2, 0, 3, //

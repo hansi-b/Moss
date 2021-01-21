@@ -1,7 +1,7 @@
 package org.hansi_b.moss.explain;
 
-import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.Sudoku;
 
@@ -24,7 +24,7 @@ import org.hansi_b.moss.Sudoku;
 public class XyWing implements Technique {
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
+	public Stream<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
 
 		/*
 		 * now find all empty cells in the intersection of the two wing cells (other

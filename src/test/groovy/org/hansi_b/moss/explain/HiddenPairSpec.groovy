@@ -35,10 +35,8 @@ public class HiddenPairSpec extends Specification {
 		marks(pm, cellAt(su, 2, 0), 1, 5, 9)
 		marks(pm, cellAt(su, 2, 2), 3, 5)
 
-		def actual = technique.findMoves(su, pm) as Set
-
 		then:
-		actual == [
+		technique.findMoves(su, pm).toSet() == [
 			new Elimination.Builder(Strategy.HiddenPairInBlock)
 			.with(cellsAt(su, [1, 0]) as Set, [2, 5]).with(cellsAt(su, [2, 0]) as Set, [5]).build()
 		] as Set

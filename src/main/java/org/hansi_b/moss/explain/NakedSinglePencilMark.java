@@ -1,7 +1,6 @@
 package org.hansi_b.moss.explain;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.Sudoku;
 
@@ -16,11 +15,10 @@ import org.hansi_b.moss.Sudoku;
 public class NakedSinglePencilMark implements Technique {
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
+	public Stream<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
 
 		return sudoku.streamEmptyCells().//
 				filter(c -> marks.candidates(c).size() == 1)
-				.map(c -> new Insertion(Move.Strategy.NakedSinglePencilMark, c, marks.candidates(c).first()))//
-				.collect(Collectors.toList());
+				.map(c -> new Insertion(Move.Strategy.NakedSinglePencilMark, c, marks.candidates(c).first()));
 	}
 }

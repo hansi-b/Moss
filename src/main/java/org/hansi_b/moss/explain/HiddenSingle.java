@@ -1,6 +1,6 @@
 package org.hansi_b.moss.explain;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.CollectUtils;
@@ -35,9 +35,9 @@ public class HiddenSingle extends GroupBasedTechnique {
 	}
 
 	@Override
-	public List<Move> findMoves(final CellGroup group, final Strategy strategy, final PencilMarks marks) {
+	public Stream<Move> findMoves(final CellGroup group, final Strategy strategy, final PencilMarks marks) {
 
-		return CollectUtils.mapMapToList(marks.getCellsByCandidateFiltered(group, 1),
+		return CollectUtils.mapMap(marks.getCellsByCandidateFiltered(group, 1),
 				(cand, cells) -> new Insertion(strategy, cells.first(), cand));
 	}
 }

@@ -4,11 +4,10 @@ import static org.hansi_b.moss.CollectUtils.combinations;
 import static org.hansi_b.moss.CollectUtils.difference;
 import static org.hansi_b.moss.CollectUtils.filterMap;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
@@ -27,12 +26,12 @@ public class NakedTriple extends GroupBasedTechnique {
 	}
 
 	@Override
-	public List<Move> findMoves(final CellGroup group, final Strategy strategy, final PencilMarks marks) {
+	public Stream<Move> findMoves(final CellGroup group, final Strategy strategy, final PencilMarks marks) {
 
 		final SortedMap<Cell, SortedSet<Integer>> candsByCellFiltered = filterMap(marks.getCandidatesByCell(group),
 				(c, cands) -> cands.size() == 2 || cands.size() == 3, Cell::newPosSortedMap);
 		if (candsByCellFiltered.isEmpty())
-			return Collections.emptyList();
+			return Stream.empty();
 
 		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidate(group);
 		return Elimination.Builder.collectNonEmpty(combinations(Cell.newPosSortedSet(candsByCellFiltered.keySet()), 3)

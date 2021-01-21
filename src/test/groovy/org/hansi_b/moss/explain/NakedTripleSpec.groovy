@@ -30,7 +30,7 @@ class NakedTripleSpec extends spock.lang.Specification {
 
 		when:
 
-		def actual = technique.findMoves(su, pm) as Set
+		def actual = technique.findMoves(su, pm).toSet()
 
 		then:
 		actual == [

@@ -25,7 +25,7 @@ class XyWingSpec extends spock.lang.Specification {
 		Sudoku su = Sudoku.filled(values)
 
 		expect:
-		technique.findMoves(su, new PencilMarks()) == [
+		technique.findMoves(su, new PencilMarks()).toList() == [
 			new Elimination.Builder(Move.Strategy.XyWing).with(cellAt(su, 0, 6), 7).build()
 		]
 	}

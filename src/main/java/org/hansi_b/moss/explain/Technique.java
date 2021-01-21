@@ -1,6 +1,6 @@
 package org.hansi_b.moss.explain;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.Sudoku;
 
@@ -21,5 +21,5 @@ interface Technique {
 		};
 	}
 
-	List<Move> findMoves(Sudoku sudoku, PencilMarks marks);
+	Stream<Move> findMoves(Sudoku sudoku, PencilMarks marks);
 }

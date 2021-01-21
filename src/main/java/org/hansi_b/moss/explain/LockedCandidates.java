@@ -4,10 +4,10 @@ import static org.hansi_b.moss.CollectUtils.flatten;
 import static org.hansi_b.moss.CollectUtils.mapMap;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
@@ -49,7 +49,7 @@ public class LockedCandidates implements Technique {
 	}
 
 	@Override
-	public List<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
+	public Stream<Move> findMoves(final Sudoku sudoku, final PencilMarks marks) {
 		return Elimination.Builder.collectNonEmpty(flatten(Arrays.stream(LockType.values()),
 				lockType -> flatten(sudoku.streamGroups(lockType.lockingType),
 						lockingGroup -> mapMap(marks.getCellsByCandidate(lockingGroup),

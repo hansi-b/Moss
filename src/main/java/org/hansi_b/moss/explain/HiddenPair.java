@@ -4,11 +4,11 @@ import static org.hansi_b.moss.CollectUtils.difference;
 import static org.hansi_b.moss.CollectUtils.mapMap;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
@@ -31,7 +31,7 @@ public class HiddenPair extends GroupBasedTechnique {
 	}
 
 	@Override
-	public List<Move> findMoves(final CellGroup group, final Strategy strategy, final PencilMarks marks) {
+	public Stream<Move> findMoves(final CellGroup group, final Strategy strategy, final PencilMarks marks) {
 
 		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidateFiltered(group, 2);
 
