@@ -5,19 +5,26 @@ plugins {
 	id 'jacoco'
 	id 'groovy'
 
-	id 'com.palantir.git-version' version '0.12.3'
+	id 'com.palantir.git-version' version '0.13.0'
 
-	id "com.github.ben-manes.versions" version "0.33.0"
+	id "com.github.ben-manes.versions" version "0.41.0"
 }
+
+wrapper.gradleVersion = '7.3.3'
 
 group 'org.hansi_b'
 version gitVersion()
 
-sourceCompatibility = 11
-
 repositories {
-	jcenter()
+	mavenCentral()
 }
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
 
 publishing {
 
@@ -42,14 +49,14 @@ publishing {
 
 dependencies {
 
-	testImplementation 'org.assertj:assertj-core:3.17.2'
-	testImplementation 'org.codehaus.groovy:groovy:3.0.5'
+	testImplementation 'org.assertj:assertj-core:3.22.0'
+	testImplementation 'org.codehaus.groovy:groovy:3.0.9'
 
-	testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.0'
-	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+	testImplementation 'org.junit.vintage:junit-vintage-engine:5.8.2'
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 
-	testImplementation 'org.objenesis:objenesis:3.1'
-	testImplementation 'org.spockframework:spock-core:2.0-M3-groovy-3.0'
+	testImplementation 'org.objenesis:objenesis:3.2'
+	testImplementation 'org.spockframework:spock-core:2.1-M2-groovy-3.0'
 }
 
 test {
@@ -58,8 +65,8 @@ test {
 
 jacocoTestReport {
 	reports {
-		xml.enabled true
-		html.enabled false
+		xml.required=true
+		html.required=false
 	}
 }
 
