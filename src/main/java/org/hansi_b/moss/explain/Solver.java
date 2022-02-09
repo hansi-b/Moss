@@ -1,7 +1,6 @@
 package org.hansi_b.moss.explain;
 
-import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.Arrays;
 
 import org.hansi_b.moss.Sudoku;
 
@@ -26,22 +25,16 @@ public class Solver {
 		final Sudoku suCopy = Sudoku.copyOf(su);
 		final PencilMarks pencilMarks = new PencilMarks();
 
-		Move move = findMoves(suCopy, pencilMarks);
+		Move move = findNextMove(suCopy, pencilMarks);
 		while (move != null) {
 			move.apply(pencilMarks);
-			move = findMoves(suCopy, pencilMarks);
+			move = findNextMove(suCopy, pencilMarks);
 		}
 		return suCopy;
 	}
 
-	private Move findMoves(final Sudoku sudoku, final PencilMarks pencilMarks) {
-		for (final Technique t : techniques) {
-			final Stream<Move> moves = t.findMoves(sudoku, pencilMarks);
-			final Optional<Move> nextMove = moves.findFirst();
-			if (nextMove.isPresent())
-				return nextMove.get();
-		}
-
-		return null;
+	private Move findNextMove(final Sudoku sudoku, final PencilMarks pencilMarks) {
+		return Arrays.stream(techniques).flatMap(t -> t.findMoves(sudoku, pencilMarks)).findFirst()
+				.orElseGet(() -> null);
 	}
 }
