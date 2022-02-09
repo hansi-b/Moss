@@ -38,16 +38,25 @@ public class Sudoku implements Iterable<Cell> {
 
 		private static final Integer ZERO = Integer.valueOf(0);
 
+		Sudoku filled(List<List<Integer>> values) {
+			final int size = values.size();
+			final Sudoku su = empty(size);
+			for (int row = 0; row < size; row++)
+				System.arraycopy(mapVals(values.get(row).stream()), 0, su.cellValues[row], 0, size);
+			return su;
+		}
+
 		Sudoku filled(final Integer... values) {
 			final int size = (int) Math.sqrt(values.length);
 
-			final Integer[] mappedVals = Arrays.stream(values).map(v -> ZERO.equals(v) ? null : v)
-					.toArray(Integer[]::new);
-
 			final Sudoku su = empty(size);
 			for (int row = 0; row < size; row++)
-				System.arraycopy(mappedVals, row * size, su.cellValues[row], 0, size);
+				System.arraycopy(mapVals(Arrays.stream(values)), row * size, su.cellValues[row], 0, size);
 			return su;
+		}
+
+		private static Integer[] mapVals(Stream<Integer> vals) {
+			return vals.map(v -> ZERO.equals(v) ? null : v).toArray(Integer[]::new);
 		}
 
 		Sudoku empty(final int size) {
@@ -140,6 +149,10 @@ public class Sudoku implements Iterable<Cell> {
 		return new Factory().filled(values);
 	}
 
+	public static Sudoku filled(final List<List<Integer>> values) {
+		return new Factory().filled(values);
+	}
+
 	/**
 	 * @return an independent copy of the argument Sudoku
 	 */
@@ -182,10 +195,10 @@ public class Sudoku implements Iterable<Cell> {
 	}
 
 	/**
-	 * @param row      the 0-based row in the Sudoku (i.e., maximum is equal to the
-	 *                 Sudoku's size)
+	 * @param row      the 0-based row in the Sudoku (i.e., maximum is the Sudoku's
+	 *                 size minus one)
 	 * @param col      the 0-based column in the Sudoku (i.e., the maximum allowed
-	 *                 value is the Sudoku's size)
+	 *                 value is the Sudoku's size minus one)
 	 * @param newValue either a value between one and the Sudoku's size (inclusive);
 	 *                 or null to indicate the field should be empty
 	 */
