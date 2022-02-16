@@ -20,7 +20,7 @@ public class Stepper implements Iterator<Move> {
 
 	public Stepper(Sudoku orgSudoku, final Technique... techniques) {
 		this.techniques = techniques;
-		this.sudoku = Sudoku.copyOf(orgSudoku);
+		this.sudoku = orgSudoku.copy();
 		this.pencilMarks = new PencilMarks();
 
 		this.move = findNextMove(sudoku, pencilMarks);

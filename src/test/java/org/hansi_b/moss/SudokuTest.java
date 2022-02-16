@@ -29,7 +29,7 @@ class SudokuTest {
 		final Sudoku su1 = Sudoku.empty();
 		su1.set(4, 5, 1);
 
-		final Sudoku su2 = Sudoku.copyOf(su1);
+		final Sudoku su2 = su1.copy();
 		for (final Cell c : su1)
 			assertEquals(c.getValue(), su2.getCell(c.getPos()).getValue());
 

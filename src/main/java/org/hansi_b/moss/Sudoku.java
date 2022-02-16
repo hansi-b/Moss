@@ -156,8 +156,8 @@ public class Sudoku implements Iterable<Cell> {
 	/**
 	 * @return an independent copy of the argument Sudoku
 	 */
-	public static Sudoku copyOf(final Sudoku original) {
-		return new Factory().copyOf(original);
+	public Sudoku copy() {
+		return new Factory().copyOf(this);
 	}
 
 	private static EnumMap<CellGroup.Type, CellGroup>[][] initCellGroups(final int size) {
