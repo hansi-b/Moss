@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import org.hansi_b.moss.testSupport.VisibleForTesting;
 
@@ -53,7 +52,7 @@ public class SudokuCliReader {
 
 				try {
 					final List<Integer> rowValues = Arrays.stream(tokens).map(t -> getCellVal(t, tokens.length))
-							.collect(Collectors.toList());
+							.toList();
 					values.addAll(rowValues);
 				} catch (final RuntimeException ex) {
 					err("Encountered parse error for %s (ignoring this line): %s", Arrays.toString(tokens), ex);
