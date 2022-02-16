@@ -1,7 +1,5 @@
 package org.hansi_b.moss.explain;
 
-import java.util.Arrays;
-
 import org.hansi_b.moss.Sudoku;
 
 public class Solver {
@@ -22,19 +20,11 @@ public class Solver {
 	 * @return a copy of the argument Sudoku, solved as far as possible
 	 */
 	public Sudoku solve(final Sudoku su) {
-		final Sudoku suCopy = Sudoku.copyOf(su);
-		final PencilMarks pencilMarks = new PencilMarks();
+		Stepper stepper = new Stepper(su, techniques);
 
-		Move move = findNextMove(suCopy, pencilMarks);
-		while (move != null) {
-			move.apply(pencilMarks);
-			move = findNextMove(suCopy, pencilMarks);
-		}
-		return suCopy;
-	}
+		while (stepper.hasNext())
+			stepper.next();
 
-	private Move findNextMove(final Sudoku sudoku, final PencilMarks pencilMarks) {
-		return Arrays.stream(techniques).flatMap(t -> t.findMoves(sudoku, pencilMarks)).findFirst()
-				.orElseGet(() -> null);
+		return stepper.getSudoku();
 	}
 }
