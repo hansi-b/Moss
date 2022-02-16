@@ -79,21 +79,20 @@ public class Sudoku implements Iterable<Cell> {
 			sudoku.cells[rowIdx][colIdx] = new Cell(sudoku, Pos.at(rowIdx, colIdx))));
 		}
 
-		private <T extends CellGroup> void initGroupType(final Type cellGroupType,
-				final BiFunction<Sudoku, List<Cell>, T> newCall) {
+		private void initGroupType(final Type cellGroupType, final BiFunction<Sudoku, List<Cell>, CellGroup> newCall) {
 
 			final List<CellGroup> groups = IntStream.range(0, sudoku.size)
-					.mapToObj(idx -> initGroup(cellGroupType, idx, newCall)).collect(Collectors.toList());
+					.mapToObj(idx -> initGroup(cellGroupType, idx, newCall)).toList();
 			sudoku.groupsByType.put(cellGroupType, groups);
 		}
 
-		private <T extends CellGroup> T initGroup(final Type cellGroupType, final int idx,
-				final BiFunction<Sudoku, List<Cell>, T> newCall) {
+		private CellGroup initGroup(final Type cellGroupType, final int idx,
+				final BiFunction<Sudoku, List<Cell>, CellGroup> newCall) {
 
-			final List<Pos> posList = cellGroupType.getPos(idx, sudoku.size).collect(Collectors.toList());
-			final List<Cell> cells = posList.stream().map(p -> sudoku.cells[p.row][p.col]).collect(Collectors.toList());
+			final List<Pos> posList = cellGroupType.getPos(idx, sudoku.size).toList();
+			final List<Cell> cells = posList.stream().map(p -> sudoku.cells[p.row][p.col]).toList();
 
-			final T group = newCall.apply(sudoku, cells);
+			final CellGroup group = newCall.apply(sudoku, cells);
 			for (final Pos pos : posList)
 				sudoku.groups[pos.row][pos.col].put(group.type(), group);
 
