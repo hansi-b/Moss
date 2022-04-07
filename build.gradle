@@ -5,12 +5,12 @@ plugins {
 	id 'jacoco'
 	id 'groovy'
 
-	id 'com.palantir.git-version' version '0.13.0'
+	id 'com.palantir.git-version' version '0.15.0'
 
-	id "com.github.ben-manes.versions" version "0.41.0"
+	id "com.github.ben-manes.versions" version "0.42.0"
 }
 
-wrapper.gradleVersion = '7.3.3'
+wrapper.gradleVersion = '7.4.2'
 
 group 'org.hansi_b'
 version gitVersion()
@@ -50,13 +50,12 @@ publishing {
 dependencies {
 
 	testImplementation 'org.assertj:assertj-core:3.22.0'
-	testImplementation 'org.codehaus.groovy:groovy:3.0.9'
 
 	testImplementation 'org.junit.vintage:junit-vintage-engine:5.8.2'
 	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 
 	testImplementation 'org.objenesis:objenesis:3.2'
-	testImplementation 'org.spockframework:spock-core:2.1-M2-groovy-3.0'
+	testImplementation 'org.spockframework:spock-core:2.2-M1-groovy-4.0'
 }
 
 test {
