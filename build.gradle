@@ -20,8 +20,8 @@ repositories {
 		name = 'GitHubPackages'
 		url = 'https://maven.pkg.github.com/hansi-b/JavaSundries'
 			credentials {
-				username = project.findProperty("GITHUB_ACTOR") ?: ""
-				password = project.findProperty("GITHUB_REPO_PAT_RO") ?: ""
+				username = project.findProperty("GITHUB_ACTOR") ?: System.getenv("GITHUB_ACTOR")
+				password = project.findProperty("GITHUB_REPO_PAT_RO") ?: System.getenv("GITHUB_REPO_PAT_RO")
 			}
 	}
 }
