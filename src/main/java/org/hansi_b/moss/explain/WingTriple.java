@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
-import org.hansi_b.moss.CollectUtils;
+import org.hansib.sundries.CollectUtils;
 
 class WingTriple {
 

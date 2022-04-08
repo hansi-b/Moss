@@ -1,7 +1,7 @@
 package org.hansi_b.moss.explain;
 
-import static org.hansi_b.moss.CollectUtils.difference;
-import static org.hansi_b.moss.CollectUtils.mapMap;
+import static org.hansib.sundries.CollectUtils.difference;
+import static org.hansib.sundries.CollectUtils.mapMap;
 
 import java.util.Collections;
 import java.util.Set;

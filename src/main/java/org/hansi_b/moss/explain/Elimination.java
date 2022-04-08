@@ -11,7 +11,7 @@ import java.util.TreeSet;
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
-import org.hansi_b.moss.CollectUtils;
+import org.hansib.sundries.CollectUtils;
 
 /**
  * Remove specific candidates from specific cells.

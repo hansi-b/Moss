@@ -15,6 +15,7 @@ import org.hansi_b.moss.CellGroup.Block;
 import org.hansi_b.moss.CellGroup.Col;
 import org.hansi_b.moss.CellGroup.Row;
 import org.hansi_b.moss.CellGroup.Type;
+import org.hansib.sundries.Errors;
 
 public class Sudoku implements Iterable<Cell> {
 

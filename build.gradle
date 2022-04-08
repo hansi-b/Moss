@@ -1,6 +1,5 @@
 
 plugins {
-	id 'maven-publish'
 	id 'application'
 	id 'jacoco'
 	id 'groovy'
@@ -17,6 +16,14 @@ version gitVersion()
 
 repositories {
 	mavenCentral()
+	maven {
+		name = 'GitHubPackages'
+		url = 'https://maven.pkg.github.com/hansi-b/JavaSundries'
+			credentials {
+				username = project.findProperty("GITHUB_ACTOR") ?: ""
+				password = project.findProperty("GITHUB_REPO_PAT_RO") ?: ""
+			}
+	}
 }
 
 java {
@@ -25,29 +32,9 @@ java {
 	}
 }
 
-
-publishing {
-
-	publications {
-		mavenJava(MavenPublication) {
-			artifactId = 'moss'
-			from components.java
-		}
-	}
-
-	repositories {
-		maven {
-			name = "GitHubPackages"
-			url = "https://maven.pkg.github.com/hansi-b/moss"
-			credentials {
-				username = project.hasProperty("GITHUB_ACTOR") ? GITHUB_ACTOR : ""
-				password = project.hasProperty("GITHUB_REPO_PAT") ? GITHUB_REPO_PAT : ""
-			}
-		}
-	}
-}
-
 dependencies {
+
+	implementation 'org.hansib:sundries:0.1.4'
 
 	testImplementation 'org.assertj:assertj-core:3.22.0'
 

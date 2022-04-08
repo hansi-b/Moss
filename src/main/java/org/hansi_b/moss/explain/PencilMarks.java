@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
-import org.hansi_b.moss.CollectUtils;
-import org.hansi_b.moss.Errors;
+import org.hansib.sundries.CollectUtils;
+import org.hansib.sundries.Errors;
 
 /**
  * A notebook for candidate values for cells. For each cell, these are initially

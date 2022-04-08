@@ -1,8 +1,8 @@
 package org.hansi_b.moss.explain;
 
-import static org.hansi_b.moss.CollectUtils.combinations;
-import static org.hansi_b.moss.CollectUtils.difference;
-import static org.hansi_b.moss.CollectUtils.filterMap;
+import static org.hansib.sundries.CollectUtils.combinations;
+import static org.hansib.sundries.CollectUtils.difference;
+import static org.hansib.sundries.CollectUtils.filterMap;
 
 import java.util.SortedMap;
 import java.util.SortedSet;

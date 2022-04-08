@@ -1,9 +1,9 @@
 package org.hansi_b.moss.explain;
 
-import static org.hansi_b.moss.CollectUtils.filterMap;
-import static org.hansi_b.moss.CollectUtils.intersection;
-import static org.hansi_b.moss.CollectUtils.invertMap;
-import static org.hansi_b.moss.CollectUtils.mapMap;
+import static org.hansib.sundries.CollectUtils.filterMap;
+import static org.hansib.sundries.CollectUtils.intersection;
+import static org.hansib.sundries.CollectUtils.invertMap;
+import static org.hansib.sundries.CollectUtils.mapMap;
 
 import java.util.HashMap;
 import java.util.HashSet;

@@ -7,13 +7,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
-import org.hansi_b.moss.CollectUtils;
 import org.hansi_b.moss.Pos;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Elimination;
 import org.hansi_b.moss.explain.Insertion;
 import org.hansi_b.moss.explain.Move.Strategy;
 import org.hansi_b.moss.explain.PencilMarks;
+import org.hansib.sundries.CollectUtils;
 
 public class Shortcuts {
 

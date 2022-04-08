@@ -1,9 +1,9 @@
 package org.hansi_b.moss.explain;
 
-import static org.hansi_b.moss.CollectUtils.flatten;
-import static org.hansi_b.moss.CollectUtils.intersection;
-import static org.hansi_b.moss.CollectUtils.pairCombinations;
-import static org.hansi_b.moss.CollectUtils.union;
+import static org.hansib.sundries.CollectUtils.flatten;
+import static org.hansib.sundries.CollectUtils.intersection;
+import static org.hansib.sundries.CollectUtils.pairCombinations;
+import static org.hansib.sundries.CollectUtils.union;
 
 import java.util.Arrays;
 import java.util.List;

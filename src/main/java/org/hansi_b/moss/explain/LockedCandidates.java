@@ -1,7 +1,7 @@
 package org.hansi_b.moss.explain;
 
-import static org.hansi_b.moss.CollectUtils.flatten;
-import static org.hansi_b.moss.CollectUtils.mapMap;
+import static org.hansib.sundries.CollectUtils.flatten;
+import static org.hansib.sundries.CollectUtils.mapMap;
 
 import java.util.Arrays;
 import java.util.Set;

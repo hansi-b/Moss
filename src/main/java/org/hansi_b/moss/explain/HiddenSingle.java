@@ -3,7 +3,7 @@ package org.hansi_b.moss.explain;
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.CellGroup;
-import org.hansi_b.moss.CollectUtils;
+import org.hansib.sundries.CollectUtils;
 import org.hansi_b.moss.explain.Move.Strategy;
 
 /**
