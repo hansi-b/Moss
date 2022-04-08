@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Pos;
@@ -17,13 +16,17 @@ import org.hansib.sundries.CollectUtils;
 
 public class Shortcuts {
 
+	private Shortcuts() {
+		// instantiation prevention
+	}
+
 	public static Cell cellAt(final Sudoku su, final int x, final int y) {
 		return su.getCell(Pos.at(x, y));
 	}
 
 	@SafeVarargs
 	public static Cell[] cellsAt(final Sudoku su, final ArrayList<Integer>... cellPosses) {
-		return Arrays.stream(cellPosses).map(l -> su.getCell(Pos.at(l.get(0), l.get(1)))).collect(Collectors.toList())
+		return Arrays.stream(cellPosses).map(l -> su.getCell(Pos.at(l.get(0), l.get(1)))).toList()
 				.toArray(new Cell[] {});
 	}
 

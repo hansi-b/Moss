@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.SortedSet;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
@@ -86,9 +86,9 @@ public class XWing implements Technique {
 	/*
 	 * Find candidates for which we have pairs of possible cells.
 	 */
-	private static List<Map<Integer, SortedSet<Cell>>> eligibleCellSets(final Sudoku sudoku, final PencilMarks marks,
-			final Type pairsType) {
+	private static List<SortedMap<Integer, SortedSet<Cell>>> eligibleCellSets(final Sudoku sudoku,
+			final PencilMarks marks, final Type pairsType) {
 		return sudoku.streamGroups(pairsType).map(group -> marks.getCellsByCandidateFiltered(group, 2))
-				.filter(m -> !m.isEmpty()).collect(Collectors.toList());
+				.filter(m -> !m.isEmpty()).toList();
 	}
 }

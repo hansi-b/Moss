@@ -12,7 +12,6 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
@@ -99,7 +98,7 @@ class XyWingFinder {
 				next = innerKeys.next();
 				final Stream<WingTriple> wingStream = collectWingsFromTail(innerMappings.get(currentCand),
 						innerMappings.tailMap(next).entrySet(), currentCand, commonCand);
-				wings.addAll(wingStream.collect(Collectors.toList()));
+				wings.addAll(wingStream.toList());
 			}
 			return wings.stream();
 		}).flatMap(Function.identity());
