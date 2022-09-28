@@ -18,22 +18,10 @@ import org.hansi_b.moss.CellGroup.Type;
  * version). Does not maintain its value, but lets the Sudoku do that. It is
  * itself actually immutable.
  */
-public class Cell {
+public record Cell(Sudoku sudoku, Pos pos) {
 
 	public static final Comparator<Cell> positionComparator = (c1, c2) -> Pos.positionComparator.compare(c1.pos,
 			c2.pos);
-
-	private final Sudoku sudoku;
-	private final Pos pos;
-
-	/**
-	 * Create a cell for the given Sudoku and position. Should not have to be
-	 * called, but is constructed during Sudoku initialization.
-	 */
-	Cell(final Sudoku sudoku, final Pos pos) {
-		this.sudoku = sudoku;
-		this.pos = pos;
-	}
 
 	public Sudoku getSudoku() {
 		return sudoku;
