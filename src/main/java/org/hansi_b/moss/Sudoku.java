@@ -91,11 +91,11 @@ public class Sudoku implements Iterable<Cell> {
 				final BiFunction<Sudoku, List<Cell>, CellGroup> newCall) {
 
 			final List<Pos> posList = cellGroupType.getPos(idx, sudoku.size).toList();
-			final List<Cell> cells = posList.stream().map(p -> sudoku.cells[p.row][p.col]).toList();
+			final List<Cell> cells = posList.stream().map(p -> sudoku.cells[p.row()][p.col()]).toList();
 
 			final CellGroup group = newCall.apply(sudoku, cells);
 			for (final Pos pos : posList)
-				sudoku.groups[pos.row][pos.col].put(group.type(), group);
+				sudoku.groups[pos.row()][pos.col()].put(group.type(), group);
 
 			return group;
 		}
@@ -236,7 +236,7 @@ public class Sudoku implements Iterable<Cell> {
 	}
 
 	public Cell getCell(final Pos pos) {
-		return cells[pos.row][pos.col];
+		return cells[pos.row()][pos.col()];
 	}
 
 	public CellGroup getGroup(final Type groupType, final int groupIndex) {
@@ -247,11 +247,11 @@ public class Sudoku implements Iterable<Cell> {
 	 * @return the cell group of the given type at the given position
 	 */
 	public CellGroup getGroup(final Type groupType, final Pos pos) {
-		return groups[pos.row][pos.col].get(groupType);
+		return groups[pos.row()][pos.col()].get(groupType);
 	}
 
 	public Stream<CellGroup> streamGroups(final Pos pos) {
-		return Arrays.stream(Type.values()).map(groups[pos.row][pos.col]::get);
+		return Arrays.stream(Type.values()).map(groups[pos.row()][pos.col()]::get);
 	}
 
 	public Stream<CellGroup> streamGroups() {

@@ -10,7 +10,7 @@ import java.util.Map;
  * The implementation guarantees object identity for position object(s) with the
  * same coordinates.
  */
-public class Pos {
+public record Pos(int row, int col) {
 
 	public static final Comparator<Pos> positionComparator = (p1, p2) -> {
 		final int rowDiff = p1.row - p2.row;
@@ -18,14 +18,6 @@ public class Pos {
 	};
 
 	private static final Map<Integer, Map<Integer, Pos>> lookup = new HashMap<>();
-
-	final int row;
-	final int col;
-
-	private Pos(final int row, final int col) {
-		this.row = row;
-		this.col = col;
-	}
 
 	public static Pos at(final int row, final int col) {
 		final Map<Integer, Pos> rowMap = lookup.computeIfAbsent(row, r -> new HashMap<>());

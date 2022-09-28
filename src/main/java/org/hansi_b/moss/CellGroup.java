@@ -147,11 +147,11 @@ public class CellGroup {
 	}
 
 	protected int firstRow() {
-		return cells.get(0).getPos().row;
+		return cells.get(0).getPos().row();
 	}
 
 	protected int firstCol() {
-		return cells.get(0).getPos().col;
+		return cells.get(0).getPos().col();
 	}
 
 	@Override

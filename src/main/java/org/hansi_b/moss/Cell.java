@@ -40,11 +40,11 @@ public class Cell {
 	}
 
 	public Integer getValue() {
-		return sudoku.getValue(pos.row, pos.col);
+		return sudoku.getValue(pos.row(), pos.col());
 	}
 
 	public boolean isEmpty() {
-		return sudoku.getValue(pos.row, pos.col) == null;
+		return sudoku.getValue(pos.row(), pos.col()) == null;
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class Cell {
 	}
 
 	public void setValue(final Integer newValue) {
-		sudoku.set(pos.row, pos.col, newValue);
+		sudoku.set(pos.row(), pos.col(), newValue);
 	}
 
 	public static Set<CellGroup> toGroups(final Collection<Cell> cells, final Type groupType) {
