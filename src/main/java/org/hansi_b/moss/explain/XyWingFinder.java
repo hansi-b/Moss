@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
-import org.hansi_b.moss.testSupport.VisibleForTesting;
+import org.hansib.sundries.testing.VisibleForTesting;
 
 class XyWingFinder {
 	private final Sudoku sudoku;

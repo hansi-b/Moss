@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import org.hansi_b.moss.testSupport.VisibleForTesting;
+import org.hansib.sundries.testing.VisibleForTesting;
 
 /**
  * Reads a Sudoku from the command line and just prints whether it is solved.
