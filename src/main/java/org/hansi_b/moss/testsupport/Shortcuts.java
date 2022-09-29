@@ -1,4 +1,4 @@
-package org.hansi_b.moss.testSupport;
+package org.hansi_b.moss.testsupport;
 
 import java.util.ArrayList;
 import java.util.Arrays;

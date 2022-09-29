@@ -1,8 +1,9 @@
 package org.hansi_b.moss.explain;
 
+import static org.hansi_b.moss.testsupport.Shortcuts.*
+
 import org.hansi_b.moss.Sudoku
 import org.hansi_b.moss.explain.Move.Strategy
-import static org.hansi_b.moss.testSupport.Shortcuts.*
 
 import spock.lang.Shared
 import spock.lang.Specification

@@ -1,7 +1,7 @@
 package org.hansi_b.moss.explain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hansi_b.moss.testSupport.Shortcuts.insert;
+import static org.hansi_b.moss.testsupport.Shortcuts.insert;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hansi_b.moss.Sudoku;

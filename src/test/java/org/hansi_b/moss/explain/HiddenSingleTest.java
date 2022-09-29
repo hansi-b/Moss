@@ -1,18 +1,18 @@
 package org.hansi_b.moss.explain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hansi_b.moss.testSupport.Shortcuts.insert;
+import static org.hansi_b.moss.testsupport.Shortcuts.insert;
 
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 import org.junit.jupiter.api.Test;
 
-public class HiddenSingleTest {
+class HiddenSingleTest {
 
 	final HiddenSingle technique = new HiddenSingle();
 
 	@Test
-	public void testFindsMultipleHidden() {
+	void testFindsMultipleHidden() {
 
 		final Integer[] values = { //
 				0, 0, 0, 0, //
@@ -31,7 +31,7 @@ public class HiddenSingleTest {
 	}
 
 	@Test
-	public void testFindsSingleHidden() {
+	void testFindsSingleHidden() {
 
 		final Integer[] values = { //
 				0, 0, 0, 0, //
@@ -49,7 +49,7 @@ public class HiddenSingleTest {
 	}
 
 	@Test
-	public void testFindsSingleHiddenBig() {
+	void testFindsSingleHiddenBig() {
 
 		/*
 		 * from http://www.sudoku-space.de/sudoku-loesungstechniken/
@@ -76,7 +76,7 @@ public class HiddenSingleTest {
 	}
 
 	@Test
-	public void testBigSinglePositive() {
+	void testBigSinglePositive() {
 		/*
 		 * the explained example from
 		 * https://www.sudokuoftheday.com/techniques/single-position/

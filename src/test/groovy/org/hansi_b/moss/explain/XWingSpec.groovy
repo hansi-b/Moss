@@ -1,6 +1,6 @@
 package org.hansi_b.moss.explain;
 
-import static org.hansi_b.moss.testSupport.Shortcuts.cellsAt
+import static org.hansi_b.moss.testsupport.Shortcuts.cellsAt
 
 import org.hansi_b.moss.Sudoku
 

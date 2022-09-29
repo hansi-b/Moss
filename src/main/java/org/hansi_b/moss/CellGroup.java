@@ -3,7 +3,6 @@ package org.hansi_b.moss;
 import java.util.BitSet;
 import java.util.List;
 import java.util.SortedSet;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public sealed class CellGroup {
@@ -67,7 +66,7 @@ public sealed class CellGroup {
 	 *         iteration
 	 */
 	public List<Integer> values() {
-		return streamAllCells().map(Cell::getValue).collect(Collectors.toList());
+		return streamAllCells().map(Cell::getValue).toList();
 	}
 
 	/**

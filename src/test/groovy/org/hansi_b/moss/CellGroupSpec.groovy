@@ -1,6 +1,6 @@
 package org.hansi_b.moss;
 
-import static org.hansi_b.moss.testSupport.Shortcuts.cellAt
+import static org.hansi_b.moss.testsupport.Shortcuts.cellAt
 
 import spock.lang.Specification
 import spock.lang.Unroll

@@ -1,6 +1,6 @@
 package org.hansi_b.moss;
 
-import static org.hansi_b.moss.testSupport.Shortcuts.*
+import static org.hansi_b.moss.testsupport.Shortcuts.*
 
 import spock.lang.Specification
 

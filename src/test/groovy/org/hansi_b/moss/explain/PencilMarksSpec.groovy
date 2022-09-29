@@ -1,6 +1,6 @@
 package org.hansi_b.moss.explain
 
-import static org.hansi_b.moss.testSupport.Shortcuts.*
+import static org.hansi_b.moss.testsupport.Shortcuts.*
 
 import java.util.stream.Collectors
 
