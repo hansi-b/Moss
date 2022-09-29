@@ -1,13 +1,10 @@
 package org.hansi_b.moss.explain
 
-import org.hansi_b.moss.Cell
-import org.hansi_b.moss.CellGroup.Type
-import org.hansi_b.moss.explain.PencilMarks
-import org.hansi_b.moss.Pos
-
-import java.util.stream.Collectors
 import static org.hansi_b.moss.testSupport.Shortcuts.*
 
+import java.util.stream.Collectors
+
+import org.hansi_b.moss.GroupType
 import org.hansi_b.moss.Sudoku
 
 import spock.lang.Specification
@@ -19,7 +16,7 @@ public class PencilMarksSpec extends Specification {
 
 		given:
 		Sudoku su = Sudoku.empty()
-		def group = su.getGroup(Type.Row, 0)
+		def group = su.getGroup(GroupType.Row, 0)
 		def cells = group.streamEmptyCells().collect(Collectors.toList()) as Set
 
 		when:
@@ -45,16 +42,16 @@ public class PencilMarksSpec extends Specification {
 		Sudoku su = Sudoku.filled(values)
 
 		then:
-		new PencilMarks().getCellsByCandidate(su.getGroup(Type.Row, 0)).isEmpty()
+		new PencilMarks().getCellsByCandidate(su.getGroup(GroupType.Row, 0)).isEmpty()
 
-		new PencilMarks().getCellsByCandidate(su.getGroup(Type.Block, 0)) == [ 4 : [cellAt(su, 1, 0)] as Set ]
+		new PencilMarks().getCellsByCandidate(su.getGroup(GroupType.Block, 0)) == [ 4 : [cellAt(su, 1, 0)] as Set ]
 	}
 
 	def "getCandidatesByCell for empty row returns all values"() {
 
 		given:
 		Sudoku su = Sudoku.empty()
-		def group = su.getGroup(Type.Row, 0)
+		def group = su.getGroup(GroupType.Row, 0)
 		def cells = group.streamEmptyCells().collect(Collectors.toList()) as Set
 
 		when:
@@ -80,10 +77,10 @@ public class PencilMarksSpec extends Specification {
 		Sudoku su = Sudoku.filled(values)
 
 		then:
-		new PencilMarks().getCandidatesByCell(su.getGroup(Type.Row, 0)).isEmpty()
+		new PencilMarks().getCandidatesByCell(su.getGroup(GroupType.Row, 0)).isEmpty()
 
-		new PencilMarks().getCandidatesByCell(su.getGroup(Type.Block, 0)) == [ (cellAt(su, 1, 0)) : [4] as Set ]
-		new PencilMarks().getCandidatesByCell(su.getGroup(Type.Row, 1)) == [
+		new PencilMarks().getCandidatesByCell(su.getGroup(GroupType.Block, 0)) == [ (cellAt(su, 1, 0)) : [4] as Set ]
+		new PencilMarks().getCandidatesByCell(su.getGroup(GroupType.Row, 1)) == [
 			(cellAt(su, 1, 0)) : [4] as Set,
 			(cellAt(su, 1, 2)) : [2] as Set
 		]

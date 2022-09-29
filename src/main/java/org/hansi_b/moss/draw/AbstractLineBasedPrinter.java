@@ -1,7 +1,7 @@
 package org.hansi_b.moss.draw;
 
 import org.hansi_b.moss.CellGroup;
-import org.hansi_b.moss.CellGroup.Type;
+import org.hansi_b.moss.GroupType;
 import org.hansi_b.moss.Sudoku;
 
 /**
@@ -20,7 +20,7 @@ abstract class AbstractLineBasedPrinter {
 		appendLine(topBorder(blockSize), bld);
 
 		int rowIndex = 1;
-		for (final CellGroup row : su.getGroups(Type.Row)) {
+		for (final CellGroup row : su.getGroups(GroupType.Row)) {
 			appendLine(valuesLine(row, blockSize, rowIndex == size), bld);
 			if (rowIndex < size) {
 				final String line;

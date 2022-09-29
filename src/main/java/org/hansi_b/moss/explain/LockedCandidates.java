@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
-import org.hansi_b.moss.CellGroup.Type;
+import org.hansi_b.moss.GroupType;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 
@@ -32,16 +32,16 @@ public class LockedCandidates implements Technique {
 
 	enum LockType {
 
-		BlockCol(Type.Block, Type.Col, Strategy.LockedCandidateBlockCol), //
-		BlockRow(Type.Block, Type.Row, Strategy.LockedCandidateBlockRow), //
-		ColBlock(Type.Col, Type.Block, Strategy.LockedCandidateColBlock), //
-		RowBlock(Type.Row, Type.Block, Strategy.LockedCandidateRowBlock);
+		BlockCol(GroupType.Block, GroupType.Col, Strategy.LockedCandidateBlockCol), //
+		BlockRow(GroupType.Block, GroupType.Row, Strategy.LockedCandidateBlockRow), //
+		ColBlock(GroupType.Col, GroupType.Block, Strategy.LockedCandidateColBlock), //
+		RowBlock(GroupType.Row, GroupType.Block, Strategy.LockedCandidateRowBlock);
 
-		private final Type lockingType;
-		private final Type targetType;
+		private final GroupType lockingType;
+		private final GroupType targetType;
 		private final Strategy moveStrategy;
 
-		LockType(final Type lockingType, final Type targetType, final Strategy moveStrategy) {
+		LockType(final GroupType lockingType, final GroupType targetType, final Strategy moveStrategy) {
 			this.lockingType = lockingType;
 			this.targetType = targetType;
 			this.moveStrategy = moveStrategy;

@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 import org.hansi_b.moss.CellGroup.Block;
 import org.hansi_b.moss.CellGroup.Col;
 import org.hansi_b.moss.CellGroup.Row;
-import org.hansi_b.moss.CellGroup.Type;
 import org.hansib.sundries.Errors;
 
 public class Sudoku implements Iterable<Cell> {
@@ -68,9 +67,9 @@ public class Sudoku implements Iterable<Cell> {
 
 			sudoku = new Sudoku(size);
 			initCells();
-			initGroupType(Type.Row, Row::new);
-			initGroupType(Type.Col, Col::new);
-			initGroupType(Type.Block, Block::new);
+			initGroupType(GroupType.Row, Row::new);
+			initGroupType(GroupType.Col, Col::new);
+			initGroupType(GroupType.Block, Block::new);
 			return sudoku;
 		}
 
@@ -80,14 +79,14 @@ public class Sudoku implements Iterable<Cell> {
 			sudoku.cells[rowIdx][colIdx] = new Cell(sudoku, Pos.at(rowIdx, colIdx))));
 		}
 
-		private void initGroupType(final Type cellGroupType, final BiFunction<Sudoku, List<Cell>, CellGroup> newCall) {
+		private void initGroupType(final GroupType cellGroupType, final BiFunction<Sudoku, List<Cell>, CellGroup> newCall) {
 
 			final List<CellGroup> groups = IntStream.range(0, sudoku.size)
 					.mapToObj(idx -> initGroup(cellGroupType, idx, newCall)).toList();
 			sudoku.groupsByType.put(cellGroupType, groups);
 		}
 
-		private CellGroup initGroup(final Type cellGroupType, final int idx,
+		private CellGroup initGroup(final GroupType cellGroupType, final int idx,
 				final BiFunction<Sudoku, List<Cell>, CellGroup> newCall) {
 
 			final List<Pos> posList = cellGroupType.getPos(idx, sudoku.size).toList();
@@ -103,10 +102,10 @@ public class Sudoku implements Iterable<Cell> {
 
 	private final int size;
 
-	private final EnumMap<Type, List<CellGroup>> groupsByType;
+	private final EnumMap<GroupType, List<CellGroup>> groupsByType;
 
 	private final Cell[][] cells;
-	private final EnumMap<CellGroup.Type, CellGroup>[][] groups;
+	private final EnumMap<GroupType, CellGroup>[][] groups;
 
 	private final TreeSet<Integer> possibleValues;
 	private final Integer[][] cellValues;
@@ -114,7 +113,7 @@ public class Sudoku implements Iterable<Cell> {
 	private Sudoku(final int size) {
 		this.size = size;
 
-		this.groupsByType = new EnumMap<>(Type.class);
+		this.groupsByType = new EnumMap<>(GroupType.class);
 
 		this.cells = new Cell[size][size];
 		this.groups = initCellGroups(size);
@@ -160,12 +159,12 @@ public class Sudoku implements Iterable<Cell> {
 		return new Factory().copyOf(this);
 	}
 
-	private static EnumMap<CellGroup.Type, CellGroup>[][] initCellGroups(final int size) {
+	private static EnumMap<GroupType, CellGroup>[][] initCellGroups(final int size) {
 		@SuppressWarnings("unchecked")
-		final EnumMap<CellGroup.Type, CellGroup>[][] cellGroups = new EnumMap[size][size];
+		final EnumMap<GroupType, CellGroup>[][] cellGroups = new EnumMap[size][size];
 		for (int rowIdx = 0; rowIdx < size; rowIdx++)
 			for (int colIdx = 0; colIdx < size; colIdx++)
-				cellGroups[rowIdx][colIdx] = new EnumMap<>(CellGroup.Type.class);
+				cellGroups[rowIdx][colIdx] = new EnumMap<>(GroupType.class);
 		return cellGroups;
 	}
 
@@ -229,7 +228,7 @@ public class Sudoku implements Iterable<Cell> {
 	}
 
 	public boolean isSolved() {
-		for (final Type groupType : Type.values())
+		for (final GroupType groupType : GroupType.values())
 			if (streamGroups(groupType).anyMatch(g -> !g.isSolved()))
 				return false;
 		return true;
@@ -239,30 +238,30 @@ public class Sudoku implements Iterable<Cell> {
 		return cells[pos.row()][pos.col()];
 	}
 
-	public CellGroup getGroup(final Type groupType, final int groupIndex) {
+	public CellGroup getGroup(final GroupType groupType, final int groupIndex) {
 		return groupsByType.get(groupType).get(groupIndex);
 	}
 
 	/**
 	 * @return the cell group of the given type at the given position
 	 */
-	public CellGroup getGroup(final Type groupType, final Pos pos) {
+	public CellGroup getGroup(final GroupType groupType, final Pos pos) {
 		return groups[pos.row()][pos.col()].get(groupType);
 	}
 
 	public Stream<CellGroup> streamGroups(final Pos pos) {
-		return Arrays.stream(Type.values()).map(groups[pos.row()][pos.col()]::get);
+		return Arrays.stream(GroupType.values()).map(groups[pos.row()][pos.col()]::get);
 	}
 
 	public Stream<CellGroup> streamGroups() {
-		return Arrays.stream(Type.values()).map(groupsByType::get).flatMap(List::stream);
+		return Arrays.stream(GroupType.values()).map(groupsByType::get).flatMap(List::stream);
 	}
 
-	public Stream<CellGroup> streamGroups(final Type groupType) {
+	public Stream<CellGroup> streamGroups(final GroupType groupType) {
 		return getGroups(groupType).stream();
 	}
 
-	public List<CellGroup> getGroups(final Type groupType) {
+	public List<CellGroup> getGroups(final GroupType groupType) {
 		return groupsByType.get(groupType);
 	}
 

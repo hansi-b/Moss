@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.assertj.core.util.Sets;
-import org.hansi_b.moss.CellGroup.Type;
 import org.junit.jupiter.api.Test;
 
 class SudokuTest {
@@ -182,23 +181,23 @@ class SudokuTest {
 	void testGetBlockAtPos() {
 		final Sudoku su = Sudoku.empty(4);
 
-		final CellGroup block0 = su.getGroup(Type.Block, Pos.at(0, 0));
-		assertSame(block0, su.getGroup(Type.Block, Pos.at(0, 1)));
-		assertSame(block0, su.getGroup(Type.Block, Pos.at(1, 0)));
-		assertSame(block0, su.getGroup(Type.Block, Pos.at(1, 1)));
-		final CellGroup block1 = su.getGroup(Type.Block, Pos.at(2, 0));
+		final CellGroup block0 = su.getGroup(GroupType.Block, Pos.at(0, 0));
+		assertSame(block0, su.getGroup(GroupType.Block, Pos.at(0, 1)));
+		assertSame(block0, su.getGroup(GroupType.Block, Pos.at(1, 0)));
+		assertSame(block0, su.getGroup(GroupType.Block, Pos.at(1, 1)));
+		final CellGroup block1 = su.getGroup(GroupType.Block, Pos.at(2, 0));
 		assertNotSame(block0, block1);
-		assertSame(block1, su.getGroup(Type.Block, Pos.at(2, 1)));
+		assertSame(block1, su.getGroup(GroupType.Block, Pos.at(2, 1)));
 	}
 
 	@Test
 	void testGetGroupAtPos() {
 		final Sudoku su = Sudoku.empty(4);
 
-		final CellGroup block0 = su.getGroup(Type.Block, Pos.at(0, 0));
-		assertSame(block0, su.getGroup(Type.Block, Pos.at(0, 1)));
-		assertSame(block0, su.getGroup(Type.Block, Pos.at(1, 0)));
-		assertSame(block0, su.getGroup(Type.Block, Pos.at(1, 1)));
+		final CellGroup block0 = su.getGroup(GroupType.Block, Pos.at(0, 0));
+		assertSame(block0, su.getGroup(GroupType.Block, Pos.at(0, 1)));
+		assertSame(block0, su.getGroup(GroupType.Block, Pos.at(1, 0)));
+		assertSame(block0, su.getGroup(GroupType.Block, Pos.at(1, 1)));
 	}
 
 	@Test

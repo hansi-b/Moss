@@ -3,7 +3,7 @@ package org.hansi_b.moss.explain;
 import java.util.Arrays;
 import java.util.function.Function;
 
-import org.hansi_b.moss.CellGroup.Type;
+import org.hansi_b.moss.GroupType;
 
 public interface Move {
 
@@ -30,11 +30,11 @@ public interface Move {
 		XyWing //
 		;
 
-		static Function<Type, Strategy> groupTypeMapper(final Strategy... rowColBlockReturns) {
+		static Function<GroupType, Strategy> groupTypeMapper(final Strategy... rowColBlockReturns) {
 			if (rowColBlockReturns.length != 3)
 				throw new IllegalArgumentException(String.format("Require three arguments to strategy mapping, got %s",
 						Arrays.toString(rowColBlockReturns)));
-			return (final Type type) -> {
+			return (final GroupType type) -> {
 				switch (type) {
 				case Row:
 					return rowColBlockReturns[0];

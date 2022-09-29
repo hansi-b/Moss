@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
-import org.hansi_b.moss.CellGroup.Type;
+import org.hansi_b.moss.GroupType;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 
@@ -34,14 +34,14 @@ public class XWing implements Technique {
 
 	enum WingType {
 
-		XWingFromRow(Type.Row, Type.Col, Move.Strategy.XWingFromRow), //
-		XWingFromCol(Type.Col, Type.Row, Move.Strategy.XWingFromCol);
+		XWingFromRow(GroupType.Row, GroupType.Col, Move.Strategy.XWingFromRow), //
+		XWingFromCol(GroupType.Col, GroupType.Row, Move.Strategy.XWingFromCol);
 
-		private final Type pairsType;
-		private final Type crossingType;
+		private final GroupType pairsType;
+		private final GroupType crossingType;
 		private final Strategy moveStrategy;
 
-		WingType(final Type pairGroups, final Type crossingType, final Strategy moveStrategy) {
+		WingType(final GroupType pairGroups, final GroupType crossingType, final Strategy moveStrategy) {
 			this.pairsType = pairGroups;
 			this.crossingType = crossingType;
 			this.moveStrategy = moveStrategy;
@@ -67,7 +67,7 @@ public class XWing implements Technique {
 		final SortedSet<Cell> otherCells = other.get(cand);
 
 		// should not all be in the same block
-		if (union(Cell.toGroups(oneCells, Type.Block), Cell.toGroups(otherCells, Type.Block)).size() < 2)
+		if (union(Cell.toGroups(oneCells, GroupType.Block), Cell.toGroups(otherCells, GroupType.Block)).size() < 2)
 			return null;
 
 		final Set<CellGroup> crossingGroups = Cell.toGroups(oneCells, wingType.crossingType);
@@ -87,7 +87,7 @@ public class XWing implements Technique {
 	 * Find candidates for which we have pairs of possible cells.
 	 */
 	private static List<SortedMap<Integer, SortedSet<Cell>>> eligibleCellSets(final Sudoku sudoku,
-			final PencilMarks marks, final Type pairsType) {
+			final PencilMarks marks, final GroupType pairsType) {
 		return sudoku.streamGroups(pairsType).map(group -> marks.getCellsByCandidateFiltered(group, 2))
 				.filter(m -> !m.isEmpty()).toList();
 	}

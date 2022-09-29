@@ -11,8 +11,6 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.hansi_b.moss.CellGroup.Type;
-
 /**
  * A single field in the Sudoku. Has a row and a column (at least in the square
  * version). Does not maintain its value, but lets the Sudoku do that. It is
@@ -48,12 +46,12 @@ public record Cell(Sudoku sudoku, Pos pos) {
 		return pos;
 	}
 
-	public CellGroup getGroup(final CellGroup.Type groupType) {
+	public CellGroup getGroup(final GroupType groupType) {
 		return sudoku.getGroup(groupType, pos);
 	}
 
 	public boolean sharesAnyGroup(final Cell other) {
-		return this == other || Arrays.stream(CellGroup.Type.values()).anyMatch(t -> getGroup(t) == other.getGroup(t));
+		return this == other || Arrays.stream(GroupType.values()).anyMatch(t -> getGroup(t) == other.getGroup(t));
 	}
 
 	public Stream<CellGroup> streamGroups() {
@@ -72,7 +70,7 @@ public record Cell(Sudoku sudoku, Pos pos) {
 		sudoku.set(pos.row(), pos.col(), newValue);
 	}
 
-	public static Set<CellGroup> toGroups(final Collection<Cell> cells, final Type groupType) {
+	public static Set<CellGroup> toGroups(final Collection<Cell> cells, final GroupType groupType) {
 		return cells.stream().map(c -> c.getGroup(groupType)).collect(Collectors.toSet());
 	}
 

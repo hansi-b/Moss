@@ -1,6 +1,5 @@
 package org.hansi_b.moss;
 
-import org.hansi_b.moss.CellGroup.Type;
 import static org.hansi_b.moss.testSupport.Shortcuts.cellAt
 
 import spock.lang.Specification
@@ -15,8 +14,8 @@ public class CellGroupSpec extends Specification {
 		Sudoku s2 = Sudoku.empty()
 
 		then:
-		cellAt(s1, 0, 1).getGroup(Type.Row) == cellAt(s1, 0, 2).getGroup(Type.Row)
-		cellAt(s2, 0, 1).getGroup(Type.Row) != cellAt(s1, 0, 2).getGroup(Type.Row)
+		cellAt(s1, 0, 1).getGroup(GroupType.Row) == cellAt(s1, 0, 2).getGroup(GroupType.Row)
+		cellAt(s2, 0, 1).getGroup(GroupType.Row) != cellAt(s1, 0, 2).getGroup(GroupType.Row)
 	}
 
 	@Unroll
@@ -31,7 +30,7 @@ public class CellGroupSpec extends Specification {
 		Sudoku su = Sudoku.filled(values)
 
 		expect:
-		su.getGroup(Type.Row, groupIdx).values() == groupValues
+		su.getGroup(GroupType.Row, groupIdx).values() == groupValues
 
 		where:
 		groupIdx | groupValues
@@ -53,7 +52,7 @@ public class CellGroupSpec extends Specification {
 		Sudoku su = Sudoku.filled(values)
 
 		expect:
-		su.getGroup(Type.Col, groupIdx).values() == groupValues
+		su.getGroup(GroupType.Col, groupIdx).values() == groupValues
 
 		where:
 		groupIdx | groupValues
@@ -75,7 +74,7 @@ public class CellGroupSpec extends Specification {
 		Sudoku su = Sudoku.filled(values)
 
 		expect:
-		su.getGroup(Type.Block, groupIdx).values() == groupValues
+		su.getGroup(GroupType.Block, groupIdx).values() == groupValues
 
 		where:
 		groupIdx | groupValues
@@ -97,7 +96,7 @@ public class CellGroupSpec extends Specification {
 		Sudoku su = Sudoku.filled(values);
 
 		expect:
-		su.getGroup(Type.Block, groupIdx).missing() == missingVals as Set
+		su.getGroup(GroupType.Block, groupIdx).missing() == missingVals as Set
 
 		where:
 		groupIdx | missingVals
@@ -119,7 +118,7 @@ public class CellGroupSpec extends Specification {
 		Sudoku su = Sudoku.filled(values);
 
 		expect:
-		su.getGroup(Type.Row, groupIdx).missing() == missingVals as Set
+		su.getGroup(GroupType.Row, groupIdx).missing() == missingVals as Set
 
 		where:
 		groupIdx | missingVals

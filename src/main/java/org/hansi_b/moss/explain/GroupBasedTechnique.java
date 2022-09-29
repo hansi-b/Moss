@@ -4,7 +4,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.CellGroup;
-import org.hansi_b.moss.CellGroup.Type;
+import org.hansi_b.moss.GroupType;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
 
@@ -14,7 +14,7 @@ import org.hansi_b.moss.explain.Move.Strategy;
  */
 abstract class GroupBasedTechnique implements Technique {
 
-	private final Function<Type, Strategy> groupTypeMapper;
+	private final Function<GroupType, Strategy> groupTypeMapper;
 
 	/**
 	 * @param groupTypes three move strategies ordered Row, Column, Block
