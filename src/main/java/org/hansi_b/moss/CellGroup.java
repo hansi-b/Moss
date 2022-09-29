@@ -6,9 +6,9 @@ import java.util.SortedSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CellGroup {
+public sealed class CellGroup {
 
-	public static class Row extends CellGroup {
+	public static final class Row extends CellGroup {
 		Row(final Sudoku sudoku, final List<Cell> cells) {
 			super(sudoku, GroupType.Row, cells);
 		}
@@ -19,7 +19,7 @@ public class CellGroup {
 		}
 	}
 
-	public static class Col extends CellGroup {
+	public static final class Col extends CellGroup {
 		Col(final Sudoku sudoku, final List<Cell> cells) {
 			super(sudoku, GroupType.Col, cells);
 		}
@@ -30,7 +30,7 @@ public class CellGroup {
 		}
 	}
 
-	public static class Block extends CellGroup {
+	public static final class Block extends CellGroup {
 		Block(final Sudoku sudoku, final List<Cell> cells) {
 			super(sudoku, GroupType.Block, cells);
 		}
@@ -45,7 +45,7 @@ public class CellGroup {
 	private final GroupType type;
 	private final List<Cell> cells;
 
-	CellGroup(final Sudoku sudoku, final GroupType type, final List<Cell> cells) {
+	private CellGroup(final Sudoku sudoku, final GroupType type, final List<Cell> cells) {
 		this.sudoku = sudoku;
 		this.type = type;
 		this.cells = cells;
