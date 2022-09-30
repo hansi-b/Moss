@@ -5,7 +5,7 @@ import java.util.function.Function;
 
 import org.hansi_b.moss.GroupType;
 
-public interface Move {
+public sealed interface Move permits Insertion, Elimination {
 
 	public enum Strategy {
 		NakedSingleInRow, //

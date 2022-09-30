@@ -16,7 +16,8 @@ import org.hansib.sundries.CollectUtils;
 /**
  * Remove specific candidates from specific cells.
  */
-public class Elimination implements Move {
+public record Elimination(Move.Strategy strategy, SortedMap<SortedSet<Cell>, SortedSet<Integer>> cellsByCandidates)
+		implements Move {
 
 	public static class Builder {
 		private final Strategy strategy;
@@ -74,18 +75,9 @@ public class Elimination implements Move {
 		}
 	}
 
-	final Strategy strategy;
-	private final SortedMap<SortedSet<Cell>, SortedSet<Integer>> candidatesCellsBy;
-
-	private Elimination(final Move.Strategy strategy,
-			final SortedMap<SortedSet<Cell>, SortedSet<Integer>> cellsByCandidates) {
-		this.strategy = strategy;
-		this.candidatesCellsBy = cellsByCandidates;
-	}
-
 	@Override
 	public void apply(final PencilMarks marks) {
-		candidatesCellsBy
+		cellsByCandidates
 				.forEach((cells, cands) -> cells.forEach(cell -> cands.forEach(cand -> marks.remove(cell, cand))));
 	}
 
@@ -95,18 +87,18 @@ public class Elimination implements Move {
 			return false;
 		final Elimination m = (Elimination) obj;
 		return strategy == m.strategy && //
-				candidatesCellsBy.equals(m.candidatesCellsBy);
+				cellsByCandidates.equals(m.cellsByCandidates);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(strategy, candidatesCellsBy);
+		return Objects.hash(strategy, cellsByCandidates);
 	}
 
 	@Override
 	public String toString() {
 		final String joined = String.join(", ",
-				CollectUtils.mapMapToList(candidatesCellsBy, (k, v) -> String.format("%s - %s", k, v)));
+				CollectUtils.mapMapToList(cellsByCandidates, (k, v) -> String.format("%s - %s", k, v)));
 		return String.format("Eliminate: %s (%s)", joined, strategy);
 	}
 }

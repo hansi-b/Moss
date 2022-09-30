@@ -3,6 +3,7 @@ package org.hansi_b.moss.explain;
 import java.util.stream.Stream
 
 import org.hansi_b.moss.Sudoku
+import org.hansi_b.moss.explain.Move.Strategy
 
 import spock.lang.Specification
 
@@ -14,7 +15,7 @@ public class StepperSpec extends Specification {
 	def "can find next move"() {
 
 		when:
-		Move move = Mock()
+		Move move = new Elimination(Strategy.NakedSingleInRow, Collections.emptySortedMap())
 
 		tec.findMoves(_, _) >>> [
 			Stream.of(move),
