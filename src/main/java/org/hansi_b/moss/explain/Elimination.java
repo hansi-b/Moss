@@ -21,7 +21,7 @@ public record Elimination(Move.Strategy strategy, SortedMap<SortedSet<Cell>, Sor
 
 	public static class Builder {
 		private final Strategy strategy;
-		final Map<Cell, SortedSet<Integer>> candsBySingleCell;
+		private final Map<Cell, SortedSet<Integer>> candsBySingleCell;
 
 		public Builder(final Move.Strategy strategy) {
 			this.strategy = strategy;
@@ -43,7 +43,7 @@ public record Elimination(Move.Strategy strategy, SortedMap<SortedSet<Cell>, Sor
 			return candsBySingleCell.computeIfAbsent(cell, k -> new TreeSet<>());
 		}
 
-		public boolean isEmpty() {
+		private boolean isEmpty() {
 			return candsBySingleCell.isEmpty();
 		}
 
