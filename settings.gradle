@@ -1,1 +1,3 @@
 rootProject.name = 'Moss'
+
+if (file('../Sundries').exists()) includeBuild '../Sundries'
