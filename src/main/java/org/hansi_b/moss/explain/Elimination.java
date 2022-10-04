@@ -3,11 +3,13 @@ package org.hansi_b.moss.explain;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
@@ -16,7 +18,7 @@ import org.hansib.sundries.CollectUtils;
 /**
  * Remove specific candidates from specific cells.
  */
-public record Elimination(Move.Strategy strategy, SortedMap<SortedSet<Cell>, SortedSet<Integer>> cellsByCandidates)
+public record Elimination(Move.Strategy strategy, SortedMap<SortedSet<Cell>, SortedSet<Integer>> candidatesByCells)
 		implements Move {
 
 	public static class Builder {
@@ -56,6 +58,12 @@ public record Elimination(Move.Strategy strategy, SortedMap<SortedSet<Cell>, Sor
 			 * NB: by construction, there can be no duplicate values in cellsByCands, so we
 			 * can just turn it around
 			 */
+			cellsByCands.entrySet().stream().collect(Collectors.toMap(Entry::getValue, Entry::getKey, //
+					(x, y) -> {
+						throw new IllegalStateException("Duplicate value");
+					}, //
+					() -> new TreeMap<>(CollectUtils.sortedSetComparator(Cell.positionComparator))));
+
 			final SortedMap<SortedSet<Cell>, SortedSet<Integer>> candsByCells = new TreeMap<>(
 					CollectUtils.sortedSetComparator(Cell.positionComparator));
 			cellsByCands.forEach((k, v) -> candsByCells.put(v, k));
@@ -77,7 +85,7 @@ public record Elimination(Move.Strategy strategy, SortedMap<SortedSet<Cell>, Sor
 
 	@Override
 	public void apply(final PencilMarks marks) {
-		cellsByCandidates
+		candidatesByCells
 				.forEach((cells, cands) -> cells.forEach(cell -> cands.forEach(cand -> marks.remove(cell, cand))));
 	}
 
@@ -87,18 +95,18 @@ public record Elimination(Move.Strategy strategy, SortedMap<SortedSet<Cell>, Sor
 			return false;
 		final Elimination m = (Elimination) obj;
 		return strategy == m.strategy && //
-				cellsByCandidates.equals(m.cellsByCandidates);
+				candidatesByCells.equals(m.candidatesByCells);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(strategy, cellsByCandidates);
+		return Objects.hash(strategy, candidatesByCells);
 	}
 
 	@Override
 	public String toString() {
 		final String joined = String.join(", ",
-				CollectUtils.mapMapToList(cellsByCandidates, (k, v) -> String.format("%s - %s", k, v)));
+				CollectUtils.mapMapToList(candidatesByCells, (k, v) -> String.format("%s - %s", k, v)));
 		return String.format("Eliminate: %s (%s)", joined, strategy);
 	}
 }
