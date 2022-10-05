@@ -76,10 +76,11 @@ public class XWing implements Technique {
 
 		final Elimination.Builder builder = new Elimination.Builder(wingType.moveStrategy);
 		crossingGroups
-				.forEach(group -> builder.with(
-						Cell.collect(group.streamEmptyCells().filter(cell -> !oneCells.contains(cell)
-								&& !otherCells.contains(cell) && marks.candidates(cell).contains(cand))),
-						Set.of(cand)));
+				.forEach(
+						group -> builder.with(
+								Cell.collect(group.streamEmptyCells().filter(cell -> !oneCells.contains(cell)
+										&& !otherCells.contains(cell) && marks.candidates(cell).contains(cand))),
+								cand));
 		return builder;
 	}
 

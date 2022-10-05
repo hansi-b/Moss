@@ -3,7 +3,6 @@ package org.hansi_b.moss.explain;
 import static org.hansib.sundries.CollectUtils.difference;
 import static org.hansib.sundries.CollectUtils.mapMap;
 
-import java.util.Collections;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -45,7 +44,7 @@ public class HiddenPair extends GroupBasedTechnique {
 					upperCells.forEach(cell -> {
 						final SortedSet<Integer> others = difference(marks.candidates(cell), pair);
 						if (!others.isEmpty())
-							builder.with(Collections.singleton(cell), others);
+							builder.with(cell, others);
 					});
 					return builder;
 				})).flatMap(Function.identity()));

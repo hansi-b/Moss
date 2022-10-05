@@ -18,11 +18,11 @@ public record Elimination(Move.Strategy strategy, SortedMap<Cell, SortedSet<Inte
 
 	public static class Builder {
 		private final Strategy strategy;
-		private final SortedMap<Cell, SortedSet<Integer>> candsBySingleCell;
+		private final SortedMap<Cell, SortedSet<Integer>> candsByCell;
 
 		public Builder(final Move.Strategy strategy) {
 			this.strategy = strategy;
-			this.candsBySingleCell = Cell.newPosSortedMap();
+			this.candsByCell = Cell.newPosSortedMap();
 		}
 
 		public Builder with(final Cell cell, final int candidate) {
@@ -30,22 +30,31 @@ public record Elimination(Move.Strategy strategy, SortedMap<Cell, SortedSet<Inte
 			return this;
 		}
 
+		public Builder with(final Cell cell, final Collection<Integer> candidates) {
+			targetSet(cell).addAll(candidates);
+			return this;
+		}
+
+		public Builder with(final Collection<Cell> cells, final Integer candidate) {
+			cells.forEach(c -> with(c, candidate));
+			return this;
+		}
+
 		public Builder with(final Collection<Cell> cells, final Collection<Integer> candidates) {
-			for (final Cell cell : cells)
-				targetSet(cell).addAll(candidates);
+			cells.forEach(c -> with(c, candidates));
 			return this;
 		}
 
 		private SortedSet<Integer> targetSet(final Cell cell) {
-			return candsBySingleCell.computeIfAbsent(cell, k -> new TreeSet<>());
+			return candsByCell.computeIfAbsent(cell, k -> new TreeSet<>());
 		}
 
 		private boolean isEmpty() {
-			return candsBySingleCell.isEmpty();
+			return candsByCell.isEmpty();
 		}
 
 		public Elimination build() {
-			return new Elimination(strategy, candsBySingleCell);
+			return new Elimination(strategy, candsByCell);
 		}
 
 		/**
