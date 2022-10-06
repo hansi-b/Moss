@@ -21,7 +21,7 @@ public class EliminationSpec extends Specification {
 
 		where:
 		eli1 << [
-			new Elimination.Builder(Strategy.NakedPairInCol).with(c13, 7).with([c13, c22], [3]).build()
+			new Elimination.Builder(Strategy.NakedPairInCol).with(c13, 7).with([c13, c22], 3).build()
 		]
 		eli2 << [
 			new Elimination.Builder(Strategy.NakedPairInCol).with(c13, 3).with(c22, 3).with(c13, 7).build()

@@ -38,7 +38,7 @@ public class HiddenPairSpec extends Specification {
 		then:
 		technique.findMoves(su, pm).toSet() == [
 			new Elimination.Builder(Strategy.HiddenPairInBlock)
-			.with(cellsAt(su, [1, 0]) as Set, [2, 5]).with(cellsAt(su, [2, 0]) as Set, [5]).build()
+			.with(cellsAt(su, [1, 0]) as Set, [2, 5]).with(cellsAt(su, [2, 0]) as Set, 5).build()
 		] as Set
 	}
 }

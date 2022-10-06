@@ -34,18 +34,14 @@ public class HiddenPair extends GroupBasedTechnique {
 
 		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidateFiltered(group, 2);
 
+		final Builder builder = new Elimination.Builder(strategy);
 		return Elimination.Builder.collectNonEmpty(mapMap(cellsByCandidate, (upperCandidate,
 				upperCells) -> mapMap(cellsByCandidate.headMap(upperCandidate), (lowerCandiate, lowerCells) -> {
 					if (!upperCells.equals(lowerCells))
 						return null;
 
 					final Set<Integer> pair = Set.of(upperCandidate, lowerCandiate);
-					final Builder builder = new Elimination.Builder(strategy);
-					upperCells.forEach(cell -> {
-						final SortedSet<Integer> others = difference(marks.candidates(cell), pair);
-						if (!others.isEmpty())
-							builder.with(cell, others);
-					});
+					upperCells.forEach(cell -> builder.with(cell, difference(marks.candidates(cell), pair)));
 					return builder;
 				})).flatMap(Function.identity()));
 	}

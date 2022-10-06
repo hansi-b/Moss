@@ -49,9 +49,9 @@ class NakedPairSpec extends spock.lang.Specification {
 		// row 7 & block 3/0: some occurrences of 1 + 4 can go (tied to 7/0 and 7/2)
 		technique.findMoves(su, new PencilMarks()).toSet() == [
 			new Elimination.Builder(Strategy.NakedPairInRow)
-			.with(cellsAt(su, [7, 5], [7, 7]) as Set, [1]).with([cellAt(su,7,8)], [1, 4]).build(),
+			.with(cellsAt(su, [7, 5], [7, 7]) as Set, 1).with([cellAt(su,7,8)], [1, 4]).build(),
 			new Elimination.Builder(Strategy.NakedPairInBlock)
-			.with(cellsAt(su, [8, 0], [8, 1], [8, 2]) as Set, [1, 4]).with([cellAt(su,6,2)], [1]).build()
+			.with(cellsAt(su, [8, 0], [8, 1], [8, 2]) as Set, [1, 4]).with([cellAt(su,6,2)], 1).build()
 		] as Set
 	}
 }

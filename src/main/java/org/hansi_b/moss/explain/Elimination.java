@@ -31,7 +31,8 @@ public record Elimination(Move.Strategy strategy, SortedMap<Cell, SortedSet<Inte
 		}
 
 		public Builder with(final Cell cell, final Collection<Integer> candidates) {
-			targetSet(cell).addAll(candidates);
+			if (!candidates.isEmpty())
+				targetSet(cell).addAll(candidates);
 			return this;
 		}
 
@@ -41,7 +42,8 @@ public record Elimination(Move.Strategy strategy, SortedMap<Cell, SortedSet<Inte
 		}
 
 		public Builder with(final Collection<Cell> cells, final Collection<Integer> candidates) {
-			cells.forEach(c -> with(c, candidates));
+			if (!candidates.isEmpty())
+				cells.forEach(c -> with(c, candidates));
 			return this;
 		}
 
