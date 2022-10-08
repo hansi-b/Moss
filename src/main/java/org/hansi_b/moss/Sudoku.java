@@ -63,9 +63,7 @@ public class Sudoku implements Iterable<Cell> {
 
 			sudoku = new Sudoku(size);
 			initCells();
-			initGroupType(GroupType.Row);
-			initGroupType(GroupType.Col);
-			initGroupType(GroupType.Block);
+			initGroups();
 			return sudoku;
 		}
 
@@ -75,11 +73,12 @@ public class Sudoku implements Iterable<Cell> {
 			sudoku.cells[rowIdx][colIdx] = new Cell(sudoku, Pos.at(rowIdx, colIdx))));
 		}
 
-		private void initGroupType(final GroupType cellGroupType) {
-
-			final List<CellGroup> groups = IntStream.range(0, sudoku.size)
-					.mapToObj(idx -> initGroup(cellGroupType, idx)).toList();
-			sudoku.groupsByType.put(cellGroupType, groups);
+		private void initGroups() {
+			for (GroupType groupType : GroupType.values()) {
+				final List<CellGroup> groups = IntStream.range(0, sudoku.size)
+						.mapToObj(idx -> initGroup(groupType, idx)).toList();
+				sudoku.groupsByType.put(groupType, groups);
+			}
 		}
 
 		private CellGroup initGroup(final GroupType cellGroupType, final int idx) {
@@ -97,24 +96,34 @@ public class Sudoku implements Iterable<Cell> {
 
 	private final int size;
 
-	private final EnumMap<GroupType, List<CellGroup>> groupsByType;
-
 	private final Cell[][] cells;
 	private final EnumMap<GroupType, CellGroup>[][] groups;
+
+	private final EnumMap<GroupType, List<CellGroup>> groupsByType;
 
 	private final TreeSet<Integer> possibleValues;
 	private final Integer[][] cellValues;
 
 	private Sudoku(final int size) {
 		this.size = size;
+
 		this.cells = new Cell[size][size];
+		this.groups = createGroupMaps(size);
 
 		this.groupsByType = new EnumMap<>(GroupType.class);
-		this.groups = initCellGroups(size);
 
 		this.possibleValues = IntStream.range(1, size + 1).mapToObj(Integer::valueOf)
 				.collect(Collectors.toCollection(TreeSet::new));
 		this.cellValues = new Integer[size][size];
+	}
+
+	private static EnumMap<GroupType, CellGroup>[][] createGroupMaps(final int size) {
+		@SuppressWarnings("unchecked")
+		final EnumMap<GroupType, CellGroup>[][] cellGroups = new EnumMap[size][size];
+		for (int rowIdx = 0; rowIdx < size; rowIdx++)
+			for (int colIdx = 0; colIdx < size; colIdx++)
+				cellGroups[rowIdx][colIdx] = new EnumMap<>(GroupType.class);
+		return cellGroups;
 	}
 
 	/**
@@ -151,15 +160,6 @@ public class Sudoku implements Iterable<Cell> {
 	 */
 	public Sudoku copy() {
 		return new Factory().copyOf(this);
-	}
-
-	private static EnumMap<GroupType, CellGroup>[][] initCellGroups(final int size) {
-		@SuppressWarnings("unchecked")
-		final EnumMap<GroupType, CellGroup>[][] cellGroups = new EnumMap[size][size];
-		for (int rowIdx = 0; rowIdx < size; rowIdx++)
-			for (int colIdx = 0; colIdx < size; colIdx++)
-				cellGroups[rowIdx][colIdx] = new EnumMap<>(GroupType.class);
-		return cellGroups;
 	}
 
 	/**
