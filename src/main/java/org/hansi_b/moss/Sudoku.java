@@ -1,6 +1,7 @@
 package org.hansi_b.moss;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.List;
@@ -96,7 +97,7 @@ public class Sudoku implements Iterable<Cell> {
 
 	private final EnumMap<GroupType, List<CellGroup>> groupsByType;
 
-	private final TreeSet<Integer> possibleValues;
+	private final SortedSet<Integer> possibleValues;
 	private final Integer[][] cellValues;
 
 	private Sudoku(final int size) {
@@ -107,8 +108,8 @@ public class Sudoku implements Iterable<Cell> {
 
 		this.groupsByType = new EnumMap<>(GroupType.class);
 
-		this.possibleValues = IntStream.range(1, size + 1).mapToObj(Integer::valueOf)
-				.collect(Collectors.toCollection(TreeSet::new));
+		this.possibleValues = Collections.unmodifiableSortedSet(
+				IntStream.range(1, size + 1).mapToObj(Integer::valueOf).collect(Collectors.toCollection(TreeSet::new)));
 		this.cellValues = new Integer[size][size];
 	}
 
@@ -209,11 +210,11 @@ public class Sudoku implements Iterable<Cell> {
 	}
 
 	/**
-	 * @return a fresh copy of this Sudoku's possible values, i.e., just the
+	 * @return an unmodifiable view of this Sudoku's possible values, i.e., just the
 	 *         universe of all numbers any cell could take
 	 */
 	public SortedSet<Integer> possibleValues() {
-		return new TreeSet<>(possibleValues);
+		return possibleValues;
 	}
 
 	public boolean isSolved() {

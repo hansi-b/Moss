@@ -1,5 +1,9 @@
 package org.hansi_b.moss;
 
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toSet;
+import static org.hansib.sundries.CollectUtils.difference;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -8,7 +12,6 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -37,9 +40,8 @@ public record Cell(Sudoku sudoku, Pos pos) {
 	 * @return a set of the values not set in any of the groups of this cell
 	 */
 	public SortedSet<Integer> getCandidates() {
-		final SortedSet<Integer> candidates = sudoku.possibleValues();
-		streamGroups().forEach(g -> candidates.removeAll(g.values()));
-		return candidates;
+		return difference(sudoku.possibleValues(), //
+				streamGroups().flatMap(CellGroup::streamFilledCells).distinct().map(Cell::getValue).collect(toSet()));
 	}
 
 	public Pos getPos() {
@@ -71,7 +73,7 @@ public record Cell(Sudoku sudoku, Pos pos) {
 	}
 
 	public static Set<CellGroup> toGroups(final Collection<Cell> cells, final GroupType groupType) {
-		return cells.stream().map(c -> c.getGroup(groupType)).collect(Collectors.toSet());
+		return cells.stream().map(c -> c.getGroup(groupType)).collect(toSet());
 	}
 
 	/**
@@ -101,7 +103,7 @@ public record Cell(Sudoku sudoku, Pos pos) {
 	 * @return a set sorting on position of the argument stream of cells
 	 */
 	public static SortedSet<Cell> collect(final Stream<Cell> cells) {
-		return cells.collect(Collectors.toCollection(Cell::newPosSortedSet));
+		return cells.collect(toCollection(Cell::newPosSortedSet));
 	}
 
 	@Override

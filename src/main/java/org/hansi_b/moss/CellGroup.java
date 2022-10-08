@@ -1,5 +1,8 @@
 package org.hansi_b.moss;
 
+import static java.util.stream.Collectors.toSet;
+import static org.hansib.sundries.CollectUtils.difference;
+
 import java.util.BitSet;
 import java.util.List;
 import java.util.SortedSet;
@@ -43,9 +46,8 @@ public class CellGroup {
 	 */
 	public SortedSet<Integer> missing() {
 
-		final SortedSet<Integer> possibleValues = sudoku.possibleValues();
-		streamFilledCells().forEach(c -> possibleValues.remove(c.getValue()));
-		return possibleValues;
+		return difference(sudoku.possibleValues(), //
+				streamFilledCells().map(Cell::getValue).collect(toSet()));
 	}
 
 	public Stream<Cell> streamEmptyCells() {

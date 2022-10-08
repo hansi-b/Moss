@@ -19,16 +19,16 @@ repositories {
 	maven {
 		name = 'GitHubPackages'
 		url = 'https://maven.pkg.github.com/hansi-b/JavaSundries'
-			credentials {
-				username = project.findProperty("GITHUB_ACTOR") ?: System.getenv("GITHUB_ACTOR")
-				password = project.findProperty("GITHUB_REPO_PAT_RO") ?: System.getenv("GITHUB_REPO_PAT_RO")
-			}
+		credentials {
+			username = project.findProperty("GITHUB_ACTOR") ?: System.getenv("GITHUB_ACTOR")
+			password = project.findProperty("GITHUB_REPO_PAT_RO") ?: System.getenv("GITHUB_REPO_PAT_RO")
+		}
 	}
 }
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(19)
 	}
 }
 
