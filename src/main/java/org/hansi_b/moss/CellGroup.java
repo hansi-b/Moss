@@ -56,7 +56,7 @@ public class CellGroup {
 		return streamAllCells().filter(c -> !c.isEmpty());
 	}
 
-	private Stream<Cell> streamAllCells() {
+	Stream<Cell> streamAllCells() {
 		return cells.stream();
 	}
 

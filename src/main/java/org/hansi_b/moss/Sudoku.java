@@ -77,20 +77,15 @@ public class Sudoku implements Iterable<Cell> {
 			for (GroupType groupType : GroupType.values()) {
 				final List<CellGroup> groups = IntStream.range(0, sudoku.size)
 						.mapToObj(idx -> initGroup(groupType, idx)).toList();
+				groups.forEach(group -> group.streamAllCells().map(Cell::getPos)
+						.forEach(pos -> sudoku.groups[pos.row()][pos.col()].put(group.type(), group)));
 				sudoku.groupsByType.put(groupType, groups);
 			}
 		}
 
 		private CellGroup initGroup(final GroupType cellGroupType, final int idx) {
-
-			final List<Pos> posList = cellGroupType.getPos(idx, sudoku.size).toList();
-			final List<Cell> cells = posList.stream().map(p -> sudoku.cells[p.row()][p.col()]).toList();
-
-			final CellGroup group = new CellGroup(sudoku, cellGroupType, cells);
-			for (final Pos pos : posList)
-				sudoku.groups[pos.row()][pos.col()].put(group.type(), group);
-
-			return group;
+			return new CellGroup(sudoku, cellGroupType,
+					cellGroupType.getPos(idx, sudoku.size).map(p -> sudoku.cells[p.row()][p.col()]).toList());
 		}
 	}
 
