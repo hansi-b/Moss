@@ -6,14 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.hansi_b.moss.CellGroup.Block;
-import org.hansi_b.moss.CellGroup.Col;
-import org.hansi_b.moss.CellGroup.Row;
 import org.hansib.sundries.Errors;
 
 public class Sudoku implements Iterable<Cell> {
@@ -67,9 +63,9 @@ public class Sudoku implements Iterable<Cell> {
 
 			sudoku = new Sudoku(size);
 			initCells();
-			initGroupType(GroupType.Row, Row::new);
-			initGroupType(GroupType.Col, Col::new);
-			initGroupType(GroupType.Block, Block::new);
+			initGroupType(GroupType.Row);
+			initGroupType(GroupType.Col);
+			initGroupType(GroupType.Block);
 			return sudoku;
 		}
 
@@ -79,20 +75,19 @@ public class Sudoku implements Iterable<Cell> {
 			sudoku.cells[rowIdx][colIdx] = new Cell(sudoku, Pos.at(rowIdx, colIdx))));
 		}
 
-		private void initGroupType(final GroupType cellGroupType, final BiFunction<Sudoku, List<Cell>, CellGroup> newCall) {
+		private void initGroupType(final GroupType cellGroupType) {
 
 			final List<CellGroup> groups = IntStream.range(0, sudoku.size)
-					.mapToObj(idx -> initGroup(cellGroupType, idx, newCall)).toList();
+					.mapToObj(idx -> initGroup(cellGroupType, idx)).toList();
 			sudoku.groupsByType.put(cellGroupType, groups);
 		}
 
-		private CellGroup initGroup(final GroupType cellGroupType, final int idx,
-				final BiFunction<Sudoku, List<Cell>, CellGroup> newCall) {
+		private CellGroup initGroup(final GroupType cellGroupType, final int idx) {
 
 			final List<Pos> posList = cellGroupType.getPos(idx, sudoku.size).toList();
 			final List<Cell> cells = posList.stream().map(p -> sudoku.cells[p.row()][p.col()]).toList();
 
-			final CellGroup group = newCall.apply(sudoku, cells);
+			final CellGroup group = new CellGroup(sudoku, cellGroupType, cells);
 			for (final Pos pos : posList)
 				sudoku.groups[pos.row()][pos.col()].put(group.type(), group);
 
@@ -112,10 +107,9 @@ public class Sudoku implements Iterable<Cell> {
 
 	private Sudoku(final int size) {
 		this.size = size;
+		this.cells = new Cell[size][size];
 
 		this.groupsByType = new EnumMap<>(GroupType.class);
-
-		this.cells = new Cell[size][size];
 		this.groups = initCellGroups(size);
 
 		this.possibleValues = IntStream.range(1, size + 1).mapToObj(Integer::valueOf)

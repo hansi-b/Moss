@@ -5,46 +5,13 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.stream.Stream;
 
-public sealed class CellGroup {
-
-	public static final class Row extends CellGroup {
-		Row(final Sudoku sudoku, final List<Cell> cells) {
-			super(sudoku, GroupType.Row, cells);
-		}
-
-		@Override
-		public String toString() {
-			return String.format("%s %d", GroupType.Row, firstRow());
-		}
-	}
-
-	public static final class Col extends CellGroup {
-		Col(final Sudoku sudoku, final List<Cell> cells) {
-			super(sudoku, GroupType.Col, cells);
-		}
-
-		@Override
-		public String toString() {
-			return String.format("%s %d", GroupType.Col, firstCol());
-		}
-	}
-
-	public static final class Block extends CellGroup {
-		Block(final Sudoku sudoku, final List<Cell> cells) {
-			super(sudoku, GroupType.Block, cells);
-		}
-
-		@Override
-		public String toString() {
-			return String.format("%s %d/%d", GroupType.Block, firstRow(), firstCol());
-		}
-	}
+public class CellGroup {
 
 	private final Sudoku sudoku;
 	private final GroupType type;
 	private final List<Cell> cells;
 
-	private CellGroup(final Sudoku sudoku, final GroupType type, final List<Cell> cells) {
+	CellGroup(final Sudoku sudoku, final GroupType type, final List<Cell> cells) {
 		this.sudoku = sudoku;
 		this.type = type;
 		this.cells = cells;
@@ -100,16 +67,21 @@ public sealed class CellGroup {
 		return targets.cardinality() == size();
 	}
 
-	protected int firstRow() {
+	private int firstRow() {
 		return cells.get(0).getPos().row();
 	}
 
-	protected int firstCol() {
+	private int firstCol() {
 		return cells.get(0).getPos().col();
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s[%s ...]", type, cells.get(0));
+		String idx = switch (type) {
+		case Row -> Integer.toString(firstRow());
+		case Col -> Integer.toString(firstCol());
+		case Block -> String.format("%d/%d", firstRow(), firstCol());
+		};
+		return String.format("%s %s", type, idx);
 	}
 }
