@@ -86,7 +86,7 @@ public class Sudoku implements Iterable<Cell> {
 
 		private CellGroup initGroup(final GroupType cellGroupType, final int idx) {
 			return new CellGroup(sudoku, cellGroupType,
-					cellGroupType.getPos(idx, sudoku.size).map(p -> sudoku.cells[p.row()][p.col()]).toList());
+					cellGroupType.streamPos(idx, sudoku.size).map(p -> sudoku.cells[p.row()][p.col()]).toList());
 		}
 	}
 

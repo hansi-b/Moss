@@ -1,8 +1,11 @@
 package org.hansi_b.moss;
 
-import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+interface GroupPosStreamer {
+	Stream<Pos> streamPos(final int groupIdx, final int sudokuSize);
+}
 
 public enum GroupType {
 
@@ -10,9 +13,9 @@ public enum GroupType {
 	Col(GroupType::colPos), //
 	Block(GroupType::blockPos);
 
-	private final BiFunction<Integer, Integer, Stream<Pos>> posStreamer;
+	private final GroupPosStreamer posStreamer;
 
-	GroupType(final BiFunction<Integer, Integer, Stream<Pos>> posStreamer) {
+	GroupType(final GroupPosStreamer posStreamer) {
 		this.posStreamer = posStreamer;
 	}
 
@@ -23,8 +26,8 @@ public enum GroupType {
 	 * @param sudokuSize the size of the Sudoku
 	 * @return a Stream of the positions of this group's cells
 	 */
-	public Stream<Pos> getPos(final int groupIdx, final int sudokuSize) {
-		return posStreamer.apply(groupIdx, sudokuSize);
+	public Stream<Pos> streamPos(final int groupIdx, final int sudokuSize) {
+		return posStreamer.streamPos(groupIdx, sudokuSize);
 	}
 
 	private static Stream<Pos> rowPos(final int groupIdx, final int sudokuSize) {
