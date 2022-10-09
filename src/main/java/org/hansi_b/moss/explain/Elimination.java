@@ -93,7 +93,7 @@ public record Elimination(Move.Strategy strategy, SortedMap<Cell, SortedSet<Inte
 	@Override
 	public String toString() {
 		final String joined = String.join(", ",
-				CollectUtils.mapMapToList(candidatesByCell, (k, v) -> String.format("%s - %s", k, v)));
+				CollectUtils.mapMap(candidatesByCell, (k, v) -> String.format("%s - %s", k, v)).toList());
 		return String.format("Eliminate: %s (%s)", joined, strategy);
 	}
 }
