@@ -46,4 +46,3 @@ jobs:
           gradle check jacocoTestReport
       - codecov/upload:
           file: build/reports/jacoco/test/jacocoTestReport.xml
-          token: $CODECOV_TOKEN
