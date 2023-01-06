@@ -35,18 +35,21 @@ public class SudokuCliReader {
 	@VisibleForTesting
 	static List<Integer> readValues(final InputStream inStream) {
 		final List<Integer> values = new ArrayList<>();
-		int size = -1;
 
 		try (Scanner stdin = new Scanner(inStream)) {
-			String line;
+
+			int size = Integer.MAX_VALUE;
 			int lineCount = 0;
-			while (stdin.hasNextLine() && !(line = stdin.nextLine().trim()).isEmpty()) {
+
+			String line;
+			while (stdin.hasNextLine() && !(line = stdin.nextLine().trim()).isEmpty() && lineCount < size) {
 
 				final String[] tokens = line.split("\\s");
-				if (size == -1) {
+				if (size == Integer.MAX_VALUE) {
 					size = tokens.length;
 				} else if (tokens.length != size) {
-					err("Line contains %d values, expected %d (ignoring this line).", tokens.length, size);
+					err("Line %d contains %d values, expected %d (ignoring this line).", lineCount + 1, tokens.length,
+							size);
 					continue;
 				}
 
@@ -58,8 +61,7 @@ public class SudokuCliReader {
 					err("Encountered parse error for %s (ignoring this line): %s", Arrays.toString(tokens), ex);
 				}
 
-				if (++lineCount == size)
-					break;
+				lineCount += 1;
 			}
 		}
 		return values;
