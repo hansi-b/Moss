@@ -20,6 +20,8 @@ import org.hansi_b.moss.explain.Move.Strategy;
  * For a given group and missing number, find a tuple of cells which are the
  * only possible cells for the same tuple of candidates (or subset thereof, with
  * some restriction).
+ * 
+ * The move eliminates the other candidates from those cells.
  */
 public class HiddenPair extends GroupBasedTechnique {
 
@@ -34,12 +36,12 @@ public class HiddenPair extends GroupBasedTechnique {
 
 		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = marks.getCellsByCandidateFiltered(group, 2);
 
-		final Builder builder = new Elimination.Builder(strategy);
 		return Elimination.Builder.collectNonEmpty(mapMap(cellsByCandidate, (upperCandidate,
 				upperCells) -> mapMap(cellsByCandidate.headMap(upperCandidate), (lowerCandiate, lowerCells) -> {
 					if (!upperCells.equals(lowerCells))
 						return null;
 
+					final Builder builder = new Elimination.Builder(strategy);
 					final Set<Integer> pair = Set.of(upperCandidate, lowerCandiate);
 					upperCells.forEach(cell -> builder.with(cell, difference(marks.candidates(cell), pair)));
 					return builder;
