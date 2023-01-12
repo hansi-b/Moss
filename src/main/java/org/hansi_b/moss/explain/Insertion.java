@@ -17,10 +17,8 @@ public record Insertion(Move.Strategy strategy, Cell cell, Integer newValue) imp
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof Insertion))
-			return false;
-		final Insertion m = (Insertion) obj;
-		return strategy == m.strategy && //
+		return obj instanceof Insertion m && //
+				strategy == m.strategy && //
 				cell == m.cell && //
 				newValue.intValue() == m.newValue.intValue();
 	}

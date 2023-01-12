@@ -78,10 +78,8 @@ public record Elimination(Move.Strategy strategy, SortedMap<Cell, SortedSet<Inte
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof Elimination))
-			return false;
-		final Elimination m = (Elimination) obj;
-		return strategy == m.strategy && //
+		return obj instanceof Elimination m && //
+				strategy == m.strategy && //
 				candidatesByCell.equals(m.candidatesByCell);
 	}
 
