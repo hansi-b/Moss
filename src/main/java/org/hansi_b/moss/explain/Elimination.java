@@ -2,37 +2,31 @@ package org.hansi_b.moss.explain;
 
 import java.util.Collection;
 import java.util.Objects;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
-import org.hansib.sundries.CollectUtils;
 
 /**
  * Remove specific candidates from specific cells.
  */
-public record Elimination(Move.Strategy strategy, SortedMap<Cell, SortedSet<Integer>> candidatesByCell)
-		implements Move {
+public record Elimination(Move.Strategy strategy, Marks candidatesByCell) implements Move {
 
 	public static class Builder {
 		private final Strategy strategy;
-		private final SortedMap<Cell, SortedSet<Integer>> candsByCell;
+		private final Marks candsByCell;
 
 		public Builder(final Move.Strategy strategy) {
 			this.strategy = strategy;
-			this.candsByCell = Cell.newPosSortedMap();
+			this.candsByCell = new Marks();
 		}
 
 		public Builder with(final Cell cell, final int candidate) {
-			targetSet(cell).add(candidate);
+			candsByCell.add(cell, candidate);
 			return this;
 		}
 
 		public Builder with(final Cell cell, final Collection<Integer> candidates) {
-			if (!candidates.isEmpty())
-				targetSet(cell).addAll(candidates);
+			candsByCell.addAll(cell, candidates);
 			return this;
 		}
 
@@ -45,10 +39,6 @@ public record Elimination(Move.Strategy strategy, SortedMap<Cell, SortedSet<Inte
 			if (!candidates.isEmpty())
 				cells.forEach(c -> with(c, candidates));
 			return this;
-		}
-
-		private SortedSet<Integer> targetSet(final Cell cell) {
-			return candsByCell.computeIfAbsent(cell, k -> new TreeSet<>());
 		}
 
 		private boolean isEmpty() {
@@ -90,8 +80,6 @@ public record Elimination(Move.Strategy strategy, SortedMap<Cell, SortedSet<Inte
 
 	@Override
 	public String toString() {
-		final String joined = String.join(", ",
-				CollectUtils.mapMap(candidatesByCell, (k, v) -> String.format("%s - %s", k, v)).toList());
-		return String.format("Eliminate: %s (%s)", joined, strategy);
+		return String.format("Eliminate: %s (%s)", candidatesByCell, strategy);
 	}
 }

@@ -1,8 +1,6 @@
 package org.hansi_b.moss.explain;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -20,10 +18,10 @@ import org.hansib.sundries.Errors;
  * successively.
  */
 public class PencilMarks {
-	private final Map<Cell, SortedSet<Integer>> candidatesByCell = new HashMap<>();
+	private final Marks candidatesByCell;
 
 	public PencilMarks() {
-		// does nothing currently
+		candidatesByCell = new Marks(Cell::getCandidates);
 	}
 
 	/**
@@ -34,7 +32,7 @@ public class PencilMarks {
 	}
 
 	private SortedSet<Integer> candidatesInternal(final Cell cell) {
-		return candidatesByCell.computeIfAbsent(cell, Cell::getCandidates);
+		return candidatesByCell.get(cell);
 	}
 
 	/**

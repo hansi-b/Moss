@@ -15,7 +15,7 @@ public class StepperSpec extends Specification {
 	def "can find next move"() {
 
 		when:
-		Move move = new Elimination(Strategy.NakedSingleInRow, Collections.emptySortedMap())
+		Move move = new Elimination(Strategy.NakedSingleInRow, new Marks())
 
 		tec.findMoves(_, _) >>> [
 			Stream.of(move),
