@@ -1,4 +1,4 @@
-package org.hansi_b.moss.explain;
+package org.hansi_b.moss.explain.technique;
 
 import static org.hansib.sundries.CollectUtils.flatten;
 import static org.hansib.sundries.CollectUtils.mapMap;
@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.Sudoku;
+import org.hansi_b.moss.explain.PencilMarks;
 import org.hansib.sundries.testing.VisibleForTesting;
 
 class XyWingFinder {

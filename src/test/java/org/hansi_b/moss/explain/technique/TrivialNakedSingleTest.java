@@ -1,4 +1,4 @@
-package org.hansi_b.moss.explain;
+package org.hansi_b.moss.explain.technique;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hansi_b.moss.testsupport.Shortcuts.insert;
@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy;
+import org.hansi_b.moss.explain.PencilMarks;
 import org.junit.jupiter.api.Test;
 
 class TrivialNakedSingleTest {

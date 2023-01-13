@@ -1,9 +1,12 @@
-package org.hansi_b.moss.explain;
+package org.hansi_b.moss.explain.technique;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.Sudoku;
+import org.hansi_b.moss.explain.Elimination;
+import org.hansi_b.moss.explain.Move;
+import org.hansi_b.moss.explain.PencilMarks;
 
 /**
  * As explained, e.g., on https://www.learn-sudoku.com/xy-wing.html

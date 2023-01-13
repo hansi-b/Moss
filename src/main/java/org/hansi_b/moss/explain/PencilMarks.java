@@ -57,7 +57,7 @@ public class PencilMarks {
 	 * @return a SortedMap containing the mappings from candidates to
 	 *         <code>cellCount</code> cells
 	 */
-	SortedMap<Integer, SortedSet<Cell>> getCellsByCandidateFiltered(final CellGroup group, final int cellCount) {
+	public SortedMap<Integer, SortedSet<Cell>> getCellsByCandidateFiltered(final CellGroup group, final int cellCount) {
 		return CollectUtils.filterMap(getCellsByCandidate(group), (cand, cells) -> cells.size() == cellCount,
 				TreeMap::new);
 	}

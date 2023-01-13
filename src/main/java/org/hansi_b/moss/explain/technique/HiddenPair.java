@@ -1,4 +1,4 @@
-package org.hansi_b.moss.explain;
+package org.hansi_b.moss.explain.technique;
 
 import static org.hansib.sundries.CollectUtils.difference;
 import static org.hansib.sundries.CollectUtils.mapMap;
@@ -11,8 +11,11 @@ import java.util.stream.Stream;
 
 import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
+import org.hansi_b.moss.explain.Elimination;
 import org.hansi_b.moss.explain.Elimination.Builder;
+import org.hansi_b.moss.explain.Move;
 import org.hansi_b.moss.explain.Move.Strategy;
+import org.hansi_b.moss.explain.PencilMarks;
 
 /**
  * As described in http://www.sudoku-space.de/sudoku-loesungstechniken/

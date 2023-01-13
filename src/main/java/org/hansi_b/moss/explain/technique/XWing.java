@@ -1,4 +1,4 @@
-package org.hansi_b.moss.explain;
+package org.hansi_b.moss.explain.technique;
 
 import static org.hansib.sundries.CollectUtils.flatten;
 import static org.hansib.sundries.CollectUtils.intersection;
@@ -17,7 +17,10 @@ import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.GroupType;
 import org.hansi_b.moss.Sudoku;
+import org.hansi_b.moss.explain.Elimination;
+import org.hansi_b.moss.explain.Move;
 import org.hansi_b.moss.explain.Move.Strategy;
+import org.hansi_b.moss.explain.PencilMarks;
 
 /**
  * As explained, e.g., on https://www.learn-sudoku.com/x-wing.html

@@ -1,10 +1,13 @@
-package org.hansi_b.moss.explain;
+package org.hansi_b.moss.explain.technique;
 
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.CellGroup;
-import org.hansib.sundries.CollectUtils;
+import org.hansi_b.moss.explain.Insertion;
+import org.hansi_b.moss.explain.Move;
 import org.hansi_b.moss.explain.Move.Strategy;
+import org.hansi_b.moss.explain.PencilMarks;
+import org.hansib.sundries.CollectUtils;
 
 /**
  * As described in http://www.sudoku-space.de/sudoku-loesungstechniken/

@@ -1,4 +1,4 @@
-package org.hansi_b.moss.explain;
+package org.hansi_b.moss.explain.technique;
 
 import java.util.Set;
 import java.util.stream.Collectors;

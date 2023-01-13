@@ -30,7 +30,7 @@ public sealed interface Move permits Insertion, Elimination {
 		XyWing //
 		;
 
-		static Function<GroupType, Strategy> groupTypeMapper(final Strategy... rowColBlockReturns) {
+		public static Function<GroupType, Strategy> groupTypeMapper(final Strategy... rowColBlockReturns) {
 			if (rowColBlockReturns.length != 3)
 				throw new IllegalArgumentException(String.format("Require three arguments to strategy mapping, got %s",
 						Arrays.toString(rowColBlockReturns)));

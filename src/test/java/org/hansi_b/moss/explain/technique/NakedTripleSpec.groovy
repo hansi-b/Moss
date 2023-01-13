@@ -1,9 +1,11 @@
-package org.hansi_b.moss.explain;
+package org.hansi_b.moss.explain.technique;
 
 import static org.hansi_b.moss.testsupport.Shortcuts.*
 
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Move.Strategy
+import org.hansi_b.moss.explain.PencilMarks
+import org.hansi_b.moss.explain.technique.NakedTriple
 
 class NakedTripleSpec extends spock.lang.Specification {
 

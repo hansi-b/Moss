@@ -1,10 +1,12 @@
-package org.hansi_b.moss.explain;
+package org.hansi_b.moss.explain.technique;
 
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.Sudoku;
+import org.hansi_b.moss.explain.Move;
+import org.hansi_b.moss.explain.PencilMarks;
 
-interface Technique {
+public interface Technique {
 
 	static Technique[] allTechniques() {
 		return new Technique[] { //

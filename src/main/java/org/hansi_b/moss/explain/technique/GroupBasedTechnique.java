@@ -1,4 +1,4 @@
-package org.hansi_b.moss.explain;
+package org.hansi_b.moss.explain.technique;
 
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -6,7 +6,9 @@ import java.util.stream.Stream;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.GroupType;
 import org.hansi_b.moss.Sudoku;
+import org.hansi_b.moss.explain.Move;
 import org.hansi_b.moss.explain.Move.Strategy;
+import org.hansi_b.moss.explain.PencilMarks;
 
 /**
  * A common pattern: A technique is based on a group, and accumulating the moves

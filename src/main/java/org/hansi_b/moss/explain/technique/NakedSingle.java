@@ -1,8 +1,11 @@
-package org.hansi_b.moss.explain;
+package org.hansi_b.moss.explain.technique;
 
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.Sudoku;
+import org.hansi_b.moss.explain.Insertion;
+import org.hansi_b.moss.explain.Move;
+import org.hansi_b.moss.explain.PencilMarks;
 
 /**
  *

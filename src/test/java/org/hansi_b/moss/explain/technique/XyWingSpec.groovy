@@ -1,8 +1,11 @@
-package org.hansi_b.moss.explain
+package org.hansi_b.moss.explain.technique
 
 import static org.hansi_b.moss.testsupport.Shortcuts.*
 
 import org.hansi_b.moss.Sudoku
+import org.hansi_b.moss.explain.Elimination
+import org.hansi_b.moss.explain.Move
+import org.hansi_b.moss.explain.PencilMarks
 
 class XyWingSpec extends spock.lang.Specification {
 
