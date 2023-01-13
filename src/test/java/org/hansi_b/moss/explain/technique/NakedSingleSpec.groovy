@@ -4,7 +4,7 @@ import static org.hansi_b.moss.testsupport.Shortcuts.insert
 
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.PencilMarks
-import org.hansi_b.moss.explain.technique.NakedSingle
+import org.hansi_b.moss.explain.Strategy
 
 class NakedSingleSpec extends spock.lang.Specification {
 
@@ -60,7 +60,8 @@ class NakedSingleSpec extends spock.lang.Specification {
 			insert(su, Strategy.NakedSingle, 1, 0, 2),
 			insert(su, Strategy.NakedSingle, 1, 1, 4),
 			insert(su, Strategy.NakedSingle, 2, 2, 1),
-			insert(su, Strategy.NakedSingle, 3, 0, 3)] as Set
+			insert(su, Strategy.NakedSingle, 3, 0, 3)
+		] as Set
 	}
 
 	def testFindBig() {

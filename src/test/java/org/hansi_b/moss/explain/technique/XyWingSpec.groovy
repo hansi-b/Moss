@@ -4,8 +4,8 @@ import static org.hansi_b.moss.testsupport.Shortcuts.*
 
 import org.hansi_b.moss.Sudoku
 import org.hansi_b.moss.explain.Elimination
-import org.hansi_b.moss.explain.Move
 import org.hansi_b.moss.explain.PencilMarks
+import org.hansi_b.moss.explain.Strategy
 
 class XyWingSpec extends spock.lang.Specification {
 
@@ -29,7 +29,7 @@ class XyWingSpec extends spock.lang.Specification {
 
 		expect:
 		technique.findMoves(su, new PencilMarks()).toList() == [
-			new Elimination.Builder(Move.Strategy.XyWing).with(cellAt(su, 0, 6), 7).build()
+			new Elimination.Builder(Strategy.XyWing).with(cellAt(su, 0, 6), 7).build()
 		]
 	}
 }
