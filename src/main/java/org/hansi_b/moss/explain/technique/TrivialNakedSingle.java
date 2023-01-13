@@ -7,8 +7,8 @@ import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.explain.Insertion;
 import org.hansi_b.moss.explain.Move;
-import org.hansi_b.moss.explain.Move.Strategy;
 import org.hansi_b.moss.explain.PencilMarks;
+import org.hansi_b.moss.explain.Strategy;
 
 /**
  * The trivial variant of NakedSingle:

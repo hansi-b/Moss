@@ -3,7 +3,6 @@ package org.hansi_b.moss.explain;
 import org.hansi_b.moss.Cell
 import org.hansi_b.moss.Pos
 import org.hansi_b.moss.Sudoku
-import org.hansi_b.moss.explain.Move.Strategy
 
 public class InsertionSpec extends spock.lang.Specification {
 
@@ -11,15 +10,6 @@ public class InsertionSpec extends spock.lang.Specification {
 	Pos pos = new Pos(3,5)
 
 	def cell = new Cell(sudoku, pos)
-
-	def "strategy requires three arguments"() {
-
-		when:
-		Strategy.groupTypeMapper(Strategy.NakedSingleInRow)
-
-		then:
-		thrown IllegalArgumentException
-	}
 
 	def "moves are equal in all three positions"() {
 

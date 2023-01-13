@@ -5,8 +5,8 @@ import static org.hansi_b.moss.testsupport.Shortcuts.insert;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hansi_b.moss.Sudoku;
-import org.hansi_b.moss.explain.Move.Strategy;
 import org.hansi_b.moss.explain.PencilMarks;
+import org.hansi_b.moss.explain.Strategy;
 import org.junit.jupiter.api.Test;
 
 class TrivialNakedSingleTest {

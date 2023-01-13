@@ -19,8 +19,9 @@ import org.hansi_b.moss.GroupType;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Elimination;
 import org.hansi_b.moss.explain.Move;
-import org.hansi_b.moss.explain.Move.Strategy;
 import org.hansi_b.moss.explain.PencilMarks;
+import org.hansi_b.moss.explain.Strategy;
+import org.hansi_b.moss.explain.Technique;
 
 /**
  * As explained, e.g., on https://www.learn-sudoku.com/x-wing.html
@@ -37,8 +38,8 @@ public class XWing implements Technique {
 
 	enum WingType {
 
-		XWingFromRow(GroupType.Row, GroupType.Col, Move.Strategy.XWingFromRow), //
-		XWingFromCol(GroupType.Col, GroupType.Row, Move.Strategy.XWingFromCol);
+		XWingFromRow(GroupType.Row, GroupType.Col, Strategy.XWingFromRow), //
+		XWingFromCol(GroupType.Col, GroupType.Row, Strategy.XWingFromCol);
 
 		private final GroupType pairsType;
 		private final GroupType crossingType;

@@ -3,8 +3,6 @@ package org.hansi_b.moss.explain;
 import java.util.stream.Stream
 
 import org.hansi_b.moss.Sudoku
-import org.hansi_b.moss.explain.Move.Strategy
-import org.hansi_b.moss.explain.technique.Technique
 
 import spock.lang.Specification
 

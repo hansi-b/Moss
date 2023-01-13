@@ -14,8 +14,8 @@ import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.explain.Elimination;
 import org.hansi_b.moss.explain.Elimination.Builder;
 import org.hansi_b.moss.explain.Move;
-import org.hansi_b.moss.explain.Move.Strategy;
 import org.hansi_b.moss.explain.PencilMarks;
+import org.hansi_b.moss.explain.Strategy;
 
 /**
  * As described in http://www.sudoku-space.de/sudoku-loesungstechniken/

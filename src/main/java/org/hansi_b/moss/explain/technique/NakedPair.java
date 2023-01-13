@@ -16,8 +16,8 @@ import org.hansi_b.moss.Cell;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.explain.Elimination;
 import org.hansi_b.moss.explain.Move;
-import org.hansi_b.moss.explain.Move.Strategy;
 import org.hansi_b.moss.explain.PencilMarks;
+import org.hansi_b.moss.explain.Strategy;
 
 /**
  * As explained, e.g., on https://www.learn-sudoku.com/naked-pairs.html
@@ -26,7 +26,7 @@ import org.hansi_b.moss.explain.PencilMarks;
  * candidates, eliminate these from all other cell candidates.
  */
 public class NakedPair extends GroupBasedTechnique {
-	NakedPair() {
+	public NakedPair() {
 		super(Strategy.NakedPairInRow, //
 				Strategy.NakedPairInCol, //
 				Strategy.NakedPairInBlock);

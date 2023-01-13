@@ -6,6 +6,8 @@ import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Insertion;
 import org.hansi_b.moss.explain.Move;
 import org.hansi_b.moss.explain.PencilMarks;
+import org.hansi_b.moss.explain.Strategy;
+import org.hansi_b.moss.explain.Technique;
 
 /**
  *
@@ -27,6 +29,6 @@ public class NakedSingle implements Technique {
 
 		return sudoku.streamEmptyCells().//
 				filter(c -> c.getCandidates().size() == 1)
-				.map(c -> new Insertion(Move.Strategy.NakedSingle, c, c.getCandidates().first()));
+				.map(c -> new Insertion(Strategy.NakedSingle, c, c.getCandidates().first()));
 	}
 }

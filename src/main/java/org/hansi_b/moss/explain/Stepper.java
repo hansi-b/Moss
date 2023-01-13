@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.hansi_b.moss.Sudoku;
-import org.hansi_b.moss.explain.technique.Technique;
 
 public class Stepper implements Iterator<Move> {
 

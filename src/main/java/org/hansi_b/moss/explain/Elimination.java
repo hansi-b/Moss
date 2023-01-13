@@ -9,13 +9,13 @@ import org.hansi_b.moss.Cell;
 /**
  * Remove specific candidates from specific cells.
  */
-public record Elimination(Move.Strategy strategy, Marks candidatesByCell) implements Move {
+public record Elimination(Strategy strategy, Marks candidatesByCell) implements Move {
 
 	public static class Builder {
 		private final Strategy strategy;
 		private final Marks candsByCell;
 
-		public Builder(final Move.Strategy strategy) {
+		public Builder(final Strategy strategy) {
 			this.strategy = strategy;
 			this.candsByCell = new Marks();
 		}

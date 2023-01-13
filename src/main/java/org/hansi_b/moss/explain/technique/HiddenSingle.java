@@ -5,8 +5,8 @@ import java.util.stream.Stream;
 import org.hansi_b.moss.CellGroup;
 import org.hansi_b.moss.explain.Insertion;
 import org.hansi_b.moss.explain.Move;
-import org.hansi_b.moss.explain.Move.Strategy;
 import org.hansi_b.moss.explain.PencilMarks;
+import org.hansi_b.moss.explain.Strategy;
 import org.hansib.sundries.CollectUtils;
 
 /**

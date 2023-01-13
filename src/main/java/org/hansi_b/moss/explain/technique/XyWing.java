@@ -7,6 +7,8 @@ import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Elimination;
 import org.hansi_b.moss.explain.Move;
 import org.hansi_b.moss.explain.PencilMarks;
+import org.hansi_b.moss.explain.Strategy;
+import org.hansi_b.moss.explain.Technique;
 
 /**
  * As explained, e.g., on https://www.learn-sudoku.com/xy-wing.html
@@ -34,7 +36,7 @@ public class XyWing implements Technique {
 		 * than the middle wing cell), and remove the wings's common candidate
 		 */
 		return Elimination.Builder.collectNonEmpty(new XyWingFinder(sudoku, marks).streamWings().map(wing -> {
-			final Elimination.Builder builder = new Elimination.Builder(Move.Strategy.XyWing);
+			final Elimination.Builder builder = new Elimination.Builder(Strategy.XyWing);
 			wing.targetCells().stream().filter(c -> marks.candidates(c).contains(wing.commonCandidate))
 					.collect(Collectors.toSet()).forEach(cell -> builder.with(cell, wing.commonCandidate));
 			return builder;

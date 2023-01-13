@@ -10,8 +10,8 @@ import org.hansi_b.moss.Pos;
 import org.hansi_b.moss.Sudoku;
 import org.hansi_b.moss.explain.Elimination;
 import org.hansi_b.moss.explain.Insertion;
-import org.hansi_b.moss.explain.Move.Strategy;
 import org.hansi_b.moss.explain.PencilMarks;
+import org.hansi_b.moss.explain.Strategy;
 import org.hansib.sundries.CollectUtils;
 
 public class Shortcuts {

@@ -7,7 +7,7 @@ import org.hansi_b.moss.Cell;
 /**
  * A move that sets a value in a cell.
  */
-public record Insertion(Move.Strategy strategy, Cell cell, Integer newValue) implements Move {
+public record Insertion(Strategy strategy, Cell cell, Integer newValue) implements Move {
 
 	@Override
 	public void apply(final PencilMarks marks) {

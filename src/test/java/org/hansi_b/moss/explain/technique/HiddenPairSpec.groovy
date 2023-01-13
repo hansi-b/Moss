@@ -4,7 +4,6 @@ import static org.hansi_b.moss.testsupport.Shortcuts.*
 
 import org.hansi_b.moss.Sudoku
 import org.hansi_b.moss.explain.Elimination
-import org.hansi_b.moss.explain.Move.Strategy
 import org.hansi_b.moss.explain.PencilMarks
 
 import spock.lang.Specification
