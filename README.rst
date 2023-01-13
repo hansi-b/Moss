@@ -13,5 +13,5 @@ MOSS is *not* a brute-force solver; instead, it implements techniques a human wo
 
 This project is mainly a playground for various Java-related techniques such as streams, so ...
 
-+ its focus is *not* completeness or even adequacy.
++ its focus is *not* completeness or even adequacy, let alone performance.
 + there are *no* guarantees beyond what the tests show to be working.
