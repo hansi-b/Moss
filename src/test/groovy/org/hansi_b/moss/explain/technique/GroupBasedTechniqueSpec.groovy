@@ -29,12 +29,9 @@ public class GroupBasedTechniqueSpec extends Specification {
 	def"group types are mapped to corresponding strategies"() {
 
 		given:
-		CellGroup block = Mock()
-		block.type() >> GroupType.Block
-		CellGroup col = Mock()
-		col.type() >> GroupType.Col
-		CellGroup row = Mock()
-		row.type() >> GroupType.Row
+		CellGroup block = new CellGroup(null, GroupType.Block, Collections.emptyList())
+		CellGroup col = new CellGroup(null, GroupType.Col, Collections.emptyList())
+		CellGroup row = new CellGroup(null, GroupType.Row, Collections.emptyList())
 
 		Sudoku s = Mock()
 		s.streamGroups() >> Stream.of(block, col, row)

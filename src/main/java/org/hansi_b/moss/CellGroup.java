@@ -8,24 +8,14 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.stream.Stream;
 
-public class CellGroup {
+public record CellGroup(Sudoku sudoku, GroupType type, List<Cell> cells) {
 
-	private final Sudoku sudoku;
-	private final GroupType type;
-	private final List<Cell> cells;
-
-	CellGroup(final Sudoku sudoku, final GroupType type, final List<Cell> cells) {
-		this.sudoku = sudoku;
-		this.type = type;
-		this.cells = cells;
+	public CellGroup {
+		cells = List.copyOf(cells);
 	}
 
 	public int size() {
 		return cells.size();
-	}
-
-	public GroupType type() {
-		return type;
 	}
 
 	/**
