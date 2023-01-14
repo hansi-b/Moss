@@ -1,7 +1,7 @@
 package org.hansi_b.moss.explain.technique;
 
-import java.util.Arrays;
-import java.util.function.Function;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import org.hansi_b.moss.CellGroup;
@@ -18,37 +18,19 @@ import org.hansi_b.moss.explain.Technique;
  */
 abstract class GroupBasedTechnique implements Technique {
 
-	private final Function<GroupType, Strategy> groupTypeMapper;
+	private final Map<GroupType, Strategy> strategyByGroupType;
 
-	/**
-	 * @param groupTypes three move strategies ordered Row, Column, Block
-	 */
-	protected GroupBasedTechnique(final Strategy... groupTypes) {
-		this.groupTypeMapper = GroupBasedTechnique.groupTypeMapper(groupTypes);
-	}
-
-	static Function<GroupType, Strategy> groupTypeMapper(final Strategy... rowColBlockReturns) {
-		if (rowColBlockReturns.length != 3)
-			throw new IllegalArgumentException(String.format("Require three arguments to strategy mapping, got %s",
-					Arrays.toString(rowColBlockReturns)));
-		return (final GroupType type) -> {
-			switch (type) {
-			case Row:
-				return rowColBlockReturns[0];
-			case Col:
-				return rowColBlockReturns[1];
-			case Block:
-				return rowColBlockReturns[2];
-			default:
-				throw new IllegalStateException(String.format("Unknown cell group type %s", type));
-			}
-		};
+	protected GroupBasedTechnique(final Strategy rowStrategy, Strategy colStrategy, Strategy blockStrategy) {
+		strategyByGroupType = new EnumMap<>(GroupType.class);
+		strategyByGroupType.put(GroupType.Row, rowStrategy);
+		strategyByGroupType.put(GroupType.Col, colStrategy);
+		strategyByGroupType.put(GroupType.Block, blockStrategy);
 	}
 
 	@Override
 	public Stream<Move> findMoves(final Sudoku sudoku, final PencilMarks cached) {
-		return sudoku.streamGroups().flatMap(group -> findMoves(group, groupTypeMapper.apply(group.type()), cached));
+		return sudoku.streamGroups().flatMap(group -> findMoves(group, strategyByGroupType.get(group.type()), cached));
 	}
 
-	public abstract Stream<Move> findMoves(CellGroup group, Strategy strategy, PencilMarks cached);
+	abstract Stream<Move> findMoves(CellGroup group, Strategy strategy, PencilMarks cached);
 }
