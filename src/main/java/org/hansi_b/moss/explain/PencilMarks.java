@@ -28,11 +28,7 @@ public class PencilMarks {
 	 * @return an unmodifiable view of the cell's candidate values
 	 */
 	public SortedSet<Integer> candidates(final Cell cell) {
-		return Collections.unmodifiableSortedSet(candidatesInternal(cell));
-	}
-
-	private SortedSet<Integer> candidatesInternal(final Cell cell) {
-		return candidatesByCell.get(cell);
+		return Collections.unmodifiableSortedSet(candidatesByCell.get(cell));
 	}
 
 	/**
@@ -44,7 +40,7 @@ public class PencilMarks {
 	 */
 	public SortedMap<Integer, SortedSet<Cell>> getCellsByCandidate(final CellGroup group) {
 		final SortedMap<Integer, SortedSet<Cell>> cellsByCandidate = new TreeMap<>();
-		group.streamEmptyCells().forEach(c -> candidatesInternal(c)
+		group.streamEmptyCells().forEach(c -> candidatesByCell.get(c)
 				.forEach(i -> cellsByCandidate.computeIfAbsent(i, v -> Cell.newPosSortedSet()).add(c)));
 		return cellsByCandidate;
 	}
@@ -84,7 +80,7 @@ public class PencilMarks {
 	 *                                  for the given cell
 	 */
 	public void remove(final Cell cell, final int candidate) {
-		final SortedSet<Integer> cands = candidatesInternal(cell);
+		final SortedSet<Integer> cands = candidatesByCell.get(cell);
 		if (!cands.contains(candidate))
 			throw Errors.illegalArg("Argument '%d' is not in candidates %s of cell %s", candidate, cands, cell);
 
@@ -101,7 +97,7 @@ public class PencilMarks {
 	 * @param newValue the value that has been filled in
 	 */
 	public void updateByInsertion(final Cell cell, final int newValue) {
-		cell.streamEmptyCellsFromGroups().forEach(c -> candidatesInternal(c).remove(newValue));
-		candidatesInternal(cell).clear();
+		cell.streamEmptyCellsFromGroups().forEach(c -> candidatesByCell.get(c).remove(newValue));
+		candidatesByCell.get(cell).clear();
 	}
 }
