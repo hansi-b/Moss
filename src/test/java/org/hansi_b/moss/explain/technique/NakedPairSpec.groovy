@@ -56,4 +56,30 @@ class NakedPairSpec extends spock.lang.Specification {
 			.with(cellsAt(su, [8, 0], [8, 1], [8, 2]) as Set, [1, 4]).with([cellAt(su,6,2)], 1).build()
 		] as Set
 	}
+
+	def 'can find multiple naked pairs in same group'() {
+
+		when:
+		final Integer[] values = //
+				[0, 0, 1, 2, 3, 4, 5, 6, 7]+
+				[0, 0, 4, 5, 6, 7, 8, 9, 1]+
+				[0, 0, 7, 0, 0, 0, 0, 0, 0]+
+				[0, 0, 0, 0, 0, 0, 0, 0, 0]+
+				[0, 0, 0, 0, 0, 0, 0, 0, 0]+
+				[0, 0, 0, 0, 0, 0, 0, 0, 0]+
+				[0, 0, 0, 0, 0, 0, 0, 0, 0]+
+				[0, 0, 0, 0, 0, 0, 0, 0, 0]+
+				[0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+		Sudoku su = Sudoku.filled(values);
+
+		then:
+		// row 7 & block 3/0: some occurrences of 1 + 4 can go (tied to 7/0 and 7/2)
+		technique.findMoves(su, new PencilMarks()).toSet() == [
+			new Elimination.Builder(Strategy.NakedPairInBlock)
+			.with(cellsAt(su, [2, 0], [2, 1]) as Set, [8, 9]).build(),
+			new Elimination.Builder(Strategy.NakedPairInBlock)
+			.with(cellsAt(su, [2, 0], [2, 1]) as Set, [2, 3]).build()
+		] as Set
+	}
 }
