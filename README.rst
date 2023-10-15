@@ -1,8 +1,9 @@
 Moss
 ====
 
-.. image:: https://circleci.com/gh/hansi-b/Moss.svg?style=svg
-    :target: https://circleci.com/gh/hansi-b/Moss
+.. image:: https://github.com/hansi-b/Moss/actions/workflows/gradle.yml/badge.svg
+    :target: https://github.com/hansi-b/Moss/actions/workflows/gradle.yml
+    :alt: Github Workflow
 
 .. image:: https://codecov.io/gh/hansi-b/moss/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/hansi-b/moss
